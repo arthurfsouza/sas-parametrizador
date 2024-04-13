@@ -1,0 +1,11 @@
+.parametro-form {
+    .radio-modo {
+        display: flex;
+        flex-direction: column;
+
+        .radio-modo-aviso {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

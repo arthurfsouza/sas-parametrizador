@@ -1,0 +1,172 @@
+<!-- <div class="parametrizador-variaveis-content">
+    <div class="parametrizador-variaveis-top">
+        <h2>Variável</h2>
+
+        <div class="parametrizador-variaveis-add">
+            <button mat-fab matTooltip="Adicionar variável" color="primary">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="parametrizador-variaveis-table">
+        <div class="table-container" *ngIf="dataSource">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="orderId">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '5%' }" class="t-center"> # </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '5%' }" class="t-center">
+                        {{ row.orderNumber }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="client">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '30%' }" class="t-center"> {{ 'input.client' | translate }} </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '30%' }">
+                        <div class="client">
+                            <div class="client-title">{{ row.client.name }}</div>
+                            <div class="client-extra-info">
+                                <div class="client-email">{{ row.client.email }}</div>
+                                <div class="client-phone" *ngIf="row.client.phone">
+                                    {{
+                                        ' | ' + (row.client.phoneCountryCode ? '(' + row.client.phoneCountryCode + ') ' : '') +
+                                        ((row?.client?.phone || "") | mask: row?.client?.phoneMaskCode)
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> {{ 'input.statusOrder' | translate }} </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-center">
+                        <div class="order-validate" *ngIf="row.status === 'PENDING_APPROVAL'">
+                            <countdown-circle class="countdown-circle" [setup]="row.countdownCircle" (timeFinished)="onTimeFinished($event, row)"></countdown-circle>
+
+                            <div class="button-accept" (click)="onValidateOrder(row, true)">
+                                {{ 'action.accept' | translate }}
+                            </div>
+
+                            <div class="button-reject" (click)="onValidateOrder(row, false)">
+                                {{ 'action.reject' | translate }}
+                            </div>
+                        </div>
+
+                        <div class="status-pending-payment" *ngIf="row.status === 'PENDING_PAYMENT'">{{ 'payment.statusPendingPayment' | translate }}</div>
+                        <div class="status-paid" *ngIf="row.status === 'PAID'">{{ 'payment.statusPaid' | translate }}</div>
+                        <div class="status-rejected" *ngIf="row.status === 'REJECTED_ADMIN'">{{ 'payment.statusRejectedByAdmin' | translate }}</div>
+                        <div class="status-rejected" *ngIf="row.status === 'REJECTED_CLIENT'">{{ 'payment.statusRejectedByClient' | translate }}</div>
+                        <div class="status-finished" *ngIf="row.status === 'FINISHED'">{{ 'payment.statusFinished' | translate }}</div>
+                        <div class="status-refunded" *ngIf="row.status === 'REFUNDED'">{{ 'payment.statusRefunded' | translate }}</div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="orderType">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center">{{ 'label.sale' | translate }}</th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                        <div class="order-type">
+                            <div class="order-type-group">
+                                <div class="type">
+                                    <mat-icon>{{ row.orderType === 0 ? 'delivery_dining' : 'shopping_basket' }}</mat-icon>
+                                    {{ row.orderType === 0 ? ('label.delivery' | translate) : ('label.takeaway' | translate) }}
+                                </div>
+                                <div class="date">
+                                    <div *ngIf="!row.todayFlag">
+                                        <mat-icon>event</mat-icon> {{ formarDate(row.orderDate) }}
+                                    </div>
+                                    <div *ngIf="row.todayFlag">
+                                        <mat-icon>event</mat-icon><span class="date-today">{{ 'label.today' | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="hour" *ngIf="row.orderType === 1">
+                                    <mat-icon>schedule</mat-icon> {{ row.orderHour }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center">{{ 'label.total' | translate }}</th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                        <div class="content-amount">
+                            <div class="content-amount-group" *ngIf="row.promotionPrice !== 0 || (row.deliveryPrice > 0 || row.extraCharge > 0) || row.serviceFee != 0">
+                                <div class="content-amount-subtotal-label">{{ 'label.subtotal' | translate }}</div>
+                                <div class="content-amount-subtotal-value">{{ row.price.toFixed(2) }}€</div>
+                            </div>
+
+                            <div class="content-amount-group content-amount-discount" *ngIf="row.promotionPrice !== 0">
+                                <div class="content-amount-discount-label">{{ 'input.discount' | translate }}</div>
+                                <div class="content-amount-discount-value">
+                                    <div class="content-amount-discount-value-symb">-</div>
+                                    <div class="content-amount-discount-value2">{{ row.promotionPrice.toFixed(2) }}€</div>
+                                </div>
+                            </div>
+
+                            <div class="content-amount-group content-amount-tax" *ngIf="row.deliveryPrice > 0 || row.extraCharge > 0">
+                                <div class="content-amount-tax-label">
+                                    {{ row.orderType === 0 ? ('label.delivery' | translate) : ('label.takeaway' | translate) }}
+                                </div>
+                                <div class="content-amount-tax-value">
+                                    <div class="content-amount-tax-value-symb">+</div>
+                                    <div class="content-amount-tax-value2">
+                                        {{ row.orderType === 0 ? (row.deliveryPrice || 0.00).toFixed(2) : (row.extraCharge || 0.00).toFixed(2) }}€
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-amount-group content-amount-tax" *ngIf="row.serviceFee != 0">
+                              <div class="content-amount-tax-label">
+                                <div class="content-amount-tax-label">{{ 'label.serviceFee' | translate }}</div>
+                              </div>
+                              <div class="content-amount-tax-value">
+                                <div class="content-amount-tax-value-symb">+</div>
+                                <div class="content-amount-tax-value2">{{ row.serviceFee.toFixed(2) }}€</div>
+                              </div>
+                          </div>
+
+                            <div class="content-amount-total">
+                                {{ row.amount.toFixed(2) }}€
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status_2">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> {{ 'input.statusMotoboy' | translate }} </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-center">
+                        <div class="delivery-none" *ngIf="row.orderType !== 0 && !row.deliveryStatus">{{ 'delivery.notApplicable' | translate }}</div>
+                        <div class="delivery-none" *ngIf="row.orderType === 0 && !row.deliveryStatus">{{ 'delivery.none' | translate }}</div>
+                        <div class="delivery-accepted" *ngIf="row.orderType === 0 && row.deliveryStatus === 'ACCEPTED'">{{ 'delivery.accepted' | translate }}</div>
+                        <div class="delivery-created" *ngIf="row.orderType === 0 && row.deliveryStatus === 'CREATED'">{{ 'delivery.created' | translate }}</div>
+                        <div class="delivery-delivered" *ngIf="row.orderType === 0 && row.deliveryStatus === 'DELIVERING'">{{ 'delivery.delivering' | translate }}</div>
+                        <div class="delivery-delivered" *ngIf="row.orderType === 0 && row.deliveryStatus === 'DELIVERED'">{{ 'delivery.delivered' | translate }}</div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center">{{ 'label.actions' | translate }}</th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                        <div class="content-table-actions">
+                            <button type="button" mat-icon-button matTooltip="{{ 'action.detail' | translate }}" (click)="onDetails(row)">
+                                <mat-icon>receipt</mat-icon>
+                            </button>
+                            <button type="button" mat-icon-button matTooltip="{{ 'action.readyDelivery' | translate }}" [disabled]="row.status !== 'PAID'" (click)="onFinish(row)">
+                                <mat-icon>check_circle_outline</mat-icon>
+                            </button>
+                            <button type="button" mat-icon-button matTooltip="{{ 'action.openMaps' | translate }}" (click)="onOpenMaps(row)">
+                                <mat-icon>map</mat-icon>
+                            </button>
+
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="empty-message" *ngIf="dataSource.data.length === 0">{{ 'datatable.emptyMessage' | translate }}</div>
+        </div>
+    </div>
+</div> -->

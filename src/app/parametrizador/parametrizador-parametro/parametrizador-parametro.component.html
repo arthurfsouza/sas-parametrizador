@@ -1,0 +1,86 @@
+<form class="parametro-form" [formGroup]="parametroFG">
+    <div class="row custom-row-padding">
+        <div class="col-md-4 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>NOME DO PARÂMETRO</mat-label>
+                <input matInput formControlName="nome" required>
+                <mat-hint>Use apenas letras, números e underline (ao invés do espaço).</mat-hint>
+            </mat-form-field>
+        </div>
+        
+        <div class="col-md-4 col-12">
+            <mat-form-field class="custom-form-field">
+                <mat-label>CLUSTER ASSOCIADO</mat-label>
+                <mat-select name="cluster" formControlName="cluster" [compareWith]="compareObjects" (selectionChange)="onChangeCluster($event)">
+                  <mat-option *ngFor="let option of clusters" [value]="option">
+                    {{ option.nome }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint>Associe um cluster.</mat-hint>
+            </mat-form-field>
+        </div>
+        
+        <div class="col-md-4 col-12">
+            <mat-form-field class="custom-form-field">
+                <mat-label>POLÍTICA ASSOCIADA</mat-label>
+                <mat-select name="politica" formControlName="politica" [compareWith]="compareObjects">
+                  <mat-option *ngFor="let option of politicas" [value]="option">
+                    {{ option.nome }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint>Associe uma política.</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row custom-row-padding">
+        <div class="col-md-4 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>DESCRIÇÃO</mat-label>
+                <textarea #descricao matInput formControlName="descricao" maxlength="300" rows="4" required></textarea>
+                <mat-hint align="start">Digite uma descrição sobre o parâmetro</mat-hint>
+                <mat-hint align="end">{{ descricao.value.length }} / 300</mat-hint>
+            </mat-form-field>
+        </div>
+        
+
+        <div class="col-md-3 col-12 radio-modo">
+            <label>MODO DE USO DAS VARIÁVEIS</label>
+
+            <mat-radio-group aria-label="Selecione uma opção" formControlName="modo">
+                <mat-radio-button value="chave">Chave</mat-radio-button>
+                <mat-radio-button value="global">Global</mat-radio-button>
+            </mat-radio-group>
+
+            <div class="radio-modo-aviso" *ngIf="parametroFG.controls['modo'].value == 'chave'">
+               <label>*MODO CHAVE</label>
+                <small>Requer que pelo menos uma variável do parâmetro seja marcada como chave.</small>
+            </div> 
+            
+            <div class="radio-modo-aviso" *ngIf="parametroFG.controls['modo'].value == 'global'">
+                <label>*MODO GLOBAL</label>
+                <small>[ATUALIZAR TEXTO]</small>
+             </div>
+        </div>
+
+        <div class="col-md-3 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>DATA DA VIGÊNCIA</mat-label>
+                <input matInput [min]="minDate" [matDatepicker]="picker" formControlName="dataVigencia">
+                <mat-hint>Inclua uma data (dd/mm/yyyy)</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        
+        <div class="col-md-2 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>HORA DA VIGÊNCIA</mat-label>
+                <input matInput type="time" formControlName="horaVigencia" required>
+                <mat-hint>Inclua uma hora (00:00)</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+</form>
