@@ -30,13 +30,21 @@ export interface Parametro {
     politica: Politica;
 }
 
+export interface VariavelLista {
+    id: number;
+    nome: string;
+    checked: boolean;
+}
+
 export interface Variavel {
     id: number;
     nome: string;
-    tipo: "a" | "b" | "c";
-    qtdCasasDecimais: number;
+    descricao: string;
+    tipo: "DECIMAL" | "NUMERICO" | "LISTA" | "TEXTO";
+    qtdCasasDecimais: number | null;
     tamanho: number;
     isChave: boolean;
+    lista: VariavelLista[] | null;
 }
 
 /** Antes de fazer a lockup (pastas dentro do SAS), precisa preparar o ambiente.

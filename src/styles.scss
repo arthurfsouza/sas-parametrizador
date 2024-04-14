@@ -11,3 +11,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .custom-form-field {
     width: 100%;
 }
+
+.table-container {
+    .t-start { text-align: start !important; }    
+    .t-center { text-align: center !important; }    
+    .t-end { text-align: end !important; }
+
+    .content-table-actions {
+        display: flex;
+
+        .icon-buttton {
+            cursor: pointer;
+        }
+    }
+}
