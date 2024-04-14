@@ -34,7 +34,7 @@ export class ParametrizadorComponent {
   public dadosStepperFG: FormGroup = new FormGroup({});
   public revisaoStepperFG: FormGroup = new FormGroup({});
 
-  public selectedIndex: number = 1;
+  public selectedIndex: number = 2;
   public stepperTitles: string[] = ["Cadastro de Parâmetro", "Cadastro de Variável"]
 
   public onStepperChange(index$: number): void {

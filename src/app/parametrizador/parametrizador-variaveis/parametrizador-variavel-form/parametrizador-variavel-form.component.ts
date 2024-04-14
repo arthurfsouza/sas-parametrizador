@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -23,7 +22,6 @@ import { VariavelLista } from '../../parametrizador.interface';
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCardModule,
     MatCheckboxModule,
     MatDialogModule,
     MatDividerModule,
