@@ -47,6 +47,13 @@ export interface Variavel {
     lista: VariavelLista[] | null;
 }
 
+export interface Parametrizador {
+    id: number;
+    parametro: Parametro | null;
+    variaveis: Variavel[];
+    dados: any[];
+}
+
 /** Antes de fazer a lockup (pastas dentro do SAS), precisa preparar o ambiente.
  * Como é feito? Pedimos ao time de Riscos para criar um "Cluster" e uma "Política"
 */

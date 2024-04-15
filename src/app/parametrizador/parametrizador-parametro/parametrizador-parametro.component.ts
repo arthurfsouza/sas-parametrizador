@@ -1,5 +1,5 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,9 +7,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { Cluster, Politica } from '../parametrizador.interface';
+import { Cluster, Parametrizador, Politica } from '../parametrizador.interface';
 import { clusters, politicas } from '../parametrizador.mockup';
 import ptBr from '@angular/common/locales/pt';
+import { ParametrizadorService } from '../parametrizador.service';
 
 registerLocaleData(ptBr)
 
@@ -30,11 +31,12 @@ registerLocaleData(ptBr)
   styleUrl: './parametrizador-parametro.component.scss',
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt' },
-    provideMomentDateAdapter(),
+    provideMomentDateAdapter()
   ]
 })
 export class ParametrizadorParametroComponent implements OnInit {
-  constructor() {}
+  private _parametrizador = inject(ParametrizadorService);
+  public parametrizador!: Parametrizador;
 
   public minDate: Date = new Date();
   
@@ -49,10 +51,16 @@ export class ParametrizadorParametroComponent implements OnInit {
   });
   
   public clusters: Cluster[] = clusters.filter(c => c.isAtivo == true);
-  public politicas: Politica[] = politicas.filter(p => p.isAtivo == true);
+  public politicas: Politica[] = politicas.filter(p => p.isAtivo == true);  
 
   ngOnInit(): void {
     this.parametroFG.controls['politica'].disable();
+
+    this._parametrizador.getParametrizador().subscribe(parametrizador => {
+      if(parametrizador) {
+        this.parametrizador = parametrizador;
+      }
+    });
   }
 
   public onChangeCluster(event$: any): void {

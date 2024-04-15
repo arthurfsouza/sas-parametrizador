@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Variavel } from '../parametrizador.interface';
+import { Parametrizador, Variavel } from '../parametrizador.interface';
 import { ParametrizadorVariavelFormComponent } from './parametrizador-variavel-form/parametrizador-variavel-form.component';
+import { ParametrizadorService } from '../parametrizador.service';
 
 
 @Component({
@@ -24,12 +25,24 @@ import { ParametrizadorVariavelFormComponent } from './parametrizador-variavel-f
   templateUrl: './parametrizador-variaveis.component.html',
   styleUrl: './parametrizador-variaveis.component.scss'
 })
-export class ParametrizadorVariaveisComponent {
-  constructor(public dialog: MatDialog){ }
+export class ParametrizadorVariaveisComponent implements OnInit {
+  constructor(public dialog: MatDialog){ }  
+
+  private _parametrizador = inject(ParametrizadorService);
+  public parametrizador!: Parametrizador;
   
   public displayedColumns: string[] = ["id", "nome", "tipo", "qtdCasasDecimais", "tamanho", "chave", "actions"];
   public dataSource: MatTableDataSource<Variavel> = new MatTableDataSource<Variavel>([]);
-  public data: Variavel[] = [];
+  public data: Variavel[] = [];  
+
+  ngOnInit(): void {
+    this._parametrizador.getParametrizador().subscribe(parametrizador => {
+      if(parametrizador) {
+        this.parametrizador = parametrizador;
+        console.log(parametrizador);
+      }
+    });
+  }
 
   public onAddVariavel(): void {
     const dialogRef = this.dialog.open(ParametrizadorVariavelFormComponent, {
@@ -101,5 +114,22 @@ export class ParametrizadorVariaveisComponent {
     this.data.splice(index, 1);
 
     this.dataSource = new MatTableDataSource(this.data);
+  }
+
+  public variaveisStepperIsValid(): boolean {
+    let valid: boolean = false;
+
+    if(this.parametrizador && this.parametrizador.parametro) {
+      const hasGlobalKey: boolean = this.parametrizador.parametro.modo == "chave";
+
+      if(hasGlobalKey) {
+        const variaveisWithKeys: Variavel[] = this.data.filter(d => d.isChave == true);
+
+        if(variaveisWithKeys && variaveisWithKeys.length > 0) { valid = true; }
+      }
+      else { valid = (this.data.length > 0); }
+    }
+
+    return valid;
   }
 }

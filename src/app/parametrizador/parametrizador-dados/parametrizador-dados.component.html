@@ -87,19 +87,13 @@
                             <button type="button" mat-icon-button matTooltip="Adicionar linha" (click)="onAddLine()">
                                 <mat-icon>add_notes</mat-icon>
                             </button>
-                            <button type="button" color="warn" mat-icon-button matTooltip="Excluir linha" (click)="onDeleteLine(dado)">
+                            <button type="button" color="warn" mat-icon-button matTooltip="Excluir linha" 
+                                [disabled]="getDados().length == 1" (click)="onDeleteLine(dado)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </div>
                     </td>
                 </ng-container>
-                <!-- <td *ngIf="mes?.value['calculoTabelaID'] == calculo.id">{{ mes?.value['id'] }}</td>
-                <td *ngIf="mes?.value['calculoTabelaID'] == calculo.id"><input formControlName="txt1"></td>
-                <td *ngIf="mes?.value['calculoTabelaID'] == calculo.id"><input formControlName="txt2"></td>
-                <td *ngIf="mes?.value['calculoTabelaID'] == calculo.id">
-                    <button mat-raised-button color="accent" (click)="teste(mes)">Teste</button>
-                    <button mat-raised-button color="accent" (click)="onDeleteMesCalculo(calculo, mes)">Deletar Grupo</button>
-                </td> -->
               </tr>
             </tbody>
         </table>

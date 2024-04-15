@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -8,28 +8,28 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Variavel, VariavelLista } from '../parametrizador.interface';
+import { Parametrizador, Variavel, VariavelLista } from '../parametrizador.interface';
 import { DigitOnlyDirective } from '../../../shared/directives/digit-only.directive';
+import { ParametrizadorService } from '../parametrizador.service';
 
-export const variaveisMockup: Variavel[] = [
-  { id: 1, isChave: true, nome: "Var1", descricao: "Descrição 1", tamanho: 6, qtdCasasDecimais: 2, tipo: 'DECIMAL', lista: null },
-  { id: 2, isChave: false, nome: "Var2", descricao: "Descrição 2", tamanho: 9, qtdCasasDecimais: null, tipo: 'NUMERICO', lista: null },
-  { id: 3, isChave: false, nome: "Var3", descricao: "Descrição 3", tamanho: 15, qtdCasasDecimais: null, tipo: 'TEXTO', lista: null },
-  { id: 4, isChave: false, nome: "Var4", descricao: "Descrição 4", tamanho: 3, qtdCasasDecimais: null, tipo: 'LISTA', lista: [
-    { id: 1, nome: "Opção A", checked: true },
-    { id: 2, nome: "Opção B", checked: false },
-    { id: 3, nome: "Opção C", checked: true },
-    { id: 4, nome: "Opção D", checked: false },
-    { id: 5, nome: "Opção E", checked: true },
-    { id: 6, nome: "Opção F", checked: false },
-    { id: 7, nome: "Opção G", checked: true },
-    { id: 8, nome: "Opção H", checked: false },
-    { id: 9, nome: "Opção I", checked: true },
-    { id: 10, nome: "Opção J", checked: false }]
-  }
-];
+// export const variaveisMockup: Variavel[] = [
+//   { id: 1, isChave: true, nome: "Var1", descricao: "Descrição 1", tamanho: 6, qtdCasasDecimais: 2, tipo: 'DECIMAL', lista: null },
+//   { id: 2, isChave: false, nome: "Var2", descricao: "Descrição 2", tamanho: 9, qtdCasasDecimais: null, tipo: 'NUMERICO', lista: null },
+//   { id: 3, isChave: false, nome: "Var3", descricao: "Descrição 3", tamanho: 15, qtdCasasDecimais: null, tipo: 'TEXTO', lista: null },
+//   { id: 4, isChave: false, nome: "Var4", descricao: "Descrição 4", tamanho: 3, qtdCasasDecimais: null, tipo: 'LISTA', lista: [
+//     { id: 1, nome: "Opção A", checked: true },
+//     { id: 2, nome: "Opção B", checked: false },
+//     { id: 3, nome: "Opção C", checked: true },
+//     { id: 4, nome: "Opção D", checked: false },
+//     { id: 5, nome: "Opção E", checked: true },
+//     { id: 6, nome: "Opção F", checked: false },
+//     { id: 7, nome: "Opção G", checked: true },
+//     { id: 8, nome: "Opção H", checked: false },
+//     { id: 9, nome: "Opção I", checked: true },
+//     { id: 10, nome: "Opção J", checked: false }]
+//   }
+// ];
 
 @Component({
   selector: 'app-parametrizador-dados',
@@ -46,7 +46,6 @@ export const variaveisMockup: Variavel[] = [
     MatIconModule,
     MatInputModule,
     MatSelectModule,
-    MatTableModule,
     MatTooltipModule
   ],
   templateUrl: './parametrizador-dados.component.html',
@@ -55,20 +54,35 @@ export const variaveisMockup: Variavel[] = [
 export class ParametrizadorDadosComponent {
   constructor(public dialog: MatDialog, private _fb: FormBuilder){ }
 
+  private _parametrizador = inject(ParametrizadorService);
+  public parametrizador!: Parametrizador;
+
   public displayedColumns: string[] = [];
-  public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  public data: any[] = [];
+  public variaveis: Variavel[] = [];
 
   public dadosFG: FormGroup = new FormGroup({
     dados: this._fb.array([])
   });
-  private _dados: FormArray = <FormArray>this.dadosFG.get('dados');
+  private _dados: FormArray = <FormArray>this.dadosFG.get('dados');  
 
   ngOnInit(): void {
-    for(let varAux of variaveisMockup) { this.displayedColumns.push("dado-control-" + varAux.id); }
+    this._parametrizador.getParametrizador().subscribe(parametrizador => {
+      if(parametrizador) {
+        this.parametrizador = parametrizador;
 
-    this.displayedColumns.push("dado-control-actions");
+        if(this.parametrizador.variaveis && this.parametrizador.variaveis.length > 0) {
+          this.variaveis = this.parametrizador.variaveis;
+          
+          this.initDados();
+        }
+      }
+    });
+  }
 
+  public initDados(): void {
+    for(let varAux of this.parametrizador.variaveis) { this.displayedColumns.push("dado-control-" + varAux.id); }
+
+    this.displayedColumns.push("dado-control-actions");      
     this._patchDado(1);
   }
 
@@ -78,21 +92,21 @@ export class ParametrizadorDadosComponent {
 
   public getColumnName(column: string): string {
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = variaveisMockup.find(v => v.id == id);
+    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
 
     return variavel ? variavel.nome : "-";
   }
 
   public getColumnVariable(column: string): Variavel | undefined {
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = variaveisMockup.find(v => v.id == id);
+    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
 
     return variavel;
   }
 
   public getPattern(column: string): string | RegExp {
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = variaveisMockup.find(v => v.id == id);
+    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
     let pattern: string | RegExp = "";
 
     if(variavel) {
@@ -109,10 +123,14 @@ export class ParametrizadorDadosComponent {
 
   public getListItems(column: string): VariavelLista[] {
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = variaveisMockup.find(v => v.id == id);
+    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
     const variavelLista: VariavelLista[] = variavel ? variavel.lista?.filter(l => l.checked == true) || [] : [];
 
     return variavelLista;
+  }
+
+  public getDados(): any[] {
+    return this._dados.value || [];
   }
 
   public onAddLine(): void {
@@ -154,7 +172,7 @@ export class ParametrizadorDadosComponent {
       "dado-control-id": new FormControl(id, [Validators.required])
     });
 
-    for(let varAux of variaveisMockup) {
+    for(let varAux of this.variaveis) {
       fg.addControl(
         "dado-control-" + varAux.id,
         new FormControl(value ? value["dado-control-" + varAux.id] : null, [Validators.required])
