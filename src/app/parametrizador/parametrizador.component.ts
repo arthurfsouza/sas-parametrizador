@@ -9,6 +9,16 @@ import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/paramet
 import { CommonModule } from '@angular/common';
 import { ParametrizadorService } from './parametrizador.service';
 import { Parametrizador } from './parametrizador.interface';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+
+export interface SASAuth {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+  scope: string;
+  jti: string;
+}
 
 @Component({
   selector: 'app-parametrizador',
@@ -31,6 +41,9 @@ export class ParametrizadorComponent implements OnInit {
   @ViewChild("parametrizadorDados") public parametrizadorDados!: ParametrizadorDadosComponent;
   @ViewChild("parametrizadorRevisao") public parametrizadorRevisao!: ParametrizadorRevisaoComponent;
 
+  constructor() { }
+
+  private _http = inject(HttpClient);
   private _parametrizador = inject(ParametrizadorService);
   public parametrizador: Parametrizador = { id: 1, parametro: null, variaveis: [], dados: [] };
 
@@ -47,6 +60,19 @@ export class ParametrizadorComponent implements OnInit {
     });
 
     this._parametrizador.setParametrizador(this.parametrizador);
+
+    this.initAuthSAS();
+  }
+
+  public initAuthSAS(): void {
+    const url: string = "https://rmdemo.unx.sas.com/SASLogon/oauth/token";
+    const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' });
+    const body: any = { username: "demo66", password: "Go4thsas", grant_type: "password" };
+
+    this._http.post(url, body, { headers: headers }).subscribe(
+      response => { console.log(response); },
+      error => { console.log(error); }
+    )
   }
 
   public onStepperChange(index$: number): void {
