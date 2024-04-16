@@ -26,4 +26,16 @@
         }
 
     }
+
+    .parametrizador-revisao-dark {
+        padding: 16px;    
+        background-color: darkblue;
+        color: lightgray;
+        border: 1px solid lightgray;    
+        border-radius: 5px;
+
+        div {
+            padding: 0 8px;
+        }
+    }
 }

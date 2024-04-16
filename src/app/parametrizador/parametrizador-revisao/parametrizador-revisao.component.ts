@@ -20,7 +20,20 @@ export class ParametrizadorRevisaoComponent implements OnInit {
 
   ngOnInit(): void {
     this._parametrizador.getParametrizador().subscribe(parametrizador => {
-      if(parametrizador) { this.parametrizador = parametrizador; }
+      if(parametrizador) { this.parametrizador = parametrizador; console.log(this.parametrizador); }
     });
+  }
+
+  public getDataVigencia(): string {
+    let dataFormat: string = "-";
+    let dataVigencia: any = this.parametrizador?.parametro?.dataVigencia || null;
+    let horaVigencia: any = this.parametrizador?.parametro?.horaVigencia || null;
+
+
+    if(horaVigencia && dataVigencia && dataVigencia._d) {
+      dataFormat = dataVigencia._d.toLocaleDateString() + " - " + horaVigencia;
+    }
+
+    return dataFormat;
   }
 }
