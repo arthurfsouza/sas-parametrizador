@@ -6,7 +6,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Parametrizador, Variavel } from '../parametrizador.interface';
+import { Parametrizador, Variavel } from '../../../shared/interfaces/parametrizador.interface';
 import { ParametrizadorVariavelFormComponent } from './parametrizador-variavel-form/parametrizador-variavel-form.component';
 import { ParametrizadorService } from '../parametrizador.service';
 

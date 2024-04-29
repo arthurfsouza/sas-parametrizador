@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { Parametrizador } from "./parametrizador.interface";
+import { Parametrizador } from "../../shared/interfaces/parametrizador.interface";
 
 @Injectable({providedIn: 'root'})
 export class ParametrizadorService {

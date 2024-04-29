@@ -1,0 +1,72 @@
+<div class="clusters-container container">
+    <div class="row clusters-topnav">
+        <div class="clusters-title">
+            <h1>Clusters</h1>
+        </div>
+    </div>
+
+    <div class="row clusters-content">
+        <div class="row clusters-content-top">
+            <div class="col-md-8 col-12 content-top-filter">
+                FILTRO
+            </div>
+            <div class="col-md-4 col-12 content-top-add">
+                <button mat-fab matTooltip="Adicionar cluster" color="primary" (click)="onAddCluster()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="row clusters-content-bottom">
+            <div class="table-container" *ngIf="dataSource">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> # </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                            {{ row.id }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '40%' }" class="t-center"> NOME </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '40%' }" class="t-start">
+                            <div class="cluster-group">
+                                <div class="cluster-title">{{ row.nome }}</div>
+                                <div class="cluster-subtitle">{{ row.descricao }}</div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="segmento">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> NOME </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
+                            {{ row.segmento.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> STATUS </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                            <div class="cluster-status-ativo" *ngIf="row.isAtivo">Ativo</div>
+                            <div class="cluster-status-inativo" *ngIf="!row.isAtivo">Inativo</div>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-center">
+                            <div class="content-table-actions">
+                                <button mat-flat-button color="primary" (click)="onDetalhes(row)">Detalhes</button>
+                            </div>
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+    
+                <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhum cluster cadastrado.</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VariavelLista } from '../../parametrizador.interface';
+import { VariavelLista } from '../../../../shared/interfaces/parametrizador.interface';
 
 @Component({
   selector: 'app-parametrizador-variavel-form',

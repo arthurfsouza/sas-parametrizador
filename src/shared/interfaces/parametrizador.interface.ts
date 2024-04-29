@@ -1,6 +1,7 @@
 export interface Segmento {
     id: number;
     nome: string;
+    descricao: string;
     isAtivo: boolean;
 }
 

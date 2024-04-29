@@ -84,3 +84,25 @@
         </div>
     </div>
 </form>
+
+<br/>
+
+<fieldset class="sas-fieldset">
+    <legend>Integração via API do SAS</legend>
+
+    <form class="sas-form" [formGroup]="sasFG">
+        <div class="row custom-row-padding">            
+            <div class="col-md-4 col-12">
+                <mat-form-field class="custom-form-field">
+                    <mat-label>Pasta do SAS</mat-label>
+                    <mat-select name="folder" formControlName="folder" [compareWith]="compareObjects">
+                      <mat-option *ngFor="let option of folders" [value]="option">
+                        {{ option.description }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint>Escolha uma pasta</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>    
+</fieldset>

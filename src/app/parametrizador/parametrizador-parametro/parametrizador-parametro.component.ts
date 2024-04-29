@@ -7,10 +7,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { Cluster, Parametrizador, Politica } from '../parametrizador.interface';
-import { clusters, politicas } from '../parametrizador.mockup';
+import { Cluster, Parametrizador, Politica } from '../../../shared/interfaces/parametrizador.interface';
+import { clusters, politicas } from '../../../shared/mockups/parametrizador.mockup';
 import ptBr from '@angular/common/locales/pt';
 import { ParametrizadorService } from '../parametrizador.service';
+import { HttpClient } from '@angular/common/http';
 
 registerLocaleData(ptBr)
 
@@ -35,6 +36,7 @@ registerLocaleData(ptBr)
   ]
 })
 export class ParametrizadorParametroComponent implements OnInit {
+  private _http = inject(HttpClient);
   private _parametrizador = inject(ParametrizadorService);
   public parametrizador!: Parametrizador;
 
@@ -51,7 +53,13 @@ export class ParametrizadorParametroComponent implements OnInit {
   });
   
   public clusters: Cluster[] = clusters.filter(c => c.isAtivo == true);
-  public politicas: Politica[] = politicas.filter(p => p.isAtivo == true);  
+  public politicas: Politica[] = politicas.filter(p => p.isAtivo == true);
+  
+  public sasFG: FormGroup = new FormGroup({
+    folder: new FormControl(null)
+  });
+
+  public folders: {id: string, description: string}[] = [];
 
   ngOnInit(): void {
     this.parametroFG.controls['politica'].disable();
@@ -61,6 +69,24 @@ export class ParametrizadorParametroComponent implements OnInit {
         this.parametrizador = parametrizador;
       }
     });
+
+    this.listFoldersSAS();
+  }
+
+  public listFoldersSAS(): void {
+    this._http.get("http://127.0.0.1:5000/api-sas", { }).subscribe(
+      (response: any) => {
+        if(response && response.folder_response) {
+          const items: any[] = response.folder_response.items || [];
+          const folders: any[] = items.map(item => {
+            return { id: item.id, description: item.description || "undefined" }; 
+          });
+
+          this.folders = folders || [];
+        }
+      },
+      error => { console.log(error); }
+    )
   }
 
   public onChangeCluster(event$: any): void {
