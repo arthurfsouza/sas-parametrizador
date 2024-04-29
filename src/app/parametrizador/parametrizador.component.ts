@@ -8,7 +8,7 @@ import { ParametrizadorDadosComponent } from './parametrizador-dados/parametriza
 import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/parametrizador-revisao.component';
 import { CommonModule } from '@angular/common';
 import { ParametrizadorService } from './parametrizador.service';
-import { Parametrizador } from './parametrizador.interface';
+import { Parametrizador } from '../../shared/interfaces/parametrizador.interface';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 
 export interface SASAuth {
@@ -61,13 +61,28 @@ export class ParametrizadorComponent implements OnInit {
 
     this._parametrizador.setParametrizador(this.parametrizador);
 
-    this.initAuthSAS();
+    // this.initAuthSAS();
+    // this.initAPILocal();
+  }
+
+  public initAPILocal(): void{
+    this._http.get("http://127.0.0.1:5000/api-sas", { }).subscribe(
+      response => { console.log(response); },
+      error => { console.log(error); }
+    )
   }
 
   public initAuthSAS(): void {
     const url: string = "https://rmdemo.unx.sas.com/SASLogon/oauth/token";
-    const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' });
-    const body: any = { username: "demo66", password: "Go4thsas", grant_type: "password" };
+    const username: string = "sas.ec";
+    const password: string = "";
+    const authorizationData = 'Basic ' + btoa(username + ':' + password);
+    const body: any = { "username": "demo66", "password": "Go4thsas", "grant_type": "password" };
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+      'Authorization': authorizationData
+    });
 
     this._http.post(url, body, { headers: headers }).subscribe(
       response => { console.log(response); },

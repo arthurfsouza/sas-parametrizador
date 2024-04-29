@@ -1,11 +1,11 @@
-import { Cluster, Politica, Segmento } from "./parametrizador.interface";
+import { Cluster, Politica, Segmento } from "../interfaces/parametrizador.interface";
 
 export const segmentos: Segmento[] = [
-    { id: 1, nome: "Segmento 1", isAtivo: true },
-    { id: 2, nome: "Segmento 2", isAtivo: false },
-    { id: 3, nome: "Segmento 3", isAtivo: true },
-    { id: 4, nome: "Segmento 4", isAtivo: false },
-    { id: 5, nome: "Segmento 5", isAtivo: true }
+    { id: 1, nome: "Segmento 1", descricao: "Segmento 1 - Descrição 1", isAtivo: true },
+    { id: 2, nome: "Segmento 2", descricao: "Segmento 2 - Descrição 2", isAtivo: false },
+    { id: 3, nome: "Segmento 3", descricao: "Segmento 3 - Descrição 3", isAtivo: true },
+    { id: 4, nome: "Segmento 4", descricao: "Segmento 4 - Descrição 4", isAtivo: false },
+    { id: 5, nome: "Segmento 5", descricao: "Segmento 5 - Descrição 5", isAtivo: true }
 ];
 
 export const clusters: Cluster[] = [

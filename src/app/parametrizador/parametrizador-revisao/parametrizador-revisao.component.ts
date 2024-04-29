@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { Parametrizador } from '../parametrizador.interface';
+import { Parametrizador } from '../../../shared/interfaces/parametrizador.interface';
 import { ParametrizadorService } from '../parametrizador.service';
 import { MatCardModule } from '@angular/material/card';
 
