@@ -1,0 +1,61 @@
+:host {
+    width: 100%;
+    display: flex;
+}
+
+.datatable-paginator {
+    min-height: 65px;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+
+    .pagination-group {
+        display: block;
+
+        .pagination {
+            justify-content: center;
+            flex-wrap: wrap;
+            display: -ms-flexbox;
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .page-info {
+            width: 100%;
+            text-align: center;
+            color: rgba(0,0,0,.54);
+            margin-top: -10px;
+            font-size: 12px;
+            font-weight: 400;
+            margin-right: 175px;
+        }
+    }
+
+    .itens-per-page {
+        .form-field-itens-per-page {
+            width: 150px;
+            transform: scale(0.6);
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .datatable-paginator {
+        margin-right: auto;
+        flex-direction: column-reverse;
+
+        .pagination-group {
+            margin-top: -20px;
+        }
+
+        .itens-per-page {
+            display: flex;
+
+            .form-field-itens-per-page {
+                margin-left: auto;
+                transform: scale(1.0);
+            }
+        }
+    }
+}

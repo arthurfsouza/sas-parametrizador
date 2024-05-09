@@ -7,9 +7,18 @@
 
     <div class="row segmentos-content">
         <div class="row segmentos-content-top">
-            <div class="col-md-8 col-12 content-top-filter">
-                FILTRO
+            <div class="col-md-8 col-12 content-top-filter" [formGroup]="filterFG">
+                <mat-form-field appearance="fill" class="custom-form-field default-search">
+                    <mat-label>Buscar</mat-label>
+                    <input matInput placeholder="Digite aqui sua busca" formControlName="filter" minlength="3">
+                    <mat-icon matSuffix class="icon-search" *ngIf="filterFG.controls['filter'].value?.length === 0">search</mat-icon>
+                    <mat-icon matSuffix class="icon-backspace" color="warn" (click)="filterFG.controls['filter'].setValue('')"
+                        *ngIf="filterFG.controls['filter'].value?.length > 0">
+                        backspace
+                    </mat-icon>
+                </mat-form-field>
             </div>
+
             <div class="col-md-4 col-12 content-top-add">
                 <button mat-fab matTooltip="Adicionar segmento" color="primary" (click)="onAddSegmento()">
                     <mat-icon>add</mat-icon>
@@ -19,7 +28,7 @@
 
         <div class="row segmentos-content-bottom">
             <div class="table-container" *ngIf="dataSource">
-                <table mat-table [dataSource]="dataSource">
+                <table mat-table [dataSource]="dataSource" matSort #sort="matSort" (matSortChange)="sortChange($event)">
                     <ng-container matColumnDef="id">
                         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> # </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
@@ -28,7 +37,7 @@
                     </ng-container>
     
                     <ng-container matColumnDef="nome">
-                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '60%' }" class="t-center"> NOME </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '60%' }" class="t-center"> NOME </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '60%' }" class="t-start">
                             <div class="segmento-group">
                                 <div class="segmento-title">{{ row.nome }}</div>
@@ -38,7 +47,7 @@
                     </ng-container>
 
                     <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> STATUS </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> STATUS </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
                             <div class="segmento-status-ativo" *ngIf="row.isAtivo">Ativo</div>
                             <div class="segmento-status-inativo" *ngIf="!row.isAtivo">Inativo</div>
@@ -60,6 +69,9 @@
     
                 <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhum segmento cadastrado.</div>
             </div>
+
+            <datatable-paginator #paginator [dataSize]="data.length" (sourceChanged)="onSourceChanged($event)">
+            </datatable-paginator>
         </div>
     </div>
 </div>

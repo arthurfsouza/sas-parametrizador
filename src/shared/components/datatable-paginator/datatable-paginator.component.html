@@ -1,0 +1,63 @@
+<div class="datatable-paginator" *ngIf="source">
+    <div class="pagination-group">
+        <ul *ngIf="source.pages && source.pages.length" class="pagination">
+            <li>
+                <button type="button" mat-stroked-button color="primary"
+                    class="page-item page-icon-button previous-item" matTooltip="Primeiro"
+                    [disabled]="source.currentPage === 1" (click)="setPage(1)">
+                    <mat-icon>first_page</mat-icon>
+                </button>
+            </li>
+    
+            <li>
+                <button type="button" mat-stroked-button color="primary"
+                    class="page-item page-icon-button number-item" matTooltip="Anterior"
+                    [disabled]="source.currentPage === 1" (click)="setPage(source.currentPage - 1)">
+                    <mat-icon>navigate_before</mat-icon>
+                </button>
+            </li>
+    
+            <li *ngFor="let page of source.pages">
+                <button type="button" mat-stroked-button color="primary" class="page-item number-item"
+                    [ngClass]="source.currentPage === page ? 'active-page' : ''" (click)="setPage(page)">
+                    {{ page }}
+                </button>
+            </li>
+    
+            <li>
+                <button type="button" mat-stroked-button color="primary"
+                    class="page-item page-icon-button number-item" matTooltip="Próximo"
+                    [disabled]="source.currentPage === source.totalPages" (click)="setPage(source.currentPage + 1)">
+                    <mat-icon>navigate_next</mat-icon>
+                </button>
+            </li>
+    
+            <li>
+                <button type="button" mat-stroked-button color="primary"
+                    class="page-item page-icon-button next-item" matTooltip="Último"
+                    [disabled]="source.currentPage === source.totalPages" (click)="setPage(source.totalPages)">
+                    <mat-icon>last_page</mat-icon>
+                </button>
+            </li>
+        </ul>
+
+        <div class="page-info" *ngIf="source.pages && source.pages.length">
+            {{
+                ((source.currentPage * source.pageSize) - source.pageSize + 1) + " - " +
+                ((source.currentPage * source.pageSize) - source.pageSize + source.pageSize) +
+                " de " + (source.totalItems)
+            }}
+        </div>
+    </div>
+    
+    <div class="itens-per-page">
+        <mat-form-field class="form-field-itens-per-page">
+            <mat-label>Itens por página:</mat-label>
+            <mat-select [(value)]="pageSize" (selectionChange)="itensPerPageChange($event)">
+                <mat-option *ngFor="let pageNumber of itemsPerPageOptions" [value]="pageNumber">
+                    {{ pageNumber }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
