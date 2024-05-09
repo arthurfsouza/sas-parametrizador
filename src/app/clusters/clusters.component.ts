@@ -90,7 +90,10 @@ export class ClustersComponent {
           segmento: result.cluster.segmento
         });
 
-        this.dataSource = new MatTableDataSource(this.data);
+        if(this.paginator) {
+          this.paginator.dataSize = this.data.length;
+          this.paginator.setPage(1);
+        }
       }
     });
   }
@@ -112,7 +115,10 @@ export class ClustersComponent {
           }
         }
 
-        this.dataSource = new MatTableDataSource(this.data);
+        if(this.paginator) {
+          this.paginator.dataSize = this.data.length;
+          this.paginator.setPage(1);
+        }
       }
     });
   }

@@ -16,6 +16,7 @@ export interface Cluster {
 export interface Politica {
     id: number;
     nome: string;
+    descricao: string;
     isAtivo: boolean;
     cluster: Cluster;
 }

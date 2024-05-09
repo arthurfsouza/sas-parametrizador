@@ -18,6 +18,11 @@ export const routes: Routes = [
         title: "Clusters"
     },
     {
+        path: 'politicas',
+        loadComponent: () => import('./politicas/politicas.component').then(mod => mod.PoliticasComponent),
+        title: "Políticas"
+    },
+    {
         path: 'parametrizador',
         loadComponent: () => import('./parametrizador/parametrizador.component').then(mod => mod.ParametrizadorComponent),
         title: "Parametrizador"

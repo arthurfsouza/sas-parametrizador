@@ -52,7 +52,7 @@ export class ClusterFormComponent {
     segmento: new FormControl(null, [Validators.required])
   });
 
-  public segmentos: Segmento[] = segmentos;
+  public segmentos: Segmento[] = segmentos.filter(s => s.isAtivo == true);
 
   public onChangeSegmento(event$: any): void {
     if(event$ && event$.value && event$.value.id) {
