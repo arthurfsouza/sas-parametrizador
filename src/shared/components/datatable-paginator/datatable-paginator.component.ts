@@ -36,7 +36,7 @@ export interface DatatablePaginatorSource {
 export class DatatablePaginatorComponent implements OnInit {
   @Input() public dataSize: number = 0;
   @Input() public initialPage: number = 1;
-  @Input() public pageSize: number = 25;
+  @Input() public pageSize: number = 10;
   @Input() public maxPages: number = 5;
   @Input() public source!: DatatablePaginatorSource;
   

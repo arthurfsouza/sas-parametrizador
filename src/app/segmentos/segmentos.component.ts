@@ -37,9 +37,9 @@ export class SegmentosComponent {
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
   constructor(public dialog: MatDialog){
-    for(let i = 0; i < 50; i++) { this.data.push(...segmentos); }
+    // for(let i = 0; i < 50; i++) { this.data.push(...segmentos); }
 
-    // this.data = segmentos;
+    this.data = segmentos;
     this.originalData = this.data;
     this.dataSource = new MatTableDataSource(this.data);
 
