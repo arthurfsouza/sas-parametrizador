@@ -1,0 +1,164 @@
+.parametros-container {
+    display: block;
+
+    .parametros-topnav {
+        display: flex;
+        background-color: whitesmoke;
+
+        .parametros-title {
+            padding: 24px;
+        }
+    }
+
+    .parametros-content {
+        display: block;
+        padding: 16px 24px;
+
+        .parametros-content-top {
+            padding-bottom: 15px;
+
+            .content-top-filter {
+                .filter-hint-start { display: none; }
+                .filter-hint-end { display: block; }
+            }
+
+            .content-top-add {
+                display: flex;
+
+                button {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        .parametros-content-middle {
+            .chip-default {
+                background-color: #f5f5f5;
+                border: 1px solid darkgray;
+
+                .chip-default-span {
+                    color: darkgray;
+                }
+            }
+
+            .chip-variavel-chave {                    
+                background-color: rgb(41, 69, 83);
+                border: 1px solid #e8fff3;
+
+                .chip-variavel-chave-span {
+                    color: #e8fff3;
+                }
+            }
+
+            .chip-variavel-global {
+                background-color: #e8fff3;
+                border: 1px solid rgb(41, 69, 83);
+
+                .chip-variavel-global-span {
+                    color: rgb(41, 69, 83);
+                }
+            }
+
+            .chip-statuses {
+                background-color: #ffebcd;
+                border: 1px solid darkorange;
+
+                .chip-statuses-span {
+                    color: darkorange;
+                }
+            }
+        }
+
+        .parametros-content-bottom {
+            .table-container {
+                width: 100%;
+
+                .parametro-group {
+                    display: block;
+
+                    .parametro-title {
+
+                    }
+
+                    .parametro-subtitle {
+                        font-size: 12px;
+                        color: lightslategrey;
+                    }
+                }
+
+                .parametro-variavel-chave {
+                    color: #e8fff3;
+                    background-color: rgb(41, 69, 83);
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid #e8fff3;
+                    text-align: center;
+                }
+
+                .parametro-variavel-global {
+                    color: rgb(41, 69, 83);
+                    background-color: #e8fff3;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid rgb(41, 69, 83);;
+                    text-align: center;
+                }
+
+                .parametro-status-criado {
+                    color: #7239ea;
+                    background-color: #f8f5ff;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid;
+                    text-align: center;
+                }
+
+                .parametro-status-vigente {
+                    color: #50cd89;
+                    background-color: #e8fff3;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid;
+                    text-align: center;
+                }
+
+                .parametro-status-aguardando {
+                    color: #ffc700;
+                    background-color: #fff8dd;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid;
+                    text-align: center;
+                }
+
+                .parametro-status-deletado {
+                    color: #f1416c;
+                    background-color: #fff5f8;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px 5px;
+                    border: 1px solid;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .parametros-container {    
+        .parametros-content {    
+            .parametros-content-top {    
+                .content-top-filter {
+                    .filter-hint-start { display: block; }
+                    .filter-hint-end { display: none; }
+                }
+            }
+        }
+    }
+}

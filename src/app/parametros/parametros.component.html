@@ -1,0 +1,171 @@
+<div class="parametros-container container">
+    <div class="row parametros-topnav">
+        <div class="parametros-title">
+            <h1>Parâmetros</h1>
+        </div>
+    </div>
+
+    <div class="row parametros-content">
+        <div class="row parametros-content-top">
+            <div class="col-md-8 col-12 content-top-filter" [formGroup]="filterFG">
+                <mat-form-field appearance="fill" class="custom-form-field default-search">
+                    <mat-label>Buscar</mat-label>
+                    <input matInput placeholder="Digite aqui sua busca" formControlName="filter" minlength="3">
+                    <mat-icon matSuffix class="icon-search" *ngIf="filterFG.controls['filter'].value?.length === 0">search</mat-icon>
+                    <mat-icon matSuffix class="icon-backspace" color="warn" (click)="filterFG.controls['filter'].setValue('')"
+                        *ngIf="filterFG.controls['filter'].value?.length > 0">
+                        backspace
+                    </mat-icon>
+                    <mat-hint class="filter-hint-start" align="start">
+                        <button mat-button color="primary" (click)="onOpenBuscaAvancada()">Busca avançada</button>
+                    </mat-hint>                    
+                    <mat-hint class="filter-hint-end" align="end">
+                        <button mat-button color="primary" (click)="onOpenBuscaAvancada()">Busca avançada</button>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4 col-12 content-top-add">
+                <button mat-fab matTooltip="Adicionar parâmetro" color="primary" (click)="onAddParametro()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+        
+        <div class="row parametros-content-middle">
+            <mat-chip-set #chipSet>
+                <mat-chip class="chip-default" (removed)="removeChip('segmento')" *ngIf="buscaAvancada.segmento">
+                    <span class="chip-default-span">
+                        Segmento: {{ buscaAvancada.segmento.nome }}
+                    </span>
+                    <button matChipRemove>
+                      <mat-icon color="warn">cancel</mat-icon>
+                    </button>
+                </mat-chip>
+
+                <mat-chip class="chip-default" (removed)="removeChip('cluster')" *ngIf="buscaAvancada.cluster">
+                    <span class="chip-default-span">
+                        Cluster: {{ buscaAvancada.cluster.nome }}
+                    </span>
+                    <button matChipRemove>
+                      <mat-icon color="warn">cancel</mat-icon>
+                    </button>
+                </mat-chip>
+
+                <mat-chip class="chip-default" (removed)="removeChip('politica')" *ngIf="buscaAvancada.politica">
+                    <span class="chip-default-span">
+                        Política: {{ buscaAvancada.politica.nome }}
+                    </span>
+                    <button matChipRemove>
+                      <mat-icon color="warn">cancel</mat-icon>
+                    </button>
+                </mat-chip>
+
+                <mat-chip [ngClass]="{'chip-variavel-chave': buscaAvancada.variavel.modo == 'chave', 'chip-variavel-global': buscaAvancada.variavel.modo == 'global' }"
+                    (removed)="removeChip('variavel')" *ngIf="buscaAvancada.variavel && buscaAvancada.variavel.id != 1">
+                    <span [ngClass]="{'chip-variavel-chave-span': buscaAvancada.variavel.modo == 'chave', 'chip-variavel-global-span': buscaAvancada.variavel.modo == 'global' }">
+                        Variável: {{ buscaAvancada.variavel.modo == 'chave' ? 'Chave' : 'Global' }}
+                    </span>
+                    <button matChipRemove>
+                      <mat-icon color="warn">cancel</mat-icon>
+                    </button>
+                </mat-chip>
+
+                <mat-chip class="chip-statuses" (removed)="removeChip('statuses')" *ngIf="buscaAvancada.statuses && buscaAvancada.statuses.length != statuses.length">
+                    <span class="chip-statuses-span">
+                        Status: {{ getStatuses() }}
+                    </span>
+                    <button matChipRemove>
+                      <mat-icon color="warn">cancel</mat-icon>
+                    </button>
+                </mat-chip>
+            </mat-chip-set>
+        </div>
+
+        <div class="row parametros-content-bottom">
+            <div class="table-container" *ngIf="dataSource">
+                <table mat-table [dataSource]="dataSource" matSort #sort="matSort" (matSortChange)="sortChange($event)">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '5%' }" class="t-center"> # </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '5%' }" class="t-center">
+                            {{ row.id }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> NOME </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                            <div class="parametro-group">
+                                <div class="parametro-title">{{ row.parametro.nome }}</div>
+                                <div class="parametro-subtitle">{{ row.parametro.descricao }}</div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="segmento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> SEGMENTO </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                            {{ row.parametro.cluster.segmento.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cluster">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> CLUSTER </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                            {{ row.parametro.cluster.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="politica">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> POLÍTICA </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                            {{ row.parametro.politica.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="variavel">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> VARIÁVEL </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                            <div class="parametro-variavel-chave" *ngIf="row.parametro.modo == 'chave'">Chave</div>
+                            <div class="parametro-variavel-global" *ngIf="row.parametro.modo == 'global'">Global</div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="versao">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '5%' }" class="t-center"> VERSÃO </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '5%' }" class="t-start">
+                            {{ row.versao }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> STATUS </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                            <div class="parametro-status-criado" *ngIf="row.status == 'CREATED'">Criação</div>
+                            <div class="parametro-status-vigente" *ngIf="row.status == 'ACTIVE'">Vigente</div>
+                            <div class="parametro-status-aguardando" *ngIf="row.status == 'AWAITING_RISK_DECISION'">Aguardando Decisão de Riscos</div>
+                            <div class="parametro-status-deletado" *ngIf="row.status == 'DELETED'">Excluído</div>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                            <div class="content-table-actions">
+                                <button mat-flat-button color="primary" (click)="onDetalhes(row)">Detalhes</button>
+                            </div>
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+    
+                <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhum parâmetro cadastrado.</div>
+            </div>
+
+            <datatable-paginator #paginator [dataSize]="data.length" (sourceChanged)="onSourceChanged($event)">
+            </datatable-paginator>
+        </div>
+    </div>
+</div>

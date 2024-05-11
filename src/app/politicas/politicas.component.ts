@@ -50,7 +50,7 @@ export class PoliticasComponent {
 
       if(value.length >= 3) {
         this.data = this.data.filter(
-          segmento => StringUtils.replaceAllSpecialCharacters(segmento.nome || "").includes(
+          politica => StringUtils.replaceAllSpecialCharacters(politica.nome || "").includes(
             StringUtils.replaceAllSpecialCharacters(value)
           )
         );

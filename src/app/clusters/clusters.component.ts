@@ -49,7 +49,7 @@ export class ClustersComponent {
 
       if(value.length >= 3) {
         this.data = this.data.filter(
-          segmento => StringUtils.replaceAllSpecialCharacters(segmento.nome || "").includes(
+          cluster => StringUtils.replaceAllSpecialCharacters(cluster.nome || "").includes(
             StringUtils.replaceAllSpecialCharacters(value)
           )
         );

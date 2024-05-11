@@ -1,4 +1,4 @@
-import { Cluster, Politica, Segmento } from "../interfaces/parametrizador.interface";
+import { Cluster, Parametrizador, Politica, Segmento } from "../interfaces/parametrizador.interface";
 
 export const segmentos: Segmento[] = [
     { id: 1, nome: "Segmento 1", descricao: "Segmento 1 - Descrição 1", isAtivo: true },
@@ -72,4 +72,83 @@ export const politicas: Politica[] = [
     { id: 43, nome: "Politica 43", descricao: "Politica 43 - Descrição 43", isAtivo: true, cluster: clusters[14] },
     { id: 44, nome: "Politica 44", descricao: "Politica 44 - Descrição 44", isAtivo: false, cluster: clusters[14] },
     { id: 45, nome: "Politica 45", descricao: "Politica 45 - Descrição 45", isAtivo: true, cluster: clusters[14] }
+];
+
+export const parametrizadores: Parametrizador[] = [
+    { 
+        id: 1, status: 'CREATED', versao: "1.0", dados: [],
+        parametro: { 
+            id: 1, nome: "Parâmetro 1", descricao: "Parâmetro 1 - Descrição 1", modo: "chave", 
+            dataVigencia: new Date(2024, 0, 1), horaVigencia: new Date(), cluster: politicas[0].cluster, politica: politicas[0] 
+        },
+        variaveis: [
+            { id: 1, nome: "Var 1", descricao: "Desc 1", isChave: true, tipo: "DECIMAL", tamanho: 2, qtdCasasDecimais: 2, lista: [] },
+            { id: 2, nome: "Var 2", descricao: "Desc 2", isChave: false, tipo: "NUMERICO", tamanho: 6, qtdCasasDecimais: null, lista: [] },
+            { id: 3, nome: "Var 3", descricao: "Desc 3", isChave: false, tipo: "TEXTO", tamanho: 50, qtdCasasDecimais: null, lista: [] },
+            { id: 4, nome: "Var 4", descricao: "Desc 4", isChave: false, tipo: "LISTA", tamanho: 3, qtdCasasDecimais: null, lista: [
+                { id: 1, nome: "Item 1", checked: true },
+                { id: 2, nome: "Item 2", checked: false },
+                { id: 3, nome: "Item 3", checked: true },
+                { id: 4, nome: "Item 4", checked: false },
+                { id: 5, nome: "Item 5", checked: true },
+            ] },
+        ]
+    },
+    { 
+        id: 2, status: 'ACTIVE', versao: "1.0", dados: [],
+        parametro: { 
+            id: 2, nome: "Parâmetro 2", descricao: "Parâmetro 2 - Descrição 2", modo: "global", 
+            dataVigencia: new Date(2024, 1, 1), horaVigencia: new Date(), cluster: politicas[1].cluster, politica: politicas[1] 
+        },
+        variaveis: [
+            { id: 5, nome: "Var 1", descricao: "Desc 1", isChave: false, tipo: "DECIMAL", tamanho: 2, qtdCasasDecimais: 2, lista: [] },
+            { id: 6, nome: "Var 2", descricao: "Desc 2", isChave: true, tipo: "NUMERICO", tamanho: 6, qtdCasasDecimais: null, lista: [] },
+            { id: 7, nome: "Var 3", descricao: "Desc 3", isChave: false, tipo: "TEXTO", tamanho: 50, qtdCasasDecimais: null, lista: [] },
+            { id: 8, nome: "Var 4", descricao: "Desc 4", isChave: false, tipo: "LISTA", tamanho: 3, qtdCasasDecimais: null, lista: [
+                { id: 6, nome: "Item 1", checked: false },
+                { id: 7, nome: "Item 2", checked: true },
+                { id: 8, nome: "Item 3", checked: false },
+                { id: 9, nome: "Item 4", checked: true },
+                { id: 10, nome: "Item 5", checked: false },
+            ] },
+        ]
+    },
+    { 
+        id: 3, status: 'AWAITING_RISK_DECISION', versao: "2.0", dados: [],
+        parametro: { 
+            id: 3, nome: "Parâmetro 3", descricao: "Parâmetro 3 - Descrição 3", modo: "global", 
+            dataVigencia: new Date(2024, 2, 1), horaVigencia: new Date(), cluster: politicas[3].cluster, politica: politicas[3] 
+        },
+        variaveis: [
+            { id: 9, nome: "Var 1", descricao: "Desc 1", isChave: false, tipo: "DECIMAL", tamanho: 2, qtdCasasDecimais: 2, lista: [] },
+            { id: 10, nome: "Var 2", descricao: "Desc 2", isChave: false, tipo: "NUMERICO", tamanho: 6, qtdCasasDecimais: null, lista: [] },
+            { id: 11, nome: "Var 3", descricao: "Desc 3", isChave: true, tipo: "TEXTO", tamanho: 50, qtdCasasDecimais: null, lista: [] },
+            { id: 12, nome: "Var 4", descricao: "Desc 4", isChave: false, tipo: "LISTA", tamanho: 3, qtdCasasDecimais: null, lista: [
+                { id: 11, nome: "Item 1", checked: false },
+                { id: 12, nome: "Item 2", checked: true },
+                { id: 13, nome: "Item 3", checked: true },
+                { id: 14, nome: "Item 4", checked: true },
+                { id: 15, nome: "Item 5", checked: false },
+            ] },
+        ]
+    },
+    { 
+        id: 4, status: 'DELETED', versao: "1.0", dados: [],
+        parametro: { 
+            id: 4, nome: "Parâmetro 4", descricao: "Parâmetro 4 - Descrição 4", modo: "chave", 
+            dataVigencia: new Date(2024, 3, 1), horaVigencia: new Date(), cluster: politicas[30].cluster, politica: politicas[30] 
+        },
+        variaveis: [
+            { id: 13, nome: "Var 1", descricao: "Desc 1", isChave: false, tipo: "DECIMAL", tamanho: 2, qtdCasasDecimais: 2, lista: [] },
+            { id: 14, nome: "Var 2", descricao: "Desc 2", isChave: false, tipo: "NUMERICO", tamanho: 6, qtdCasasDecimais: null, lista: [] },
+            { id: 15, nome: "Var 3", descricao: "Desc 3", isChave: false, tipo: "TEXTO", tamanho: 50, qtdCasasDecimais: null, lista: [] },
+            { id: 16, nome: "Var 4", descricao: "Desc 4", isChave: true, tipo: "LISTA", tamanho: 3, qtdCasasDecimais: null, lista: [
+                { id: 16, nome: "Item 1", checked: false },
+                { id: 17, nome: "Item 2", checked: true },
+                { id: 18, nome: "Item 3", checked: true },
+                { id: 19, nome: "Item 4", checked: true },
+                { id: 20, nome: "Item 5", checked: false },
+            ] },
+        ]
+    }
 ];

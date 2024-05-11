@@ -19,6 +19,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .table-container {
+    max-width: 100%;
+    overflow: auto;
+    
     .t-start { text-align: start !important; }    
     .t-center { text-align: center !important; }    
     .t-end { text-align: end !important; }

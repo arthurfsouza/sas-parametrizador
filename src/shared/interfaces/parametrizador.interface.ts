@@ -54,6 +54,8 @@ export interface Parametrizador {
     parametro: Parametro | null;
     variaveis: Variavel[];
     dados: any[];
+    status?: 'CREATED' | 'ACTIVE' | 'AWAITING_RISK_DECISION' | 'DELETED';
+    versao?: string;
 }
 
 /** Antes de fazer a lockup (pastas dentro do SAS), precisa preparar o ambiente.

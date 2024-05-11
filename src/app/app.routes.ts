@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'parametrizador',
+        redirectTo: 'parametros',
         pathMatch: 'full'
     },
     {
@@ -21,6 +21,11 @@ export const routes: Routes = [
         path: 'politicas',
         loadComponent: () => import('./politicas/politicas.component').then(mod => mod.PoliticasComponent),
         title: "Políticas"
+    },
+    {
+        path: 'parametros',
+        loadComponent: () => import('./parametros/parametros.component').then(mod => mod.ParametrosComponent),
+        title: "Parâmetros"
     },
     {
         path: 'parametrizador',
