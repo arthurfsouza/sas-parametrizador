@@ -31,5 +31,10 @@ export const routes: Routes = [
         path: 'parametrizador',
         loadComponent: () => import('./parametrizador/parametrizador.component').then(mod => mod.ParametrizadorComponent),
         title: "Parametrizador"
+    },
+    {
+        path: 'parametrizador/:parametrizadorID',
+        loadComponent: () => import('./parametrizador/parametrizador.component').then(mod => mod.ParametrizadorComponent),
+        title: "Parametrizador"
     }
 ];

@@ -12,10 +12,11 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
-import { Cluster, Parametrizador, Politica, Segmento } from '../../shared/interfaces/parametrizador.interface';
+import { Cluster, Parametrizador, Parametro, Politica, Segmento } from '../../shared/interfaces/parametrizador.interface';
 import StringUtils from '../../shared/utils/string.utils';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/parametros-busca-avancada.component';
+import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-parametros',
@@ -32,7 +33,8 @@ import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/pa
     MatTooltipModule,
     MatSortModule,
     DatatablePaginatorComponent,
-    ParametrosBuscaAvancadaComponent
+    ParametrosBuscaAvancadaComponent,
+    ConfirmDialogComponent
   ],
   templateUrl: './parametros.component.html',
   styleUrl: './parametros.component.scss'
@@ -189,6 +191,29 @@ export class ParametrosComponent {
           variavel: result.search.variavel || { id: 1, nome: "Todos", modo: "todos" },
           statuses: result.search.statuses || this.statuses,
         }
+      }
+    });
+  }
+
+  public onEditarParametro(row: Parametrizador): void {
+    this._router.navigate(["parametrizador/" + row.id]);
+  }
+
+  public onDeletarParametro(row: Parametrizador): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '600px',
+      height: '300px',
+      data: {
+        title: "EXCLUSÃO DE PARÂMETRO",
+        description: `<p>Você tem certeza que deseja excluir o parâmetro <b>${row.parametro?.nome}</b>?</p>`,
+        descriptionType: "HTML",
+        buttonText: "Excluir"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == "delete") {
+        console.log("Excluir Parâmetro");
       }
     });
   }

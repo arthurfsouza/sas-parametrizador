@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Parametrizador, Variavel, VariavelLista } from '../../../shared/interfaces/parametrizador.interface';
 import { DigitOnlyDirective } from '../../../shared/directives/digit-only.directive';
 import { ParametrizadorService } from '../parametrizador.service';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 // export const variaveisMockup: Variavel[] = [
 //   { id: 1, isChave: true, nome: "Var1", descricao: "Descrição 1", tamanho: 6, qtdCasasDecimais: 2, tipo: 'DECIMAL', lista: null },
@@ -152,14 +153,29 @@ export class ParametrizadorDadosComponent {
       }
     }
 
-    dados.splice(index, 1);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '600px',
+      height: '300px',
+      data: {
+        title: "Aviso de Exclusão de linha",
+        description: `<p>Esta ação não poderá ser desfeita.</p><p>Tem certeza que deseja excluir a linha selecionada?</p>`,
+        descriptionType: "HTML",
+        buttonText: "Excluir"
+      }
+    });
 
-    let formArray: FormArray = <FormArray>this.dadosFG.get('dados');
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == "delete") {
+        dados.splice(index, 1);
 
-    while(formArray.length !== 0) { formArray.removeAt(0); }
+        let formArray: FormArray = <FormArray>this.dadosFG.get('dados');
 
-    dados.map(dado => {
-      this._patchDado(dado["dado-control-id"], dado);
+        while(formArray.length !== 0) { formArray.removeAt(0); }
+
+        dados.map(dado => {
+          this._patchDado(dado["dado-control-id"], dado);
+        });
+      }
     });
   }
 
