@@ -9,6 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Parametrizador, Variavel } from '../../../shared/interfaces/parametrizador.interface';
 import { ParametrizadorVariavelFormComponent } from './parametrizador-variavel-form/parametrizador-variavel-form.component';
 import { ParametrizadorService } from '../parametrizador.service';
+import { ParametrizadorVariavelUploadComponent } from './parametrizador-variavel-upload/parametrizador-variavel-upload.component';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class ParametrizadorVariaveisComponent implements OnInit {
   private _parametrizador = inject(ParametrizadorService);
   public parametrizador!: Parametrizador;
   
-  public displayedColumns: string[] = ["id", "nome", "tipo", "qtdCasasDecimais", "tamanho", "chave", "actions"];
+  public displayedColumns: string[] = ["id", "nome", "tipo", "chave", "tamanho", "qtdCasasDecimais", "actions"];
   public dataSource: MatTableDataSource<Variavel> = new MatTableDataSource<Variavel>([]);
   public data: Variavel[] = [];  
 
@@ -39,7 +40,11 @@ export class ParametrizadorVariaveisComponent implements OnInit {
     this._parametrizador.getParametrizador().subscribe(parametrizador => {
       if(parametrizador) {
         this.parametrizador = parametrizador;
-        console.log(parametrizador);
+
+        if(this.parametrizador.variaveis && this.parametrizador.variaveis.length > 0) {
+          this.data = this.parametrizador.variaveis;
+          this.dataSource = new MatTableDataSource(this.data);
+        }
       }
     });
   }
@@ -131,5 +136,18 @@ export class ParametrizadorVariaveisComponent implements OnInit {
     }
 
     return valid;
+  }
+
+  public onOpenVariaveisUpload(): void {
+    const dialogRef = this.dialog.open(ParametrizadorVariavelUploadComponent, {
+      width: '100%',
+      height: '100%',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+    });
   }
 }

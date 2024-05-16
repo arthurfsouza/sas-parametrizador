@@ -52,7 +52,7 @@ export class ParametrizadorComponent implements OnInit {
   public dadosStepperFG: FormGroup = new FormGroup({});
   public revisaoStepperFG: FormGroup = new FormGroup({});
 
-  public selectedIndex: number = 0;
+  public selectedIndex: number = 1;
 
   ngOnInit(): void {
     this._parametrizador.getParametrizador().subscribe( parametrizador => {
