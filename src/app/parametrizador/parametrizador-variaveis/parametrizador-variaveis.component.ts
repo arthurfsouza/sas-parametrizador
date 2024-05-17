@@ -71,8 +71,6 @@ export class ParametrizadorVariaveisComponent implements OnInit {
           lista: result.variavel.lista || null
         });
 
-        console.log(result.variavel);
-
         this.dataSource = new MatTableDataSource(this.data);
       }
     });

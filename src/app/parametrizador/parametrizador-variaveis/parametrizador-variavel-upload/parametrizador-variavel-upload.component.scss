@@ -202,35 +202,54 @@
                     }
                 }
 
-                .table-lista {
-                    min-width: 350px;
-                    padding: 8px;
-                    border: 1px solid;
-                    border-radius: 5px;
-                    
-                    th, td {
-                        border: 1px solid black;
-                        border-collapse: collapse;
+                .save-action {
+                    margin-left: auto;
+
+                    button { min-width: 220px; }
+                }
+
+                .example-element-detail {
+                    .table-file-name {
+                        padding: 4px 8px;
+                        font-size: 10px;
+                        font-weight: 500;    
                     }
+                    
+                    .table-lista {
+                        min-width: 350px;                        
+                        border: 1px solid;
 
-                    .validator-group {
-                        display: block;
+                        th {
+                            text-align: center;
+                            padding: 2px 0px;
+                        }
 
-                        .validator-group-value { display: block; }
-
-                        .validator-group-errors {
+                        td { padding: 2px 8px; }
+                        
+                        th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+    
+                        .validator-group {
                             display: block;
-
-                            div {
-                                width: fit-content;
-                                color: #f1416c;
-                                background-color: #fff5f8;
-                                border-radius: 5px;
-                                padding: 3px;
-                                margin: 5px;
-                                border: 1px solid #f1416c;
-                                font-size: 12px;
-                                text-align: center;
+    
+                            .validator-group-value { display: block; }
+    
+                            .validator-group-errors {
+                                display: block;
+    
+                                div {
+                                    width: fit-content;
+                                    color: #f1416c;
+                                    background-color: #fff5f8;
+                                    border-radius: 5px;
+                                    padding: 3px;
+                                    margin: 5px;
+                                    border: 1px solid #f1416c;
+                                    font-size: 12px;
+                                    text-align: center;
+                                }
                             }
                         }
                     }
@@ -251,6 +270,7 @@ tr.example-element-row:not(.example-expanded-row):active { background: #efefef; 
 .example-element-detail {
     overflow: hidden;
     display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 991px) {

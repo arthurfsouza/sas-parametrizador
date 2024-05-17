@@ -192,16 +192,18 @@
                                             <mat-icon>file_upload</mat-icon>
                                             Importar arquivo CSV
                                         </button>
-                
-                                        <span *ngIf="element.file">{{ element.file.name }}</span>
                                     </div>
                                 </td>
                             </ng-container>
 
                             <ng-container *ngIf="column == 'action'">
-                                <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }"></th>
+                                <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }">Ação</th>
                                 <td mat-cell *matCellDef="let element" [ngStyle]="{'width': '15%' }">
-                                    BUTTON
+                                    <div class="save-action">
+                                        <button mat-flat-button color="primary" [disabled]="element.dataStatus != 'VALID'" (click)="onSaveLista(element)">
+                                            Salvar
+                                        </button>
+                                    </div>
                                 </td>
                             </ng-container>
                         </ng-container>
@@ -224,6 +226,8 @@
                     <ng-container matColumnDef="expandedDetail">
                         <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns2Expand.length">
                             <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                <span class="table-file-name" *ngIf="element.file">{{ element.file.name }}</span>
+
                                 <table class="table-lista">
                                     <thead>
                                         <tr>
@@ -248,8 +252,8 @@
                                                         {{ item.lista.ativo == true ? "Sim" : (item.lista.ativo == false ? "Não" : item.lista.ativo) }}
                                                     </div>
                                                     <div class="validator-group-errors">
-                                                        <div *ngIf="item.controle.chaveObrigatorio">Ativo obrigatória</div>
-                                                        <div *ngIf="item.controle.chaveNaoBooleano">Ativo inválido</div>
+                                                        <div *ngIf="item.controle.ativoObrigatorio">Ativo obrigatória</div>
+                                                        <div *ngIf="item.controle.ativoNaoBooleano">Ativo inválido</div>
                                                     </div>
                                                 </div>
                                             </td>

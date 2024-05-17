@@ -105,14 +105,23 @@ export class ParametrizadorVariavelUploadComponent {
             });
 
             if(variavel.tipo == 'LISTA') {
+              let data: any[] = [];
+
+              if(variavel && variavel.lista && variavel.lista.length > 0) {
+                data = variavel.lista.map(l => { return {
+                  lista: { id: l.id, nome: l.nome, ativo: l.checked },
+                  controle: { nomeObrigatorio: false, ativoObrigatorio: false, ativoNaoBooleano: false }
+                }});
+              }
+
               dataSource2.push({
                 nome: variavel.nome,
                 file: null,
                 importedData: [],
-                data: [],
+                data: data,
                 dataEmptyFlag: false,
                 dataMissingColumns: false,
-                dataStatus: "NONE"
+                dataStatus: data.length > 0 ? "CURRENT" : "NONE"
               });
             }
           });
@@ -133,6 +142,23 @@ export class ParametrizadorVariavelUploadComponent {
       this.data1Status = 'CURRENT';
 
       this.parametrizador.variaveis = this.data1.map(d => d.variavel);
+      this._parametrizador.setParametrizador(this.parametrizador);
+    }
+  }
+
+  public onSaveLista(row: any): void {
+    if(row.dataStatus == "VALID") {
+      row.file = null;
+      row.importedData = [];
+      row.dataStatus = 'CURRENT';
+
+      for(let variavel of this.parametrizador.variaveis) {
+        if(variavel.nome === row.nome) {
+          variavel.lista = row.data.map((d: any) => { return { id: d.lista.id, nome: d.lista.nome, checked: d.lista.ativo } });
+          break;
+        }
+      }
+
       this._parametrizador.setParametrizador(this.parametrizador);
     }
   }
@@ -297,7 +323,6 @@ export class ParametrizadorVariavelUploadComponent {
 
   public initDataSource2(row: any): void {
     if(row) {
-      console.log(row);
       row.data = [];
       row.dataEmptyFlag = false;
       row.dataMissingColumns = [];
@@ -321,7 +346,7 @@ export class ParametrizadorVariavelUploadComponent {
     
           if(!nome) { nomeObrigatorio = true; }
     
-          let ativo: any = row["ativo"] || null;
+          let ativo: any = item["ativo"] || null;
           let ativoObrigatorio: boolean = false;
           let ativoNaoBooleano: boolean = false;
     
