@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Parametrizador, Variavel, VariavelLista } from '../../../shared/interfaces/parametrizador.interface';
 import { DigitOnlyDirective } from '../../../shared/directives/digit-only.directive';
 import { ParametrizadorService } from '../parametrizador.service';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 // export const variaveisMockup: Variavel[] = [
 //   { id: 1, isChave: true, nome: "Var1", descricao: "Descrição 1", tamanho: 6, qtdCasasDecimais: 2, tipo: 'DECIMAL', lista: null },

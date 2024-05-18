@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper'
@@ -6,10 +8,9 @@ import { ParametrizadorParametroComponent } from './parametrizador-parametro/par
 import { ParametrizadorVariaveisComponent } from './parametrizador-variaveis/parametrizador-variaveis.component';
 import { ParametrizadorDadosComponent } from './parametrizador-dados/parametrizador-dados.component';
 import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/parametrizador-revisao.component';
-import { CommonModule } from '@angular/common';
+import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { ParametrizadorService } from './parametrizador.service';
 import { Parametrizador } from '../../shared/interfaces/parametrizador.interface';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 
 export interface SASAuth {
   access_token: string;
@@ -30,7 +31,8 @@ export interface SASAuth {
     ParametrizadorParametroComponent,
     ParametrizadorVariaveisComponent,
     ParametrizadorDadosComponent,
-    ParametrizadorRevisaoComponent
+    ParametrizadorRevisaoComponent,
+    MenuNavigatorComponent
   ],
   templateUrl: './parametrizador.component.html',
   styleUrl: './parametrizador.component.scss'
@@ -52,7 +54,7 @@ export class ParametrizadorComponent implements OnInit {
   public dadosStepperFG: FormGroup = new FormGroup({});
   public revisaoStepperFG: FormGroup = new FormGroup({});
 
-  public selectedIndex: number = 1;
+  public selectedIndex: number = 0;
 
   ngOnInit(): void {
     this._parametrizador.getParametrizador().subscribe( parametrizador => {

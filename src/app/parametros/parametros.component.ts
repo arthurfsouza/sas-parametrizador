@@ -11,12 +11,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/parametros-busca-avancada.component';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
 import { Cluster, Parametrizador, Parametro, Politica, Segmento } from '../../shared/interfaces/parametrizador.interface';
-import StringUtils from '../../shared/utils/string.utils';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
-import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/parametros-busca-avancada.component';
-import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
+import StringUtils from '../../shared/utils/string.utils';
 
 @Component({
   selector: 'app-parametros',
@@ -34,7 +35,8 @@ import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/conf
     MatSortModule,
     DatatablePaginatorComponent,
     ParametrosBuscaAvancadaComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    MenuNavigatorComponent
   ],
   templateUrl: './parametros.component.html',
   styleUrl: './parametros.component.scss'

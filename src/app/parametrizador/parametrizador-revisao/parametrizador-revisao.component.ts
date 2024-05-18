@@ -20,7 +20,7 @@ export class ParametrizadorRevisaoComponent implements OnInit {
 
   ngOnInit(): void {
     this._parametrizador.getParametrizador().subscribe(parametrizador => {
-      if(parametrizador) { this.parametrizador = parametrizador; console.log(this.parametrizador); }
+      if(parametrizador) { this.parametrizador = parametrizador; }
     });
   }
 

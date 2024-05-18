@@ -11,10 +11,10 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PoliticaFormComponent } from './politica-form/politica-form.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { Politica } from '../../shared/interfaces/parametrizador.interface';
 import { politicas } from '../../shared/mockups/parametrizador.mockup';
 import StringUtils from '../../shared/utils/string.utils';
-
 
 @Component({
   selector: 'app-politicas',
@@ -29,7 +29,8 @@ import StringUtils from '../../shared/utils/string.utils';
     MatTableModule,
     MatTooltipModule,
     MatSortModule,
-    DatatablePaginatorComponent
+    DatatablePaginatorComponent,
+    MenuNavigatorComponent
   ],
   templateUrl: './politicas.component.html',
   styleUrl: './politicas.component.scss'

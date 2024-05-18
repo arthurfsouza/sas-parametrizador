@@ -1,0 +1,27 @@
+<div class="menu-navigator">
+    <button type="button" mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+</div>
+
+<mat-menu #menu="matMenu">
+    <button type="button" mat-menu-item [ngClass]="{'binding-active-menu': bindingRouters(['segmentos'])}" (click)="onRedirect('segmentos')">
+        <mat-icon [color]="bindingRouters(['segmentos']) ? 'primary' : ''">groups</mat-icon>
+        <span>Segmentos</span>
+    </button>
+
+    <button type="button" mat-menu-item [ngClass]="{'binding-active-menu': bindingRouters(['clusters'])}" (click)="onRedirect('clusters')">
+        <mat-icon [color]="bindingRouters(['clusters']) ? 'primary' : ''">workspaces</mat-icon>
+        <span>Clusters</span>
+    </button>
+
+    <button type="button" mat-menu-item [ngClass]="{'binding-active-menu': bindingRouters(['politicas'])}" (click)="onRedirect('politicas')">
+        <mat-icon [color]="bindingRouters(['politicas']) ? 'primary' : ''">policy</mat-icon>
+        <span>Políticas</span>
+    </button>
+
+    <button type="button" mat-menu-item [ngClass]="{'binding-active-menu': bindingRouters(['parametros', 'parametrizador'])}" (click)="onRedirect('parametros')">
+        <mat-icon [color]="bindingRouters(['parametros', 'parametrizador']) ? 'primary' : ''">table_chart</mat-icon>
+        <span>Parâmetros</span>
+    </button>
+</mat-menu>

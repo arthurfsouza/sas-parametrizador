@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { SegmentoFormComponent } from './segmento-form/segmento-form.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { Segmento } from '../../shared/interfaces/parametrizador.interface';
 import { segmentos } from '../../shared/mockups/parametrizador.mockup';
 import StringUtils from '../../shared/utils/string.utils';
@@ -28,7 +29,8 @@ import StringUtils from '../../shared/utils/string.utils';
     MatTableModule,
     MatTooltipModule,
     MatSortModule,
-    DatatablePaginatorComponent
+    DatatablePaginatorComponent,
+    MenuNavigatorComponent
   ],
   templateUrl: './segmentos.component.html',
   styleUrl: './segmentos.component.scss'

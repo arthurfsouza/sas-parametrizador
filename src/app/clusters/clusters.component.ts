@@ -10,9 +10,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { ClusterFormComponent } from './cluster-form/cluster-form.component';
+import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { Cluster } from '../../shared/interfaces/parametrizador.interface';
 import { clusters } from '../../shared/mockups/parametrizador.mockup';
-import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
 import StringUtils from '../../shared/utils/string.utils';
 
 @Component({
@@ -28,7 +29,8 @@ import StringUtils from '../../shared/utils/string.utils';
     MatTableModule,
     MatTooltipModule,
     MatSortModule,
-    DatatablePaginatorComponent
+    DatatablePaginatorComponent,
+    MenuNavigatorComponent
   ],
   templateUrl: './clusters.component.html',
   styleUrl: './clusters.component.scss'
