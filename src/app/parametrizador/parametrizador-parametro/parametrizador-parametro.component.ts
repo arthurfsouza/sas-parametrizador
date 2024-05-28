@@ -67,6 +67,16 @@ export class ParametrizadorParametroComponent implements OnInit {
     this._parametrizador.getParametrizador().subscribe(parametrizador => {
       if(parametrizador) {
         this.parametrizador = parametrizador;
+
+        if(this.parametrizador && this.parametrizador.parametro && this.parametrizador.parametro.id) {
+          this.parametroFG.controls['nome'].setValue(this.parametrizador.parametro.nome);
+          this.parametroFG.controls['descricao'].setValue(this.parametrizador.parametro.descricao);
+          this.parametroFG.controls['modo'].setValue(this.parametrizador.parametro.modo);
+          this.parametroFG.controls['dataVigencia'].setValue(this.parametrizador.parametro.dataVigencia);
+          this.parametroFG.controls['horaVigencia'].setValue(this.parametrizador.parametro.horaVigencia);
+          this.parametroFG.controls['cluster'].setValue(this.parametrizador.parametro.cluster);
+          this.parametroFG.controls['politica'].setValue(this.parametrizador.parametro.politica);
+        }
       }
     });
 

@@ -2,7 +2,8 @@
     <div class="row parametrizador-topnav">
         <div class="parametrizador-title">
             <menu-navigator></menu-navigator>
-            <h1>Cadastro de Parâmetro</h1>
+            <h1 *ngIf="!parametrizadorID">Cadastro de Parâmetro</h1>
+            <h1 *ngIf="parametrizadorID">Edição de Parâmetro</h1>            
         </div>
         <div class="parametrizador-stepper">
             <mat-stepper linear #stepper labelPosition="bottom" [selectedIndex]="selectedIndex" (selectedIndexChange)="onStepperChange($event)">

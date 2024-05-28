@@ -56,6 +56,15 @@ export interface Parametrizador {
     dados: any[];
     status?: 'CREATED' | 'ACTIVE' | 'AWAITING_RISK_DECISION' | 'DELETED';
     versao?: string;
+    eventos?: Evento[];
+}
+
+export interface Evento {
+    id: number;
+    nome: string;
+    status: string;
+    dataOcorrencia: Date;
+    responsavel: string;
 }
 
 /** Antes de fazer a lockup (pastas dentro do SAS), precisa preparar o ambiente.

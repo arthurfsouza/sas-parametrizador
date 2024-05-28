@@ -11,6 +11,8 @@ import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/paramet
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { ParametrizadorService } from './parametrizador.service';
 import { Parametrizador } from '../../shared/interfaces/parametrizador.interface';
+import { ActivatedRoute } from '@angular/router';
+import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 
 export interface SASAuth {
   access_token: string;
@@ -43,7 +45,7 @@ export class ParametrizadorComponent implements OnInit {
   @ViewChild("parametrizadorDados") public parametrizadorDados!: ParametrizadorDadosComponent;
   @ViewChild("parametrizadorRevisao") public parametrizadorRevisao!: ParametrizadorRevisaoComponent;
 
-  constructor() { }
+  constructor(private _activated: ActivatedRoute) { }
 
   private _http = inject(HttpClient);
   private _parametrizador = inject(ParametrizadorService);
@@ -55,6 +57,7 @@ export class ParametrizadorComponent implements OnInit {
   public revisaoStepperFG: FormGroup = new FormGroup({});
 
   public selectedIndex: number = 0;
+  public parametrizadorID: any;
 
   ngOnInit(): void {
     this._parametrizador.getParametrizador().subscribe( parametrizador => {
@@ -62,6 +65,16 @@ export class ParametrizadorComponent implements OnInit {
     });
 
     this._parametrizador.setParametrizador(this.parametrizador);
+
+    this._activated.params.subscribe(params => {
+      console.log(params);
+      if(params['parametrizadorID']) {
+        this.parametrizadorID = params['parametrizadorID'];
+        const parametrizador: Parametrizador | undefined = parametrizadores.find(p => p.id == this.parametrizadorID);
+
+        if(parametrizador) { this._parametrizador.setParametrizador(parametrizador); }
+      }
+    });
 
     // this.initAuthSAS();
     // this.initAPILocal();
@@ -129,7 +142,9 @@ export class ParametrizadorComponent implements OnInit {
       this._parametrizador.setParametrizador(this.parametrizador);
       this.selectedIndex = 2;
     }
-    else if(this.selectedIndex == 2 && this.dadosStepperFG.valid) {
+    else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {
+      this.parametrizador.dados = this.parametrizadorDados.getDados() || [];
+      this._parametrizador.setParametrizador(this.parametrizador);
       this.selectedIndex = 3;
     }
     else {

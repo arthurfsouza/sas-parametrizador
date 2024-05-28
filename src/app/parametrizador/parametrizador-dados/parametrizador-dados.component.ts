@@ -81,6 +81,8 @@ export class ParametrizadorDadosComponent {
   }
 
   public initDados(): void {
+    this.displayedColumns = [];
+    
     for(let varAux of this.parametrizador.variaveis) { this.displayedColumns.push("dado-control-" + varAux.id); }
 
     this.displayedColumns.push("dado-control-actions");      
