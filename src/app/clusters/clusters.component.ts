@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,12 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { ClusterFormComponent } from './cluster-form/cluster-form.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { ClusterFormComponent } from './cluster-form/cluster-form.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
-import { Cluster } from '../../shared/interfaces/parametrizador.interface';
-import { clusters } from '../../shared/mockups/parametrizador.mockup';
-import StringUtils from '../../shared/utils/string.utils';
+import { Cluster } from '../../shared/interfaces';
+import { api } from '../../shared/configurations';
+import StringUtils from '../../shared/utils/string/string.utils';
 
 @Component({
   selector: 'app-clusters',
@@ -38,14 +39,9 @@ import StringUtils from '../../shared/utils/string.utils';
 export class ClustersComponent {
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
+  private _http = inject(HttpClient);
+
   constructor(public dialog: MatDialog){
-    for(let i = 0; i < 25; i++) { this.data.push(...clusters); }
-
-    // this.data = clusters;
-
-    this.originalData = this.data;
-    this.dataSource = new MatTableDataSource(this.data);
-
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.data = this.originalData;
 
@@ -56,11 +52,6 @@ export class ClustersComponent {
           )
         );
       }
-
-      if(this.paginator) {
-        this.paginator.dataSize = this.data.length;
-        this.paginator.setPage(1);
-      }
     });
   }
 
@@ -68,10 +59,31 @@ export class ClustersComponent {
     filter: new FormControl("", [Validators.minLength(3)])
   });
 
-  public displayedColumns: string[] = ["id", "nome", "segmento", "status", "actions"];
+  public displayedColumns: string[] = ["nome", "segmento", "status", "actions"];
   public dataSource: MatTableDataSource<Cluster> = new MatTableDataSource<Cluster>([]);
   public data: Cluster[] = [];
   public originalData: Cluster[] = [];
+
+  ngOnInit(): void {
+    this._loadingClusters();
+  }
+
+  private _loadingClusters(): void {
+    this.data = [];
+    this.originalData = this.data;
+    this.dataSource = new MatTableDataSource(this.data);
+
+    this._http.get(api.private.cluster.get).subscribe(
+      response => {
+        console.log("Listagem de Cluters: ", response);
+
+        if(this.paginator) {
+          this.paginator.dataSize = this.data.length;
+          this.paginator.setPage(1);
+        }
+      }
+    );
+  }
 
   public onAddCluster(): void {
     const dialogRef = this.dialog.open(ClusterFormComponent, {
@@ -82,20 +94,7 @@ export class ClustersComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result && result.cluster && result.type == "create") {
-        const nextID: number = this.data.reduce((max, cluster) => (cluster.id > max ? cluster.id : max), 0) + 1;
-
-        this.data.push({
-          id: nextID,
-          nome: result.cluster.nome,
-          descricao: result.cluster.descricao,
-          isAtivo: result.cluster.isAtivo,
-          segmento: result.cluster.segmento
-        });
-
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
-        }
+        this._loadingClusters();
       }
     });
   }
@@ -109,18 +108,7 @@ export class ClustersComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result && result.cluster && result.type == "update") {
-        for(let cluster of this.data) {
-          if(cluster.id == result.cluster.id) {
-            cluster.descricao = result.cluster.descricao;
-            cluster.isAtivo = result.cluster.isAtivo;
-            cluster.segmento = result.cluster.segmento;
-          }
-        }
-
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
-        }
+        this._loadingClusters();
       }
     });
   }
@@ -147,16 +135,16 @@ export class ClustersComponent {
       return;
     }
 
-    sortedData = data.sort((a: any, b: any) => {
+    sortedData = data.sort((a: Cluster, b: Cluster) => {
       const isAsc = sort.direction === "asc";
 
       switch (sort.active) {
         case "nome":
           return this.compareOrder(a.nome, b.nome, isAsc);
         case "segmento":
-          return this.compareOrder(a.segmento.nome, b.segmento.nome, isAsc);
+          return this.compareOrder(a?.segmento?.nome || "", b?.segmento?.nome || "", isAsc);
         case "status":
-          return this.compareOrder(a.isAtivo ? "ativo" : "inativo", b.isAtivo ? "ativo" : "inativo", isAsc);
+          return this.compareOrder(a.is_ativo ? "ativo" : "inativo", b.is_ativo ? "ativo" : "inativo", isAsc);
 
         default:
           return 0;

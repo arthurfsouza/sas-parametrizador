@@ -29,14 +29,7 @@
 
         <div class="row segmentos-content-bottom">
             <div class="table-container" *ngIf="dataSource">
-                <table mat-table [dataSource]="dataSource" matSort #sort="matSort" (matSortChange)="sortChange($event)">
-                    <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> # </th>
-                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
-                            {{ row.id }}
-                        </td>
-                    </ng-container>
-    
+                <table mat-table [dataSource]="dataSource" matSort #sort="matSort" (matSortChange)="sortChange($event)">    
                     <ng-container matColumnDef="nome">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '60%' }" class="t-center"> NOME </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '60%' }" class="t-start">
@@ -48,16 +41,16 @@
                     </ng-container>
 
                     <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> STATUS </th>
-                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
-                            <div class="segmento-status-ativo" *ngIf="row.isAtivo">Ativo</div>
-                            <div class="segmento-status-inativo" *ngIf="!row.isAtivo">Inativo</div>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '20%' }" class="t-center"> STATUS </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
+                            <div class="segmento-status-ativo" *ngIf="row.is_ativo">Ativo</div>
+                            <div class="segmento-status-inativo" *ngIf="!row.is_ativo">Inativo</div>
                         </td>
                     </ng-container>
     
                     <ng-container matColumnDef="actions">
-                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> </th>
-                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-center">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-center">
                             <div class="content-table-actions">
                                 <button mat-flat-button color="primary" (click)="onDetalhes(row)">Detalhes</button>
                             </div>

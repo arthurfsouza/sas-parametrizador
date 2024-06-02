@@ -1,1 +1,5 @@
-<router-outlet></router-outlet> 
+<router-outlet></router-outlet>
+<div class="loader-container" *ngIf="loading">
+    <mat-progress-spinner class="loader-container-spinner" color="primary" mode="indeterminate" value="50">        
+    </mat-progress-spinner>
+</div>

@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { debounceTime } from 'rxjs';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,12 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { SegmentoFormComponent } from './segmento-form/segmento-form.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { SegmentoFormComponent } from './segmento-form/segmento-form.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
-import { Segmento } from '../../shared/interfaces/parametrizador.interface';
-import { segmentos } from '../../shared/mockups/parametrizador.mockup';
-import StringUtils from '../../shared/utils/string.utils';
+import StringUtils from '../../shared/utils/string/string.utils';
+import { api } from '../../shared/configurations';
+import { Segmento } from '../../shared/interfaces';
 
 @Component({
   selector: 'app-segmentos',
@@ -38,13 +39,9 @@ import StringUtils from '../../shared/utils/string.utils';
 export class SegmentosComponent {
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
+  private _http = inject(HttpClient);
+
   constructor(public dialog: MatDialog){
-    // for(let i = 0; i < 50; i++) { this.data.push(...segmentos); }
-
-    this.data = segmentos;
-    this.originalData = this.data;
-    this.dataSource = new MatTableDataSource(this.data);
-
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.data = this.originalData;
 
@@ -55,11 +52,6 @@ export class SegmentosComponent {
           )
         );
       }
-
-      if(this.paginator) {
-        this.paginator.dataSize = this.data.length;
-        this.paginator.setPage(1);
-      }
     });
   }
 
@@ -67,10 +59,31 @@ export class SegmentosComponent {
     filter: new FormControl("", [Validators.minLength(3)])
   });
 
-  public displayedColumns: string[] = ["id", "nome", "status", "actions"];
+  public displayedColumns: string[] = ["nome", "status", "actions"];
   public dataSource: MatTableDataSource<Segmento> = new MatTableDataSource<Segmento>([]);
   public data: Segmento[] = [];
   public originalData: Segmento[] = [];
+
+  ngOnInit(): void {
+    this._loadingSegmentos();
+  }
+
+  private _loadingSegmentos(): void {
+    this.data = [];
+    this.originalData = this.data;
+    this.dataSource = new MatTableDataSource(this.data);
+
+    this._http.get(api.private.segmento.get).subscribe(
+      response => {
+        console.log("Listagem de Segmentos: ", response);
+
+        if(this.paginator) {
+          this.paginator.dataSize = this.data.length;
+          this.paginator.setPage(1);
+        }
+      }
+    );
+  }
 
   public onAddSegmento(): void {
     const dialogRef = this.dialog.open(SegmentoFormComponent, {
@@ -81,19 +94,7 @@ export class SegmentosComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result && result.segmento && result.type == "create") {
-        const nextID: number = this.data.reduce((max, segmento) => (segmento.id > max ? segmento.id : max), 0) + 1;
-
-        this.data.push({
-          id: nextID,
-          nome: result.segmento.nome,
-          descricao: result.segmento.descricao,
-          isAtivo: result.segmento.isAtivo
-        });
-
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
-        }
+        this._loadingSegmentos();
       }
     });
   }
@@ -107,17 +108,7 @@ export class SegmentosComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result && result.segmento && result.type == "update") {
-        for(let segmento of this.data) {
-          if(segmento.id == result.segmento.id) {
-            segmento.descricao = result.segmento.descricao;
-            segmento.isAtivo = result.segmento.isAtivo;
-          }
-        }
-
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
-        }
+        this._loadingSegmentos();
       }
     });
   }
@@ -144,14 +135,14 @@ export class SegmentosComponent {
       return;
     }
 
-    sortedData = data.sort((a: any, b: any) => {
+    sortedData = data.sort((a: Segmento, b: Segmento) => {
       const isAsc = sort.direction === "asc";
 
       switch (sort.active) {
         case "nome":
           return this.compareOrder(a.nome, b.nome, isAsc);
         case "status":
-          return this.compareOrder(a.isAtivo ? "ativo" : "inativo", b.isAtivo ? "ativo" : "inativo", isAsc);
+          return this.compareOrder(a.is_ativo ? "ativo" : "inativo", b.is_ativo ? "ativo" : "inativo", isAsc);
 
         default:
           return 0;

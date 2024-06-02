@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,12 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PoliticaFormComponent } from './politica-form/politica-form.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { PoliticaFormComponent } from './politica-form/politica-form.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
-import { Politica } from '../../shared/interfaces/parametrizador.interface';
-import { politicas } from '../../shared/mockups/parametrizador.mockup';
-import StringUtils from '../../shared/utils/string.utils';
+import { Politica } from '../../shared/interfaces';
+import { api } from '../../shared/configurations';
+import StringUtils from '../../shared/utils/string/string.utils';
 
 @Component({
   selector: 'app-politicas',
@@ -38,14 +39,9 @@ import StringUtils from '../../shared/utils/string.utils';
 export class PoliticasComponent {
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
+  private _http = inject(HttpClient);
+
   constructor(public dialog: MatDialog){
-    for(let i = 0; i < 10; i++) { this.data.push(...politicas); }
-
-    // this.data = politicas;
-
-    this.originalData = this.data;
-    this.dataSource = new MatTableDataSource(this.data);
-
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.data = this.originalData;
 
@@ -56,11 +52,6 @@ export class PoliticasComponent {
           )
         );
       }
-
-      if(this.paginator) {
-        this.paginator.dataSize = this.data.length;
-        this.paginator.setPage(1);
-      }
     });
   }
 
@@ -68,10 +59,31 @@ export class PoliticasComponent {
     filter: new FormControl("", [Validators.minLength(3)])
   });
 
-  public displayedColumns: string[] = ["id", "nome", "segmento", "cluster", "status", "actions"];
+  public displayedColumns: string[] = ["nome", "segmento", "cluster", "status", "actions"];
   public dataSource: MatTableDataSource<Politica> = new MatTableDataSource<Politica>([]);
   public data: Politica[] = [];
   public originalData: Politica[] = [];
+
+  ngOnInit(): void {
+    this._loadingPoliticas();
+  }
+
+  private _loadingPoliticas(): void {
+    this.data = [];
+    this.originalData = this.data;
+    this.dataSource = new MatTableDataSource(this.data);
+
+    this._http.get(api.private.politica.get).subscribe(
+      response => {
+        console.log("Listagem de Políticas: ", response);
+
+        if(this.paginator) {
+          this.paginator.dataSize = this.data.length;
+          this.paginator.setPage(1);
+        }
+      }
+    );
+  }
 
   public onAddPolitica(): void {
     const dialogRef = this.dialog.open(PoliticaFormComponent, {
@@ -82,20 +94,7 @@ export class PoliticasComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result && result.politica && result.type == "create") {
-        const nextID: number = this.data.reduce((max, politica) => (politica.id > max ? politica.id : max), 0) + 1;
-
-        this.data.push({
-          id: nextID,
-          nome: result.politica.nome,
-          descricao: result.politica.descricao,
-          isAtivo: result.politica.isAtivo,
-          cluster: result.politica.cluster
-        });
-
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
-        }
+        this._loadingPoliticas();
       }
     });
   }
@@ -109,18 +108,7 @@ export class PoliticasComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result && result.politica && result.type == "update") {
-        for(let politica of this.data) {
-          if(politica.id == result.politica.id) {
-            politica.descricao = result.politica.descricao;
-            politica.isAtivo = result.politica.isAtivo;
-            politica.cluster = result.politica.cluster;
-          }
-        }
-
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
-        }
+        this._loadingPoliticas();
       }
     });
   }
@@ -147,18 +135,18 @@ export class PoliticasComponent {
       return;
     }
 
-    sortedData = data.sort((a: any, b: any) => {
+    sortedData = data.sort((a: Politica, b: Politica) => {
       const isAsc = sort.direction === "asc";
 
       switch (sort.active) {
         case "nome":
           return this.compareOrder(a.nome, b.nome, isAsc);
         case "segmento":
-          return this.compareOrder(a.cluster.segmento.nome, b.cluster.segmento.nome, isAsc);
+          return this.compareOrder(a?.cluster?.segmento?.nome || "", b?.cluster?.segmento?.nome || "", isAsc);
         case "cluster":
-          return this.compareOrder(a.cluster.nome, b.cluster.nome, isAsc);
+          return this.compareOrder(a?.cluster?.nome || "", b?.cluster?.nome || "", isAsc);
         case "status":
-          return this.compareOrder(a.isAtivo ? "ativo" : "inativo", b.isAtivo ? "ativo" : "inativo", isAsc);
+          return this.compareOrder(a.is_ativo ? "ativo" : "inativo", b.is_ativo ? "ativo" : "inativo", isAsc);
 
         default:
           return 0;

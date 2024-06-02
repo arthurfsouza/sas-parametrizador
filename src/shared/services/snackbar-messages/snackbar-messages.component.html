@@ -1,0 +1,13 @@
+<div class="custom-snackbar-messages custom-snackbar-messages-{{ data.type }}">
+  <div class="custom-snackbar-close-button">
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="custom-snackbar-title">{{ title }}</div>
+  <div class="custom-snackbar-message">{{ data.message }}</div>
+
+  <div class="snackbar-progress" *ngIf="data.has_duration">
+    <div id="custom-snackbar-bar" class="snackbar-bar snackbar-bar-{{ data.type }}"></div>
+  </div>
+<div>

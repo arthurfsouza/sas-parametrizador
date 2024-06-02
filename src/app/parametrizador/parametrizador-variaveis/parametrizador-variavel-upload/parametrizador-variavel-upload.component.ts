@@ -10,9 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CSVService } from '../../../../shared/services/csv.service';
 import { Parametrizador, Variavel } from '../../../../shared/interfaces/parametrizador.interface';
 import { ParametrizadorService } from '../../parametrizador.service';
+import { CSVService } from '../../../../shared/services';
 
 export interface VariavelUpload {
   variavel: Variavel;

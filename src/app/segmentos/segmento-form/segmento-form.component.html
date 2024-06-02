@@ -13,7 +13,7 @@
 
     <div class="row custom-row-padding slide-toggle-group">
         <div class="slide-toggle-ativo">
-            <mat-slide-toggle labelPosition="before" formControlName="isAtivo">
+            <mat-slide-toggle labelPosition="before" formControlName="is_ativo">
                 Disponibilidade para Uso
             </mat-slide-toggle>
         </div>
@@ -39,6 +39,15 @@
                 <mat-hint align="start">Digite uma descrição sobre o segmento</mat-hint>
                 <mat-hint align="end">{{ descricao.value.length }} / 140</mat-hint>
             </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row segmento-warning">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <div class="warning-text">
+                <b>Importante: </b>Após clicar em "Finalizar", o nome do Segmento não poderá ser editado!
+            </div>
         </div>
     </div>
 

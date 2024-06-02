@@ -7,11 +7,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { Cluster, Parametrizador, Politica } from '../../../shared/interfaces/parametrizador.interface';
-import { clusters, politicas } from '../../../shared/mockups/parametrizador.mockup';
 import ptBr from '@angular/common/locales/pt';
 import { ParametrizadorService } from '../parametrizador.service';
 import { HttpClient } from '@angular/common/http';
+import { Cluster, Politica } from '../../../shared/interfaces';
+import { Parametrizador } from '../../../shared/interfaces/parametrizador.interface';
+import { clusters, politicas } from '../../../shared/mockups';
 
 registerLocaleData(ptBr)
 
@@ -52,8 +53,8 @@ export class ParametrizadorParametroComponent implements OnInit {
     politica: new FormControl(null, [Validators.required])
   });
   
-  public clusters: Cluster[] = clusters.filter(c => c.isAtivo == true);
-  public politicas: Politica[] = politicas.filter(p => p.isAtivo == true);
+  public clusters: Cluster[] = clusters.filter(c => c.is_ativo == true);
+  public politicas: Politica[] = politicas.filter(p => p.is_ativo == true);
   
   public sasFG: FormGroup = new FormGroup({
     folder: new FormControl(null)
@@ -103,7 +104,7 @@ export class ParametrizadorParametroComponent implements OnInit {
     this.parametroFG.controls['politica'].setValue(null);
 
     if(event$ && event$.value && event$.value.id) {
-      this.politicas = politicas.filter(p => p.isAtivo == true && p.cluster.id == event$.value.id);
+      this.politicas = politicas.filter(p => p.is_ativo == true && p?.cluster?.id == event$.value.id);
       this.parametroFG.controls['politica'].enable();
     }
     else {

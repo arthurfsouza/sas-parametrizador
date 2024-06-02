@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Parametrizador, Variavel, VariavelLista } from '../../../shared/interfaces/parametrizador.interface';
-import { DigitOnlyDirective } from '../../../shared/directives/digit-only.directive';
+import { DigitOnlyDirective } from '../../../shared/directives/digit-only/digit-only.directive';
 import { ParametrizadorService } from '../parametrizador.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
@@ -82,7 +82,7 @@ export class ParametrizadorDadosComponent {
 
   public initDados(): void {
     this.displayedColumns = [];
-    
+
     for(let varAux of this.parametrizador.variaveis) { this.displayedColumns.push("dado-control-" + varAux.id); }
 
     this.displayedColumns.push("dado-control-actions");      

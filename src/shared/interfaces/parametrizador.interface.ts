@@ -1,25 +1,5 @@
-export interface Segmento {
-    id: number;
-    nome: string;
-    descricao: string;
-    isAtivo: boolean;
-}
-
-export interface Cluster {
-    id: number;
-    nome: string;
-    descricao: string;
-    isAtivo: boolean;
-    segmento: Segmento;
-}
-
-export interface Politica {
-    id: number;
-    nome: string;
-    descricao: string;
-    isAtivo: boolean;
-    cluster: Cluster;
-}
+import { Cluster } from "./cluster/cluster.interface";
+import { Politica } from "./politica/politica.interface";
 
 export interface Parametro {
     id: number;
@@ -28,8 +8,8 @@ export interface Parametro {
     modo: 'chave' | 'global';
     dataVigencia: Date;
     horaVigencia: Date;
-    cluster: Cluster;
-    politica: Politica;
+    cluster?: Cluster;
+    politica?: Politica;
 }
 
 export interface VariavelLista {

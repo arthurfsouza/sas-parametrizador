@@ -15,9 +15,10 @@ import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/pa
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
-import { Cluster, Parametrizador, Parametro, Politica, Segmento } from '../../shared/interfaces/parametrizador.interface';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
-import StringUtils from '../../shared/utils/string.utils';
+import StringUtils from '../../shared/utils/string/string.utils';
+import { Segmento, Cluster, Politica } from '../../shared/interfaces';
+import { Parametrizador } from '../../shared/interfaces/parametrizador.interface';
 
 @Component({
   selector: 'app-parametros',

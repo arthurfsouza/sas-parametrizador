@@ -9,8 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Cluster, Politica, Segmento } from '../../../shared/interfaces/parametrizador.interface';
-import { clusters, politicas, segmentos } from '../../../shared/mockups/parametrizador.mockup';
+import { Segmento, Cluster, Politica } from '../../../shared/interfaces';
+import { segmentos, clusters, politicas } from '../../../shared/mockups';
 
 @Component({
   selector: 'app-parametros-busca-avancada',
@@ -64,7 +64,7 @@ export class ParametrosBuscaAvancadaComponent {
     this.buscaAvancadaFG.controls['cluster'].setValue(null);
 
     if(event$ && event$.value && event$.value.id) {
-      this.clusters = clusters.filter(c => c.segmento.id == event$.value.id);
+      this.clusters = clusters.filter((c: any) => c.segmento.id == event$.value.id);
     }
   }
 
@@ -72,7 +72,7 @@ export class ParametrosBuscaAvancadaComponent {
     this.buscaAvancadaFG.controls['politica'].setValue(null);
 
     if(event$ && event$.value && event$.value.id) {
-      this.politicas = politicas.filter(p => p.cluster.id == event$.value.id);
+      this.politicas = politicas.filter((p: any) => p.cluster.id == event$.value.id);
     }
   }
 
