@@ -70,12 +70,18 @@ export class SegmentosComponent {
 
   private _loadingSegmentos(): void {
     this.data = [];
+    this.originalData = [];
     this.originalData = this.data;
     this.dataSource = new MatTableDataSource(this.data);
 
     this._http.get(api.private.segmento.get).subscribe(
       response => {
-        console.log("Listagem de Segmentos: ", response);
+        const segmentos: Segmento[] = response as any || [];
+
+        if(segmentos && segmentos.length > 0) {
+          this.originalData = this.data = segmentos;
+          this.dataSource = new MatTableDataSource(this.data);
+        }
 
         if(this.paginator) {
           this.paginator.dataSize = this.data.length;
