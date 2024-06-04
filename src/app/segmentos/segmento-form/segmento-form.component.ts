@@ -76,11 +76,6 @@ export class SegmentoFormComponent {
           }
 
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "update" });
-        },
-        error => {
-          if(error?.message) {
-            this._snackbar.showSnackbarMessages({ message: error.message, type: 'error' });
-          }          
         }
       );
     }
@@ -96,7 +91,7 @@ export class SegmentoFormComponent {
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "create" });
         },
         error => {
-          if(error?.message) {
+          if(error?.error) {
             this._snackbar.showSnackbarMessages({ message: error.message, type: 'error', has_duration: true });
 
             if(error?.campos_error?.length > 0) {
