@@ -76,10 +76,7 @@ export class ClusterFormComponent {
       response => {
         const segmentos: Segmento[] = response as any || [];
 
-        if(segmentos && segmentos.length > 0) { this.segmentos = segmentos.filter(s => s.is_ativo == true);
-          console.log("Segmentos API: ", segmentos);
-          console.log("Segmentos Filter: ", this.segmentos);
-         }
+        if(segmentos && segmentos.length > 0) { this.segmentos = segmentos.filter(s => s.is_ativo == true); }
       }
     );
   }
@@ -105,7 +102,7 @@ export class ClusterFormComponent {
             this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
           }
 
-          this.dialogRef.close({ segmento: this.clusterFG.value, type: "update" });
+          this.dialogRef.close({ cluster: this.clusterFG.value, type: "update" });
         }
       );
     }
@@ -119,7 +116,7 @@ export class ClusterFormComponent {
             this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
           }
 
-          this.dialogRef.close({ segmento: this.clusterFG.value, type: "create" });
+          this.dialogRef.close({ cluster: this.clusterFG.value, type: "create" });
         },
         error => {
           if(error?.error?.error) {

@@ -133,7 +133,7 @@ export class PoliticaFormComponent {
             this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
           }
 
-          this.dialogRef.close({ segmento: this.politicaFG.value, type: "update" });
+          this.dialogRef.close({ politica: this.politicaFG.value, type: "update" });
         }
       );
     }
@@ -147,7 +147,7 @@ export class PoliticaFormComponent {
             this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
           }
 
-          this.dialogRef.close({ segmento: this.politicaFG.value, type: "create" });
+          this.dialogRef.close({ politica: this.politicaFG.value, type: "create" });
         },
         error => {
           if(error?.error?.error) {
