@@ -44,13 +44,15 @@ export class SegmentosComponent {
   constructor(public dialog: MatDialog){
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.data = this.originalData;
-
+      console.log("Filter: ", value);
       if(value.length >= 3) {
         this.data = this.data.filter(
           segmento => StringUtils.replaceAllSpecialCharacters(segmento.nome || "").includes(
             StringUtils.replaceAllSpecialCharacters(value)
           )
         );
+
+        console.log("Data: ", this.data);
       }
     });
   }
@@ -80,6 +82,7 @@ export class SegmentosComponent {
 
         if(segmentos && segmentos.length > 0) {
           this.originalData = this.data = segmentos;
+          console.log("This Original Data: ", this.originalData);
           this.dataSource = new MatTableDataSource(this.data);
         }
 
