@@ -90,14 +90,14 @@ export class SegmentoFormComponent {
       this._http.post(api.private.segmento.post, body).subscribe(
         (response: any) => {
           if(response?.message) {
-            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success' });
+            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
           }
 
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "create" });
         },
         error => {
           if(error?.message) {
-            this._snackbar.showSnackbarMessages({ message: error.message, type: 'error' });
+            this._snackbar.showSnackbarMessages({ message: error.message, type: 'error', has_duration: true });
 
             if(error?.campos_error?.length > 0) {
               if(error.campos_error.includes("nome")) {

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { SnackbarMessage } from "./snackbar-messages.interface";
 
@@ -9,6 +10,7 @@ import { SnackbarMessage } from "./snackbar-messages.interface";
   templateUrl: './snackbar-messages.component.html',
   styleUrls: ['./snackbar-messages.component.scss'],
   imports: [
+    MatButtonModule,
     MatIconModule
   ]
 })
@@ -25,18 +27,20 @@ export class SnackbarMessagesComponent implements OnInit {
 
   ngAfterViewInit(): void {
     if(this.data?.type) {
-      const snackbarComponentElements: any = document.getElementsByTagName("snack-bar-container");
+      const snackbarComponentElements: any = document.getElementsByTagName("mat-snack-bar-container");
 
       for(let snackbarComponentElement of snackbarComponentElements) {
-        if(snackbarComponentElement) {
-          if(this.data?.type === 'error') { snackbarComponentElement!.style!.background = "#d85b55"; }
-          else if(this.data?.type === 'info') { snackbarComponentElement!.style!.background = "#3e7cc2"; }
-          else if(this.data?.type === 'success') { snackbarComponentElement!.style!.background = "#77c897"; }
-          else if(this.data?.type === 'warning') { snackbarComponentElement!.style!.background = "#cca500"; }
+        if(snackbarComponentElement && snackbarComponentElement.firstChild) {
+          const el: any = snackbarComponentElement.firstChild;
+
+          if(this.data?.type === 'error') { el!.style!.background = "#d85b55"; }
+          else if(this.data?.type === 'info') { el!.style!.background = "#3e7cc2"; }
+          else if(this.data?.type === 'success') { el!.style!.background = "#77c897"; }
+          else if(this.data?.type === 'warning') { el!.style!.background = "#cca500"; }
         }
       }
 
-      if(this.data?.has_duration) { this.onProgressBar(); }
+      // if(this.data?.has_duration) { this.onProgressBar(); }
     }
   }
 
