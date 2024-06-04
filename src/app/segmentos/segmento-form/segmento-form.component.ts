@@ -9,8 +9,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SnackbarMessagesService } from '../../../shared/services';
 import { Segmento } from '../../../shared/interfaces';
 import { api } from '../../../shared/configurations';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-segmento-form',
@@ -32,6 +34,7 @@ import { api } from '../../../shared/configurations';
 })
 export class SegmentoFormComponent {
   private _http = inject(HttpClient);
+  private _snackbar = inject(SnackbarMessagesService);
   
   constructor(public dialogRef: MatDialogRef<SegmentoFormComponent>, @Inject(MAT_DIALOG_DATA) public data?: { segmento: Segmento }) {
     if(this.data?.segmento) {
@@ -42,6 +45,10 @@ export class SegmentoFormComponent {
 
       this.segmentoFG.controls['nome'].disable();
     }
+
+    this.segmentoFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
+      this.segmentoFG.controls['nome'].setErrors(null);
+    });
   }
 
   public segmentoFG: FormGroup = new FormGroup({
@@ -63,10 +70,17 @@ export class SegmentoFormComponent {
       body['id'] = this.segmentoFG.value['id'];
 
       this._http.put(api.private.segmento.put, body).subscribe(
-        response => {
-          console.log("Atualização do Segmemnto: ", response);
+        (response: any) => {
+          if(response?.message) {
+            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success' });
+          }
 
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "update" });
+        },
+        error => {
+          if(error?.message) {
+            this._snackbar.showSnackbarMessages({ message: error.message, type: 'error' });
+          }          
         }
       );
     }
@@ -74,10 +88,23 @@ export class SegmentoFormComponent {
       body['nome'] = this.segmentoFG.value['nome'];
 
       this._http.post(api.private.segmento.post, body).subscribe(
-        response => {
-          console.log("Inclusão do Segmemnto: ", response);
+        (response: any) => {
+          if(response?.message) {
+            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success' });
+          }
 
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "create" });
+        },
+        error => {
+          if(error?.message) {
+            this._snackbar.showSnackbarMessages({ message: error.message, type: 'error' });
+
+            if(error?.campos_error?.length > 0) {
+              if(error.campos_error.includes("nome")) {
+                this.segmentoFG.controls['nome'].setErrors({ nomeExistente: true });
+              }
+            }
+          }
         }
       );
     }
