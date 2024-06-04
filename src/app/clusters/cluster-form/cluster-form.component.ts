@@ -76,7 +76,10 @@ export class ClusterFormComponent {
       response => {
         const segmentos: Segmento[] = response as any || [];
 
-        if(segmentos && segmentos.length > 0) { this.segmentos = segmentos.filter(s => s.is_ativo == true); }
+        if(segmentos && segmentos.length > 0) { this.segmentos = segmentos.filter(s => s.is_ativo == true);
+          console.log("Segmentos API: ", segmentos);
+          console.log("Segmentos Filter: ", this.segmentos);
+         }
       }
     );
   }
