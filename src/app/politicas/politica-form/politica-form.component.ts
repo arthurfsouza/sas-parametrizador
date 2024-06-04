@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, inject } from '@angular/core';
+import { debounceTime } from 'rxjs';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SnackbarMessagesService } from '../../../shared/services';
 import { Cluster, Politica, Segmento } from '../../../shared/interfaces';
 import { api } from '../../../shared/configurations';
 
@@ -34,6 +36,7 @@ import { api } from '../../../shared/configurations';
 })
 export class PoliticaFormComponent {
   private _http = inject(HttpClient);
+  private _snackbar = inject(SnackbarMessagesService);
   
   constructor(public dialogRef: MatDialogRef<PoliticaFormComponent>, @Inject(MAT_DIALOG_DATA) public data?: { politica: Politica }) {
     if(this.data?.politica) {
@@ -48,6 +51,10 @@ export class PoliticaFormComponent {
       this.politicaFG.controls['cluster'].disable();
       this.politicaFG.controls['segmento'].disable();
     }
+
+    this.politicaFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
+      this.politicaFG.controls['nome'].setErrors(null);
+    });
   }
 
   public politicaFG: FormGroup = new FormGroup({
@@ -74,8 +81,9 @@ export class PoliticaFormComponent {
 
     this._http.get(api.private.segmento.get).subscribe(
       response => {
-        console.log("Listagem de Segmentos para Combobox: ", response);
-        //Necessário filtrar os registros por Segmentos Ativos
+        const segmentos: Segmento[] = response as any || [];
+
+        if(segmentos && segmentos.length > 0) { this.segmentos = segmentos.filter(s => s.is_ativo == true); }
       }
     );
   }
@@ -85,8 +93,9 @@ export class PoliticaFormComponent {
 
     this._http.get(api.private.cluster.get).subscribe(
       response => {
-        console.log("Listagem de Clusters para Combobox: ", response);
-        //Necessário filtrar os registros por Clusters Ativos
+        const clusters: Cluster[] = response as any || [];
+
+        if(clusters && clusters.length > 0) { this.clusters = clusters.filter(c => c.is_ativo == true); }
       }
     );
   }
@@ -110,8 +119,51 @@ export class PoliticaFormComponent {
   public onSave(): void {
     if(!this.politicaFG.valid) { return; }
 
-    if(this.data?.politica?.id) { this.dialogRef.close({ politica: this.politicaFG.value, type: "update" }); }
-    else { this.dialogRef.close({ politica: this.politicaFG.value, type: "create" }); }
+    let body: any = {
+      descricao: this.politicaFG.value['descricao'],
+      is_ativo: this.politicaFG.value['is_ativo']      
+    };
+
+    if(this.data?.politica?.id) {
+      body['id'] = this.politicaFG.value['id'];
+
+      this._http.put(api.private.politica.put, body).subscribe(
+        (response: any) => {
+          if(response?.message) {
+            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+          }
+
+          this.dialogRef.close({ segmento: this.politicaFG.value, type: "update" });
+        }
+      );
+    }
+    else {
+      body['nome'] = this.politicaFG.value['nome'];
+      body['cluster_id'] = this.politicaFG.value['cluster']?.id;
+
+      this._http.post(api.private.politica.post, body).subscribe(
+        (response: any) => {
+          if(response?.message) {
+            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+          }
+
+          this.dialogRef.close({ segmento: this.politicaFG.value, type: "create" });
+        },
+        error => {
+          if(error?.error?.error) {
+            this._snackbar.showSnackbarMessages({ message: error.error.error, type: 'error', has_duration: true });
+
+            if(error?.error?.campos_error?.length > 0) {
+              if(error.error.campos_error.includes("nome")) {
+                this.politicaFG.controls['nome'].markAsDirty();
+                this.politicaFG.controls['nome'].markAsTouched();
+                this.politicaFG.controls['nome'].setErrors({ nomeExistente: true });
+              }
+            }
+          }
+        }
+      );
+    }
   }
 
   public compareObjects(o1: any, o2: any): boolean {

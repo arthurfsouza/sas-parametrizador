@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, inject } from '@angular/core';
+import { debounceTime } from 'rxjs';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -12,7 +13,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarMessagesService } from '../../../shared/services';
 import { Segmento } from '../../../shared/interfaces';
 import { api } from '../../../shared/configurations';
-import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-segmento-form',

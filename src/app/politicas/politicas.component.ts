@@ -82,11 +82,11 @@ export class PoliticasComponent {
 
     this._http.get(api.private.politica.get).subscribe(
       response => {
-        console.log("Listagem de Políticas: ", response);
+        const politicas: Politica[] = response as any || [];
 
-        if(this.paginator) {
-          this.paginator.dataSize = this.data.length;
-          this.paginator.setPage(1);
+        if(politicas && politicas.length > 0) {
+          this.originalData = this.data = politicas;
+          this.dataSource = new MatTableDataSource(this.data);
         }
       }
     );
