@@ -28,7 +28,7 @@
                 <input matInput formControlName="nome" required>
                 <mat-hint>Apenas letras, números e underline</mat-hint>
                 <mat-error *ngIf="politicaFG.controls['nome'].hasError('nomeExistente')">
-                    Nome já cadastrado (paro o Cluster informado), favor escolher outro nome para a Política.
+                    Nome já cadastrado (paro o Cluster informado).
                 </mat-error>
             </mat-form-field>
         </div>

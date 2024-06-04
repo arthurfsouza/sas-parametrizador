@@ -107,6 +107,9 @@ export class PoliticaFormComponent {
   public onChangeSegmento(event$: any): void {
     this.politicaFG.controls['cluster'].setValue(null);
 
+    console.log("Event: ", event$);
+    console.log("Clusters: ", this.clusters);
+
     if(event$ && event$.value && event$.value.id) {
       this.clusters = this.clusters.filter(c => c.is_ativo == true && c.segmento?.id == event$.value.id);
       this.politicaFG.controls['cluster'].enable();

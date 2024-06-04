@@ -28,7 +28,7 @@
                 <input matInput formControlName="nome" required>
                 <mat-hint>Apenas letras, números e underline</mat-hint>
                 <mat-error *ngIf="segmentoFG.controls['nome'].hasError('nomeExistente')">
-                    Nome já cadastrado, favor escolher outro nome para o Seguimento.
+                    Nome já cadastrado.
                 </mat-error>
             </mat-form-field>
         </div>
