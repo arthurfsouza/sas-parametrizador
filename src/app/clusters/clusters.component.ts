@@ -52,6 +52,13 @@ export class ClustersComponent {
           )
         );
       }
+
+      this.dataSource = new MatTableDataSource(this.data);
+
+      if(this.paginator) {
+        this.paginator.dataSize = this.data.length;
+        this.paginator.setPage(1);
+      }
     });
   }
 
@@ -75,7 +82,12 @@ export class ClustersComponent {
 
     this._http.get(api.private.cluster.get).subscribe(
       response => {
-        console.log("Listagem de Cluters: ", response);
+        const clusters: Cluster[] = response as any || [];
+
+        if(clusters && clusters.length > 0) {
+          this.originalData = this.data = clusters;
+          this.dataSource = new MatTableDataSource(this.data);
+        }
 
         if(this.paginator) {
           this.paginator.dataSize = this.data.length;

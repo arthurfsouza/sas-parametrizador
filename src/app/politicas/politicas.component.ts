@@ -52,6 +52,13 @@ export class PoliticasComponent {
           )
         );
       }
+
+      this.dataSource = new MatTableDataSource(this.data);
+
+      if(this.paginator) {
+        this.paginator.dataSize = this.data.length;
+        this.paginator.setPage(1);
+      }
     });
   }
 
