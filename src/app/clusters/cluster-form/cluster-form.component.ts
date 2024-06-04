@@ -76,7 +76,15 @@ export class ClusterFormComponent {
       response => {
         const segmentos: Segmento[] = response as any || [];
 
-        if(segmentos && segmentos.length > 0) { this.segmentos = segmentos.filter(s => s.is_ativo == true); }
+        if(segmentos && segmentos.length > 0) {
+          this.segmentos = segmentos.filter(s => s.is_ativo == true);
+
+          if(this.data?.cluster) {
+            const segmentoAux: Segmento | undefined = this.segmentos.find(s => s.id == this.clusterFG.controls['segmento'].value?.id);
+
+            if(!segmentoAux) { this.segmentos.push(this.clusterFG.controls['segmento'].value); }            
+          }
+        }
       }
     );
   }

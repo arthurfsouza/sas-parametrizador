@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <div class="row politica-warning">
+    <div class="row politica-warning" *ngIf="!data?.politica">
         <div class="warning-content">
             <mat-icon class="warning-icon">warning</mat-icon>
             <div class="warning-text">

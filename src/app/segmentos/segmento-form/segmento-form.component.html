@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="row segmento-warning">
+    <div class="row segmento-warning" *ngIf="!data?.segmento">
         <div class="warning-content">
             <mat-icon class="warning-icon">warning</mat-icon>
             <div class="warning-text">
