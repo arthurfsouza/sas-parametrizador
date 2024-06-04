@@ -68,6 +68,7 @@ export class PoliticaFormComponent {
 
   public segmentos: Segmento[] = [];
   public clusters: Cluster[] = [];
+  public clustersOriginal: Cluster[] = [];
 
   ngOnInit(): void {
     this.politicaFG.controls['cluster'].disable();
@@ -90,12 +91,13 @@ export class PoliticaFormComponent {
 
   private _loadingClusters(): void {
     this.clusters = [];
+    this.clustersOriginal = [];
 
     this._http.get(api.private.cluster.get).subscribe(
       response => {
         const clusters: Cluster[] = response as any || [];
 
-        if(clusters && clusters.length > 0) { this.clusters = clusters.filter(c => c.is_ativo == true); }
+        if(clusters && clusters.length > 0) { this.clustersOriginal = this.clusters = clusters.filter(c => c.is_ativo == true); }
       }
     );
   }
@@ -107,11 +109,8 @@ export class PoliticaFormComponent {
   public onChangeSegmento(event$: any): void {
     this.politicaFG.controls['cluster'].setValue(null);
 
-    console.log("Event: ", event$);
-    console.log("Clusters: ", this.clusters);
-
     if(event$ && event$.value && event$.value.id) {
-      this.clusters = this.clusters.filter(c => c.is_ativo == true && c.segmento?.id == event$.value.id);
+      this.clusters = this.clustersOriginal.filter(c => c.is_ativo == true && c.segmento?.id == event$.value.id);
       this.politicaFG.controls['cluster'].enable();
     }
     else {
