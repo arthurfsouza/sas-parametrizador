@@ -91,6 +91,7 @@ export class SegmentoFormComponent {
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "create" });
         },
         error => {
+          console.log("Error: ", error);
           if(error?.error) {
             this._snackbar.showSnackbarMessages({ message: error.message, type: 'error', has_duration: true });
 
