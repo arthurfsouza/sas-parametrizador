@@ -91,12 +91,11 @@ export class SegmentoFormComponent {
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "create" });
         },
         error => {
-          console.log("Error: ", error);
-          if(error?.error) {
-            this._snackbar.showSnackbarMessages({ message: error.message, type: 'error', has_duration: true });
+          if(error?.error?.error) {
+            this._snackbar.showSnackbarMessages({ message: error.error.error, type: 'error', has_duration: true });
 
             if(error?.campos_error?.length > 0) {
-              if(error.campos_error.includes("nome")) {
+              if(error.error.campos_error.includes("nome")) {
                 this.segmentoFG.controls['nome'].setErrors({ nomeExistente: true });
               }
             }
