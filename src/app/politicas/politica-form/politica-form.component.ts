@@ -43,7 +43,7 @@ export class PoliticaFormComponent {
       this.politicaFG.controls['id'].setValue(this.data.politica.id);
       this.politicaFG.controls['nome'].setValue(this.data.politica.nome);
       this.politicaFG.controls['descricao'].setValue(this.data.politica.descricao);
-      this.politicaFG.controls['isAtivo'].setValue(this.data.politica.is_ativo);
+      this.politicaFG.controls['is_ativo'].setValue(this.data.politica.is_ativo);
       this.politicaFG.controls['cluster'].setValue(this.data.politica?.cluster);
       this.politicaFG.controls['segmento'].setValue(this.data.politica?.cluster?.segmento);
 
@@ -61,7 +61,7 @@ export class PoliticaFormComponent {
     id: new FormControl(null),
     nome: new FormControl(null, [Validators.required, Validators.pattern("[A-Za-z0-9_]+")]),
     descricao: new FormControl(null, [Validators.required, Validators.maxLength(140)]),
-    isAtivo: new FormControl(true, [Validators.required]),
+    is_ativo: new FormControl(true, [Validators.required]),
     cluster: new FormControl(null, [Validators.required]),
     segmento: new FormControl(null, [Validators.required])
   });
