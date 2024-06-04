@@ -94,8 +94,10 @@ export class SegmentoFormComponent {
           if(error?.error?.error) {
             this._snackbar.showSnackbarMessages({ message: error.error.error, type: 'error', has_duration: true });
 
-            if(error?.campos_error?.length > 0) {
+            if(error?.error?.campos_error?.length > 0) {
               if(error.error.campos_error.includes("nome")) {
+                this.segmentoFG.controls['nome'].markAsDirty();
+                this.segmentoFG.controls['nome'].markAsTouched();
                 this.segmentoFG.controls['nome'].setErrors({ nomeExistente: true });
               }
             }
