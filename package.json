@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@sassoftware/sas-auth-browser": "^0.2.0",
     "@types/crypto-js": "^4.2.2",
     "bootstrap-4-grid": "^3.4.0",
     "crypto-js": "^4.2.0",
