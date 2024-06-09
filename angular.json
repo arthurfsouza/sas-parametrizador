@@ -36,7 +36,9 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/scripts/sas-auth-browser.min.js"
+            ]
           },
           "configurations": {
             "production": {

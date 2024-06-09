@@ -14,7 +14,7 @@ export class SASAuthService {
     public initialize(): void {
         try {
             if(!window.document.getElementById('sas-auth-browser-santander')) {
-                const url = 'https://cdn.developer.sas.com/packages/sas-auth-browser/latest/dist/index.min.js';
+                const url = 'assets/scripts/sas-auth-browser.min.js';
                 const sasAuthBrowserTagScript = document.createElement('script');
           
                 sasAuthBrowserTagScript.id = "sas-auth-browser-santander";
