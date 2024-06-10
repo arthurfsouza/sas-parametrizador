@@ -4,6 +4,7 @@ const apiURL: string = environment.application.api.url;
 
 export const api = {
     private: {
+        login: apiURL + "v1/front/login",
         segmento: {
             get: apiURL + "v1/front/segmentos",
             post: apiURL + "v1/front/segmentos",

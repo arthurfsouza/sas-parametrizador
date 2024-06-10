@@ -43,7 +43,7 @@ export class ApiInterceptor implements HttpInterceptor {
               break;
             case 401:
               if(req.url.includes(environment.application.api.url)) {
-                this._localStorage.clearStorageData(["auth", "permissions"]);
+                this._localStorage.clearStorageData(["auth"]);
 
                 this._snackbarMessage.showSnackbarMessages({
                   message: "Usuário não autenticado!",
@@ -56,7 +56,7 @@ export class ApiInterceptor implements HttpInterceptor {
               break;
             case 403:
               if(req.url.includes(environment.application.api.url)) {
-                this._localStorage.clearStorageData(["auth", "permissions"]);
+                this._localStorage.clearStorageData(["auth"]);
 
                 this._snackbarMessage.showSnackbarMessages({
                   message: "Usuário não autorizado!",

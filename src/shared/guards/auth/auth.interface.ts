@@ -1,12 +1,12 @@
 export interface User {
+    id: string;
     name: string;
     email: string;
-    profile?: string;
     permissions?: string[];
 }
 
 export interface Auth {
     user: User;
     token?: string;
-    expires?: Date;
+    expires_in?: Date;
 }

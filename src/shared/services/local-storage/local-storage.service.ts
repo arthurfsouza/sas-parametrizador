@@ -57,6 +57,6 @@ export class LocalStorageService {
     }
 
     private initLocalStorage(): LocalStorage {
-        return { auth: null, permissions: null };
+        return { auth: null };
     }
 }
