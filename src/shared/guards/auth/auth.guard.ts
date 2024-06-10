@@ -6,10 +6,7 @@ import { general } from '../../configurations';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    private _localStorage = inject(LocalStorageService);
-    private _snackbar = inject(SnackbarMessagesService);
-
-    constructor(private _router: Router) {}
+    constructor(private _router: Router, private _localStorage: LocalStorageService, private _snackbar: SnackbarMessagesService) {}
 
     canActivate(): Promise<boolean> {
         return new Promise(
