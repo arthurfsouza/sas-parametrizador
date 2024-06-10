@@ -46,8 +46,7 @@ export class LoginComponent {
 
   public onLogin(): void {
     if(this.loginFG.valid) {
-      const body: any = { username: this.loginFG.value['username'], password: this.loginFG.value['password'] };
-      this.dialogRef.close("CLOSED");
+      const body: any = { username: this.loginFG.value['username'], password: this.loginFG.value['password'] };      
 
       this._http.post(api.private.login, body).subscribe(
         (response: any) => {
@@ -67,6 +66,7 @@ export class LoginComponent {
 
             this._localStorage.storageData({ type: 'auth', data: auth });
             this._snackbar.showSnackbarMessages({ message: "Login realizado com sucesso!", type: 'success', has_duration: true });
+            this.dialogRef.close("closed");
           }
         }
       )
