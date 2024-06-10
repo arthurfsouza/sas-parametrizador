@@ -63,6 +63,9 @@ export class LoginComponent {
             };
 
             console.log("Auth: ", auth);
+            console.log("Token: ", auth.token);
+            console.log("Nome do Usuário: ", auth.user.name);
+            console.log("Permissões: ", auth.user.permissions);
 
             this._localStorage.storageData({ type: 'auth', data: auth });
             this._snackbar.showSnackbarMessages({ message: "Login realizado com sucesso!", type: 'success', has_duration: true });
