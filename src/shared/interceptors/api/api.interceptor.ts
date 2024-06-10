@@ -4,7 +4,9 @@ import { HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@a
 import { catchError, finalize } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { LoaderService, LocalStorageService, SnackbarMessagesService } from '../../services';
+import { Auth } from '../../guards';
 import { environment } from '../../../environments/environment';
+
 import StringUtils from '../../utils/string/string.utils';
 
 @Injectable()
@@ -20,8 +22,15 @@ export class ApiInterceptor implements HttpInterceptor {
   constructor() { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const auth: Auth = this._localStorage.getStorageData('auth');
+
+    if(auth) {
+      if(auth.token) { req = req.clone({ setHeaders: { 'Authorization': "Bearer " + auth.token } }); }
+      if(auth.user.id) { req = req.clone({ setHeaders: { 'SAS-Identification': auth.user.id } }); }
+      if(auth.user.permissions) { req = req.clone({ setHeaders: { 'SAS-User-Groups': auth.user.permissions.join(",") } }); }
+    }
+
     req= req.clone({ url: StringUtils.removeDoubleBars(req.url) });
-    // req = req.clone({ setHeaders: { 'Req-Test': "Header-Test" } });
     
     if(!this.hasUrl(req.url, this.exceptionsLoading)) {
       this.requests.push(req);

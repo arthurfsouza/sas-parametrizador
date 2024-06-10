@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { LocalStorageService, SnackbarMessagesService } from '../../services';
 import { Auth } from './auth.interface';
+import { general } from '../../configurations';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -23,6 +24,8 @@ export class AuthGuard implements CanActivate {
                     });
 
                     resolve(false);
+
+                    this._router.navigate([general.routes.auth.error.unauthorized]);
                     window.location.reload();
 
                     return;

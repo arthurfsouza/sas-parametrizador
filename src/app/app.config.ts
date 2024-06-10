@@ -5,11 +5,14 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthGuard, PermissionGuard } from '../shared/guards';
 import { ApiInterceptor } from '../shared/interceptors';
 import { LoginComponent } from '../shared/components/login/login.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    AuthGuard,
+    PermissionGuard,
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),

@@ -1,0 +1,46 @@
+.background-div {
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: url(/assets/jpgs/background.jpg) 100%;
+    background-size: cover;
+
+    .content {
+        background-color: #ffffffdd;
+        width: 90%;
+        max-width: 550px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px #797979;
+        margin: 12px;
+
+        .content-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+
+            .content-form-error-number {
+                display: flex;
+                height: 120px;
+                padding-top: 30px;
+            
+                h1 { 
+                    font-size: 100px;
+                    font-weight: 600;
+                    margin: 0px;
+                    color: #797979;
+                }
+            
+                h1.error-number-special { color: red; }
+            }
+
+            .content-form-error-message {
+                h3 { font-size: 14px; }
+            }
+        }
+    }
+}
