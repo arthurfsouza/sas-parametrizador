@@ -15,6 +15,8 @@ export class AuthGuard implements CanActivate {
         return new Promise(
             async (resolve) => {
                 const auth: Auth | null = this._localStorage.getStorageData('auth');
+
+                console.log("AUTH: ", auth);
                 
                 if(!auth || !auth?.token) {
                     this._snackbar.showSnackbarMessages({
