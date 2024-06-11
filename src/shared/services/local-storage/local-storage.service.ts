@@ -8,7 +8,7 @@ import { environment } from "../../../environments/environment";
 export class LocalStorageService {
     private _crypto = inject(CryptoService);
 
-    private _localStorage: LocalStorage = { };
+    private _localStorage!: LocalStorage;
     private _localStorageHash: string = '';
 
     private _storageSubject: BehaviorSubject<DataStorage> = new BehaviorSubject<DataStorage>({});
@@ -20,8 +20,8 @@ export class LocalStorageService {
 
     async storageData(dataStorage: DataStorage): Promise<void> {
         if(!this._localStorage) { this._localStorage = this.initLocalStorage(); }
-
-        if(dataStorage?.type && this._localStorage[dataStorage?.type]) { this._localStorage[dataStorage?.type] = dataStorage.data; }
+        
+        if(dataStorage?.type != null) { this._localStorage[dataStorage?.type] = dataStorage.data; }
 
         try {
             const cryptoEncrypt = this._crypto.encrypt(JSON.stringify(this._localStorage), environment.application.localStorage.secret);
@@ -35,13 +35,13 @@ export class LocalStorageService {
 
     getStorageData(type: DataStorageTypes): any {
         const localStorageItem = localStorage.getItem(environment.application.localStorage.name);
-
+        
         if(this._localStorageHash !== localStorageItem) {
             this._localStorageHash = localStorageItem ? localStorageItem : '';
 
             const cryptoDecrypt = localStorageItem ? this._crypto.decrypt(localStorageItem, environment.application.localStorage.secret) : null;
             const data: LocalStorage = cryptoDecrypt ? JSON.parse(cryptoDecrypt) : null;
-
+            
             this._localStorage = data;
 
             if(!this._localStorage) { this._localStorage = this.initLocalStorage(); }   
