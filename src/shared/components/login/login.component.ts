@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { LocalStorageService, SnackbarMessagesService } from '../../services';
 import { api } from '../../configurations';
-import { Auth } from '../../guards';
+import { Auth, AuthService } from '../../guards';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +30,7 @@ import { Auth } from '../../guards';
 export class LoginComponent {
   private _http = inject(HttpClient);
   private _localStorage = inject(LocalStorageService);
+  private _auth = inject(AuthService);
   private _snackbar = inject(SnackbarMessagesService);  
   
   constructor(public dialogRef: MatDialogRef<LoginComponent>) { }
@@ -54,20 +55,20 @@ export class LoginComponent {
             const auth: Auth = {
               token: response.token,
               expires_in: response.expires_in,
+              last_updated: new Date(),
+              connection_flag: this.loginFG.value['connection_flag'],
               user: {
                 id: response.user_id,
                 name: response.user_name,
                 email: response.user_email,
-                permissions: response.santander_memberships_ids
+                permissions: response.santander_memberships_ids,
+                username: body.username,
+                password: body.password
               }
             };
 
-            console.log("Auth: ", auth);
-            console.log("Token: ", auth.token);
-            console.log("Nome do Usuário: ", auth.user.name);
-            console.log("Permissões: ", auth.user.permissions);
-
             this._localStorage.storageData({ type: 'auth', data: auth });
+            this._auth.initSchedule();
             this._snackbar.showSnackbarMessages({ message: "Login realizado com sucesso!", type: 'success', has_duration: true });
             this.dialogRef.close("closed");
           }
