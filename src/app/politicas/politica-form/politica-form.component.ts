@@ -80,7 +80,7 @@ export class PoliticaFormComponent {
   private _loadingSegmentos(): void {
     this.segmentos = [];
 
-    this._http.get(api.private.segmento.get).subscribe(
+    this._http.get(api.private.segmento.getAll).subscribe(
       response => {
         const segmentos: Segmento[] = response as any || [];
 

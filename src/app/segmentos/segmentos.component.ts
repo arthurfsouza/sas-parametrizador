@@ -81,7 +81,7 @@ export class SegmentosComponent {
     this.originalData = this.data;
     this.dataSource = new MatTableDataSource(this.data);
 
-    this._http.get(api.private.segmento.get).subscribe(
+    this._http.get(api.private.segmento.getAll).subscribe(
       response => {
         const segmentos: Segmento[] = response as any || [];
 

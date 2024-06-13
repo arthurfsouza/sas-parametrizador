@@ -39,9 +39,8 @@ export class SegmentoFormComponent {
   constructor(public dialogRef: MatDialogRef<SegmentoFormComponent>, @Inject(MAT_DIALOG_DATA) public data?: { segmento: Segmento }) {
     if(this.data?.segmento) {
       this.segmentoFG.controls['id'].setValue(this.data.segmento.id);
-      this.segmentoFG.controls['nome'].setValue(this.data.segmento.nome);
-      this.segmentoFG.controls['descricao'].setValue(this.data.segmento.descricao);
-      this.segmentoFG.controls['is_ativo'].setValue(this.data.segmento.is_ativo);
+
+      this.getSegmentoByID(this.data.segmento.id);
 
       this.segmentoFG.controls['nome'].disable();
     }
@@ -58,6 +57,16 @@ export class SegmentoFormComponent {
     is_ativo: new FormControl(true, [Validators.required])
   });
 
+  public hasAssociacoes: boolean = true;
+
+  public getSegmentoByID(id: string): void {
+    this._http.get(api.private.segmento.getByID.replace("{SEGMENTO_ID}", id)).subscribe(
+      response => {
+        console.log(response);
+      }
+    )
+  }
+
   public onSave(): void {
     if(!this.segmentoFG.valid) { return; }
 
@@ -67,9 +76,7 @@ export class SegmentoFormComponent {
     };
 
     if(this.data?.segmento?.id) {
-      body['id'] = this.segmentoFG.value['id'];
-
-      this._http.put(api.private.segmento.put, body).subscribe(
+      this._http.put(api.private.segmento.put.replace("{SEGMENTO_ID}", this.segmentoFG.value['id']), body).subscribe(
         (response: any) => {
           if(response?.message) {
             this._snackbar.showSnackbarMessages({ message: response.message, type: 'success' });
