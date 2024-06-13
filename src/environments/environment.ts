@@ -5,7 +5,7 @@ export let key = 'S4$.P4r@M3tR!z4D0r';
 
 export const environment = {
     application: {
-        api: { url: "https://localhost:8080/api/" },
+        api: { url: "https://127.0.0.1:8080/api/" },
         localStorage: {
             name: String(Md5.hashStr(env + '.LocalStorageName.' + key)),
             secret: String(Md5.hashStr(env + '.LocalStorageSecret.' + key))
