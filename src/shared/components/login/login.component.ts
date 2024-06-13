@@ -29,8 +29,7 @@ import { Auth, AuthService } from '../../guards';
 })
 export class LoginComponent {
   private _http = inject(HttpClient);
-  private _localStorage = inject(LocalStorageService);
-  private _auth = inject(AuthService);
+  private _localStorage = inject(LocalStorageService);  
   private _snackbar = inject(SnackbarMessagesService);  
   
   constructor(public dialogRef: MatDialogRef<LoginComponent>) { }
@@ -68,7 +67,6 @@ export class LoginComponent {
             };
 
             this._localStorage.storageData({ type: 'auth', data: auth });
-            this._auth.initSchedule();
             this._snackbar.showSnackbarMessages({ message: "Login realizado com sucesso!", type: 'success', has_duration: true });
             this.dialogRef.close("closed");
           }

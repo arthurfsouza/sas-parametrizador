@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { Auth, AuthGuard, PermissionGuard } from '../shared/guards';
+import { Auth, AuthGuard, AuthService, PermissionGuard } from '../shared/guards';
 import { LocalStorageService } from '../shared/services';
 import { ApiInterceptor } from '../shared/interceptors';
 import { LoginComponent } from '../shared/components/login/login.component';
@@ -22,12 +22,12 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initApp,
       multi: true,
-      deps: [MatDialog, LocalStorageService]
+      deps: [MatDialog, LocalStorageService, AuthService]
     }
   ]
 };
 
-export function initApp(_dialog: MatDialog, _localStorage: LocalStorageService) {
+export function initApp(_dialog: MatDialog, _localStorage: LocalStorageService, _auth: AuthService) {
   return () => {
     return new Promise(
       async (resolve) => {
@@ -47,6 +47,8 @@ export function initApp(_dialog: MatDialog, _localStorage: LocalStorageService) 
             console.log(result);
           })
         }
+
+        _auth.initSchedule();
 
         resolve(true);
         return;
