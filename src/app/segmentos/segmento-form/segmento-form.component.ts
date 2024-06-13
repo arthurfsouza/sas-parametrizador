@@ -41,8 +41,6 @@ export class SegmentoFormComponent {
       this.segmentoFG.controls['id'].setValue(this.data.segmento.id);
 
       this.getSegmentoByID(this.data.segmento.id);
-
-      this.segmentoFG.controls['nome'].disable();
     }
 
     this.segmentoFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
@@ -61,8 +59,18 @@ export class SegmentoFormComponent {
 
   public getSegmentoByID(id: string): void {
     this._http.get(api.private.segmento.getByID.replace("{SEGMENTO_ID}", id)).subscribe(
-      response => {
-        console.log(response);
+      (response: any) => {
+        if(response) {
+          const segmento: Segmento = response;
+
+          this.segmentoFG.controls['nome'].setValue(segmento.nome);
+          this.segmentoFG.controls['descricao'].setValue(segmento.descricao);
+          this.segmentoFG.controls['is_ativo'].setValue(segmento.is_ativo);
+
+          if(segmento.has_associacoes != null) { this.hasAssociacoes = segmento.has_associacoes; }
+
+          if(this.hasAssociacoes) { this.segmentoFG.controls['nome'].disable(); }
+        }
       }
     )
   }
@@ -71,11 +79,14 @@ export class SegmentoFormComponent {
     if(!this.segmentoFG.valid) { return; }
 
     let body: any = {
+      nome: this.segmentoFG.value['nome'],
       descricao: this.segmentoFG.value['descricao'],
       is_ativo: this.segmentoFG.value['is_ativo']
     };
 
     if(this.data?.segmento?.id) {
+      if(this.hasAssociacoes) { delete body['nome']; }
+
       this._http.put(api.private.segmento.put.replace("{SEGMENTO_ID}", this.segmentoFG.value['id']), body).subscribe(
         (response: any) => {
           if(response?.message) {
@@ -83,12 +94,15 @@ export class SegmentoFormComponent {
           }
 
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "update" });
+        },
+        err => {
+          if(err?.error?.error) {
+            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+          }
         }
       );
     }
     else {
-      body['nome'] = this.segmentoFG.value['nome'];
-
       this._http.post(api.private.segmento.post, body).subscribe(
         (response: any) => {
           if(response?.message) {
@@ -97,20 +111,24 @@ export class SegmentoFormComponent {
 
           this.dialogRef.close({ segmento: this.segmentoFG.value, type: "create" });
         },
-        error => {
-          if(error?.error?.error) {
-            this._snackbar.showSnackbarMessages({ message: error.error.error, type: 'error', has_duration: true });
-
-            if(error?.error?.campos_error?.length > 0) {
-              if(error.error.campos_error.includes("nome")) {
-                this.segmentoFG.controls['nome'].markAsDirty();
-                this.segmentoFG.controls['nome'].markAsTouched();
-                this.segmentoFG.controls['nome'].setErrors({ nomeExistente: true });
-              }
-            }
+        err => {
+          if(err?.error?.error) {
+            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
           }
         }
       );
+    }
+  }
+
+  public showErros(e: { error: string, campos_error: string[] }): void {
+    this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
+
+    if(e.campos_error.length > 0) {
+      if(e.campos_error.includes("nome")) {
+        this.segmentoFG.controls['nome'].markAsDirty();
+        this.segmentoFG.controls['nome'].markAsTouched();
+        this.segmentoFG.controls['nome'].setErrors({ nomeExistente: true });
+      }
     }
   }
 }
