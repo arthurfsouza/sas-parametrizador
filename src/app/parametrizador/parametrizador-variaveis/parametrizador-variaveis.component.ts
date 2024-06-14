@@ -6,7 +6,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Parametrizador, Variavel } from '../../../shared/interfaces/parametrizador.interface';
 import { ParametrizadorVariavelFormComponent } from './parametrizador-variavel-form/parametrizador-variavel-form.component';
 import { ParametrizadorService } from '../parametrizador.service';
 import { ParametrizadorVariavelUploadComponent } from './parametrizador-variavel-upload/parametrizador-variavel-upload.component';
@@ -30,11 +29,11 @@ export class ParametrizadorVariaveisComponent implements OnInit {
   constructor(public dialog: MatDialog){ }  
 
   private _parametrizador = inject(ParametrizadorService);
-  public parametrizador!: Parametrizador;
+  public parametrizador!: any; // Parametrizador
   
   public displayedColumns: string[] = ["id", "nome", "tipo", "chave", "tamanho", "qtdCasasDecimais", "actions"];
-  public dataSource: MatTableDataSource<Variavel> = new MatTableDataSource<Variavel>([]);
-  public data: Variavel[] = [];  
+  public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]); // Variavel
+  public data: any[] = []; // Variavel  
 
   ngOnInit(): void {
     this._parametrizador.getParametrizador().subscribe(parametrizador => {
@@ -76,7 +75,7 @@ export class ParametrizadorVariaveisComponent implements OnInit {
     });
   }
 
-  public onEditVar(row: Variavel): void {
+  public onEditVar(row: any): void { // Variavel 
     const dialogRef = this.dialog.open(ParametrizadorVariavelFormComponent, {
       width: '800px',
       height: '100vh',
@@ -104,7 +103,7 @@ export class ParametrizadorVariaveisComponent implements OnInit {
     });
   }
 
-  public onDeleteVar(row: Variavel): void {
+  public onDeleteVar(row: any): void { // Variavel 
     let index = 0;
 
     for(let i = 0; i < this.data.length; i++) {
@@ -126,7 +125,7 @@ export class ParametrizadorVariaveisComponent implements OnInit {
       const hasGlobalKey: boolean = this.parametrizador.parametro.modo == "chave";
 
       if(hasGlobalKey) {
-        const variaveisWithKeys: Variavel[] = this.data.filter(d => d.isChave == true);
+        const variaveisWithKeys: any[] = this.data.filter(d => d.isChave == true); // Variavel 
 
         if(variaveisWithKeys && variaveisWithKeys.length > 0) { valid = true; }
       }

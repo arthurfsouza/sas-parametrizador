@@ -1,15 +1,14 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { Parametrizador } from "../../shared/interfaces/parametrizador.interface";
 
 @Injectable({providedIn: 'root'})
 export class ParametrizadorService {
-    private _parametrizadorSubject: BehaviorSubject<Parametrizador | null> = new BehaviorSubject<Parametrizador | null>(null)
+    private _parametrizadorSubject: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null); // Parametrizador
     private _parametrizador = this._parametrizadorSubject.asObservable();
 
-    public getParametrizador(): Observable<Parametrizador | null> { return this._parametrizador; }
+    public getParametrizador(): Observable<any | null> { return this._parametrizador; } // Parametrizador
 
-    public setParametrizador(parametrizador: Parametrizador): void {
+    public setParametrizador(parametrizador: any): void { // Parametrizador
         this._parametrizadorSubject.next(parametrizador);
     }
 }

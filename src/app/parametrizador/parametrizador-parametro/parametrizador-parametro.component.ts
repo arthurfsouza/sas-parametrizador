@@ -11,7 +11,6 @@ import ptBr from '@angular/common/locales/pt';
 import { ParametrizadorService } from '../parametrizador.service';
 import { HttpClient } from '@angular/common/http';
 import { Cluster, Politica } from '../../../shared/interfaces';
-import { Parametrizador } from '../../../shared/interfaces/parametrizador.interface';
 import { clusters, politicas } from '../../../shared/mockups';
 
 registerLocaleData(ptBr)
@@ -39,7 +38,7 @@ registerLocaleData(ptBr)
 export class ParametrizadorParametroComponent implements OnInit {
   private _http = inject(HttpClient);
   private _parametrizador = inject(ParametrizadorService);
-  public parametrizador!: Parametrizador;
+  public parametrizador!: any; // Parametrizador
 
   public minDate: Date = new Date();
   

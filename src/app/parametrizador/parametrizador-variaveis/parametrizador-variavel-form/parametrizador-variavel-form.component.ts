@@ -12,7 +12,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VariavelLista } from '../../../../shared/interfaces/parametrizador.interface';
 
 @Component({
   selector: 'app-parametrizador-variavel-form',
@@ -79,8 +78,8 @@ export class ParametrizadorVariavelFormComponent {
   ];
 
   public displayedColumns: string[] = ["checkbox", "nome", "actions"];
-  public dataSource: MatTableDataSource<VariavelLista> = new MatTableDataSource<VariavelLista>([]);
-  public dataLista: VariavelLista[] = [];
+  public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]); // VariavelLista
+  public dataLista: any[] = []; // VariavelLista
   public itemID: number | null = null;
 
   public onChangeTipo(event$: any): void {
@@ -89,7 +88,7 @@ export class ParametrizadorVariavelFormComponent {
     }
   }
 
-  public onChangeCheck(event$: any, item: VariavelLista): void {
+  public onChangeCheck(event$: any, item: any): void { // VariavelLista
     for(let vl of this.dataLista) {
       if(vl.id == item.id) {
         if(event$ && event$.checked == true) { vl.checked = true; }
@@ -150,12 +149,12 @@ export class ParametrizadorVariavelFormComponent {
     }
   }
 
-  public onEditItem(item: VariavelLista): void {
+  public onEditItem(item: any): void { // VariavelLista
     this.itemID = item.id;
     this.listaFG.controls['item'].setValue(item.nome);
   }
 
-  public onDeleteItem(item: VariavelLista): void {
+  public onDeleteItem(item: any): void { // VariavelLista
     let index = 0;
 
     for(let i = 0; i < this.dataLista.length; i++) {

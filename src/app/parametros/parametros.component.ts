@@ -18,7 +18,6 @@ import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../sha
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 import StringUtils from '../../shared/utils/string/string.utils';
 import { Segmento, Cluster, Politica } from '../../shared/interfaces';
-import { Parametrizador } from '../../shared/interfaces/parametrizador.interface';
 
 @Component({
   selector: 'app-parametros',
@@ -75,10 +74,10 @@ export class ParametrosComponent {
     filter: new FormControl("", [Validators.minLength(3)])
   });
 
-  public displayedColumns: string[] = ["id", "nome", "segmento", "cluster", "politica", "variavel", "versao", "status", "actions"];
-  public dataSource: MatTableDataSource<Parametrizador> = new MatTableDataSource<Parametrizador>([]);
-  public data: Parametrizador[] = [];
-  public originalData: Parametrizador[] = [];
+  public displayedColumns: string[] = ["nome", "segmento", "cluster", "politica", "variavel", "versao", "status", "actions"];
+  public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]); // Parametrizador
+  public data: any[] = []; // Parametrizador
+  public originalData: any[] = []; // Parametrizador
 
   public statuses: any[] = [
     { id: 1, nome: "Criação", status: "CREATED" },
@@ -99,7 +98,7 @@ export class ParametrosComponent {
     this._router.navigate(["parametrizador"]);
   }
 
-  public onDetalhes(row: Parametrizador): void {
+  public onDetalhes(row: any): void { // Parametrizador
     this._router.navigate(["parametrizador/" + row.id]);
   }
 
@@ -198,11 +197,11 @@ export class ParametrosComponent {
     });
   }
 
-  public onEditarParametro(row: Parametrizador): void {
+  public onEditarParametro(row: any): void { // Parametrizador
     this._router.navigate(["parametrizador/" + row.id]);
   }
 
-  public onDeletarParametro(row: Parametrizador): void {
+  public onDeletarParametro(row: any): void { // Parametrizador
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '600px',
       height: '300px',

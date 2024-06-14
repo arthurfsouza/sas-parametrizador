@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Parametrizador, Variavel, VariavelLista } from '../../../shared/interfaces/parametrizador.interface';
 import { DigitOnlyDirective } from '../../../shared/directives/digit-only/digit-only.directive';
 import { ParametrizadorService } from '../parametrizador.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -56,10 +55,10 @@ export class ParametrizadorDadosComponent {
   constructor(public dialog: MatDialog, private _fb: FormBuilder){ }
 
   private _parametrizador = inject(ParametrizadorService);
-  public parametrizador!: Parametrizador;
+  public parametrizador!: any; // Parametrizador;
 
   public displayedColumns: string[] = [];
-  public variaveis: Variavel[] = [];
+  public variaveis: any[] = []; //Variavel[]
 
   public dadosFG: FormGroup = new FormGroup({
     dados: this._fb.array([])
@@ -95,21 +94,21 @@ export class ParametrizadorDadosComponent {
 
   public getColumnName(column: string): string {
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
+    const variavel: any | undefined = this.variaveis.find(v => v.id == id); // Variavel
 
     return variavel ? variavel.nome : "-";
   }
 
-  public getColumnVariable(column: string): Variavel | undefined {
+  public getColumnVariable(column: string): any | undefined { // Variavel
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
+    const variavel: any | undefined = this.variaveis.find(v => v.id == id); // Variavel
 
     return variavel;
   }
 
   public getPattern(column: string): string | RegExp {
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
+    const variavel: any | undefined = this.variaveis.find(v => v.id == id); // Variavel
     let pattern: string | RegExp = "";
 
     if(variavel) {
@@ -124,10 +123,10 @@ export class ParametrizadorDadosComponent {
     return pattern;    
   }
 
-  public getListItems(column: string): VariavelLista[] {
+  public getListItems(column: string): any[] { // VariavelLista
     const id: any = this.getColumnID(column);
-    const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
-    const variavelLista: VariavelLista[] = variavel ? variavel.lista?.filter(l => l.checked == true) || [] : [];
+    const variavel: any | undefined = this.variaveis.find(v => v.id == id); // Variavel 
+    const variavelLista: any[] = variavel ? variavel.lista?.filter((l: any) => l.checked == true) || [] : [];// VariavelLista
 
     return variavelLista;
   }

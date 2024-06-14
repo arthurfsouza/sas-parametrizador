@@ -1,8 +1,7 @@
-import { Evento, Parametrizador } from "../interfaces/parametrizador.interface";
 import { politicas } from "./politica/politica.mockup";
 
 
-export const eventos: Evento[] = [
+export const eventos: any[] = [ // Evento
     { id: 1, nome: "Criação", status: "CREATED", dataOcorrencia: new Date(2024, 0, 1), responsavel: "Arthur Ferreira" },
     { id: 2, nome: "Enviado para o Ambiente Analítico", status: "AWAITING_ANALYTIC_DECISION", dataOcorrencia: new Date(2024, 0, 2), responsavel: "Arthur Ferreira" },
     { id: 3, nome: "Enviado para Aprovação de Riscos", status: "AWAITING_RISK_DECISION", dataOcorrencia: new Date(2024, 0, 3), responsavel: "Arthur Ferreira" },
@@ -12,7 +11,7 @@ export const eventos: Evento[] = [
     { id: 7, nome: "Excluído", status: "ACTIVE", dataOcorrencia: new Date(2024, 0, 7), responsavel: "Arthur Ferreira" }
 ] 
 
-export const parametrizadores: Parametrizador[] = [
+export const parametrizadores: any[] = [ // Parametrizador
     { 
         id: 1, status: 'CREATED', versao: "1.0", dados: [],
         parametro: { 

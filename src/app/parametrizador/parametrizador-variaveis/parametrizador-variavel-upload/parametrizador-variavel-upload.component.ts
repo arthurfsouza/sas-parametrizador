@@ -10,12 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Parametrizador, Variavel } from '../../../../shared/interfaces/parametrizador.interface';
 import { ParametrizadorService } from '../../parametrizador.service';
 import { CSVService } from '../../../../shared/services';
 
 export interface VariavelUpload {
-  variavel: Variavel;
+  variavel: any; // Variavel
   controle: {
     nomeObrigatorio: boolean;
     nomeInvalido: boolean;
@@ -62,7 +61,7 @@ export interface VariavelUpload {
 export class ParametrizadorVariavelUploadComponent {
   private _csv = inject(CSVService);
   private _parametrizador = inject(ParametrizadorService);
-  public parametrizador!: Parametrizador;
+  public parametrizador!: any; // Parametrizador
 
   constructor(public dialogRef: MatDialogRef<ParametrizadorVariavelUploadComponent>) { }
 
@@ -94,7 +93,7 @@ export class ParametrizadorVariavelUploadComponent {
           const variaveis: any[] = [];
           const dataSource2: any[] = [];
           
-          this.parametrizador.variaveis.map(variavel => {
+          this.parametrizador.variaveis.map((variavel: any) => {
             variaveis.push({
               nome: variavel.nome,
               descricao: variavel.descricao,
@@ -108,7 +107,7 @@ export class ParametrizadorVariavelUploadComponent {
               let data: any[] = [];
 
               if(variavel && variavel.lista && variavel.lista.length > 0) {
-                data = variavel.lista.map(l => { return {
+                data = variavel.lista.map((l: any) => { return {
                   lista: { id: l.id, nome: l.nome, ativo: l.checked },
                   controle: { nomeObrigatorio: false, ativoObrigatorio: false, ativoNaoBooleano: false }
                 }});

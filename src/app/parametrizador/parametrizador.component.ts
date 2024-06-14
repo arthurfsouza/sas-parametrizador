@@ -10,7 +10,6 @@ import { ParametrizadorDadosComponent } from './parametrizador-dados/parametriza
 import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/parametrizador-revisao.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { ParametrizadorService } from './parametrizador.service';
-import { Parametrizador } from '../../shared/interfaces/parametrizador.interface';
 import { ActivatedRoute } from '@angular/router';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 
@@ -49,7 +48,7 @@ export class ParametrizadorComponent implements OnInit {
 
   private _http = inject(HttpClient);
   private _parametrizador = inject(ParametrizadorService);
-  public parametrizador: Parametrizador = { id: 1, parametro: null, variaveis: [], dados: [] };
+  public parametrizador: any = { id: 1, parametro: null, variaveis: [], dados: [] }; // Parametrizador
 
   public parametroStepperFG: FormGroup = new FormGroup({});
   public variaveisStepperFG: FormGroup = new FormGroup({});
@@ -70,7 +69,7 @@ export class ParametrizadorComponent implements OnInit {
       console.log(params);
       if(params['parametrizadorID']) {
         this.parametrizadorID = params['parametrizadorID'];
-        const parametrizador: Parametrizador | undefined = parametrizadores.find(p => p.id == this.parametrizadorID);
+        const parametrizador: any | undefined = parametrizadores.find(p => p.id == this.parametrizadorID); // Parametrizador
 
         if(parametrizador) { this._parametrizador.setParametrizador(parametrizador); }
       }

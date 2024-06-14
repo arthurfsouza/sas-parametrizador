@@ -26,7 +26,9 @@ export class ApiInterceptor implements HttpInterceptor {
 
     if(auth) {
       if(auth.token) { req = req.clone({ setHeaders: { 'Authorization': "Bearer " + auth.token } }); }
-      if(auth.user.id) { req = req.clone({ setHeaders: { 'SAS-Identification': auth.user.id } }); }
+      if(auth.user.id) { req = req.clone({ setHeaders: { 'SAS-User-ID': auth.user.id } }); }
+      if(auth.user.name) { req = req.clone({ setHeaders: { 'SAS-User-Name': auth.user.name } }); }
+      if(auth.user.email) { req = req.clone({ setHeaders: { 'SAS-User-Email': auth.user.email } }); }
       if(auth.user.permissions) { req = req.clone({ setHeaders: { 'SAS-User-Groups': auth.user.permissions.join(",") } }); }
     }
 

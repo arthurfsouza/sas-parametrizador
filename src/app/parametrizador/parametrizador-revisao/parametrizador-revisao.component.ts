@@ -9,7 +9,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ParametrizadorService } from '../parametrizador.service';
-import { Parametrizador, Variavel } from '../../../shared/interfaces/parametrizador.interface';
 
 @Component({
   selector: 'app-parametrizador-revisao',
@@ -30,11 +29,11 @@ import { Parametrizador, Variavel } from '../../../shared/interfaces/parametriza
 })
 export class ParametrizadorRevisaoComponent implements OnInit {
   private _parametrizador = inject(ParametrizadorService);
-  public parametrizador!: Parametrizador;
+  public parametrizador!: any; // Parametrizador 
 
   public displayedColumnsVariaveis: string[] = ["nome", "tipo", "chave", "tamanho", "qtdCasasDecimais"];
-  public dataSourceVariaveis: MatTableDataSource<Variavel> = new MatTableDataSource<Variavel>([]);
-  public dataVariaveis: Variavel[] = [];
+  public dataSourceVariaveis: MatTableDataSource<any> = new MatTableDataSource<any>([]); // Variavel
+  public dataVariaveis: any[] = []; // Variavel
 
   public displayedColumnsDados: string[] = [];
   public dataSourceDados: MatTableDataSource<any> = new MatTableDataSource<any>([]);
