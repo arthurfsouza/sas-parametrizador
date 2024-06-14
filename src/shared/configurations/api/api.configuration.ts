@@ -9,7 +9,7 @@ export const api = {
             delete: apiURL + "v1/front/segmentos/{SEGMENTO_ID}",
             getAll: apiURL + "v1/front/segmentos",
             getByID: apiURL + "v1/front/segmentos/{SEGMENTO_ID}",
-            post: apiURL + "v1/front/segmentos" + "_base",
+            post: apiURL + "v1/front/segmentos",
             put: apiURL + "v1/front/segmentos/{SEGMENTO_ID}"
         },
         cluster: {
