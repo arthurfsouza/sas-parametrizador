@@ -80,7 +80,7 @@ export class PoliticasComponent {
     this.originalData = this.data;
     this.dataSource = new MatTableDataSource(this.data);
 
-    this._http.get(api.private.politica.get).subscribe(
+    this._http.get(api.private.politica.getAll).subscribe(
       response => {
         const politicas: Politica[] = response as any || [];
 
@@ -114,7 +114,7 @@ export class PoliticasComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(result && result.politica && result.type == "update") {
+      if(result && result.politica && (result.type == "update" || result.type == "delete")) {
         this._loadingPoliticas();
       }
     });

@@ -4,7 +4,7 @@ import { Component, Inject, inject } from '@angular/core';
 import { debounceTime } from 'rxjs';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarMessagesService } from '../../../shared/services';
+import { ConfirmDialogComponent } from '../../../shared/components';
 import { Cluster, Politica, Segmento } from '../../../shared/interfaces';
 import { api } from '../../../shared/configurations';
 
@@ -38,18 +39,12 @@ export class PoliticaFormComponent {
   private _http = inject(HttpClient);
   private _snackbar = inject(SnackbarMessagesService);
   
-  constructor(public dialogRef: MatDialogRef<PoliticaFormComponent>, @Inject(MAT_DIALOG_DATA) public data?: { politica: Politica }) {
+  constructor(public dialogRef: MatDialogRef<PoliticaFormComponent>, public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data?: { politica: Politica }) {
     if(this.data?.politica) {
       this.politicaFG.controls['id'].setValue(this.data.politica.id);
-      this.politicaFG.controls['nome'].setValue(this.data.politica.nome);
-      this.politicaFG.controls['descricao'].setValue(this.data.politica.descricao);
-      this.politicaFG.controls['is_ativo'].setValue(this.data.politica.is_ativo);
-      this.politicaFG.controls['cluster'].setValue(this.data.politica?.cluster);
-      this.politicaFG.controls['segmento'].setValue(this.data.politica?.cluster?.segmento);
 
-      this.politicaFG.controls['nome'].disable();
-      this.politicaFG.controls['cluster'].disable();
-      this.politicaFG.controls['segmento'].disable();
+      this.getPoliticaByID(this.data.politica.id);
     }
 
     this.politicaFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
@@ -70,11 +65,67 @@ export class PoliticaFormComponent {
   public clusters: Cluster[] = [];
   public clustersOriginal: Cluster[] = [];
 
+  public hasAssociation: boolean = true;
+
   ngOnInit(): void {
     this.politicaFG.controls['cluster'].disable();
 
     this._loadingSegmentos();
     this._loadingClusters();
+  }
+
+  public getPoliticaByID(id: string): void {
+    this._http.get(api.private.politica.getByID.replace("{POLITICA_ID}", id)).subscribe(
+      (response: any) => {
+        if(response) {
+          const politica: Politica = response;
+
+          this.politicaFG.controls['nome'].setValue(politica.nome);
+          this.politicaFG.controls['descricao'].setValue(politica.descricao);
+          this.politicaFG.controls['is_ativo'].setValue(politica.is_ativo);
+          this.politicaFG.controls['cluster'].setValue(politica.cluster);
+          this.politicaFG.controls['segmento'].setValue(politica.cluster?.segmento);          
+
+          if(politica.has_association != null) { this.hasAssociation = politica.has_association; }
+
+          if(this.hasAssociation) {
+            this.politicaFG.controls['nome'].disable();
+            this.politicaFG.controls['segmento'].disable();
+            this.politicaFG.controls['cluster'].disable();
+          }
+        }
+      }
+    )
+  }
+
+  public onDelete(): void {
+    if(!this.hasAssociation && this.politicaFG.value['id'] != null) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '600px',
+        height: '300px',
+        data: {
+          title: "Exclusão da Política",
+          description: `<p>Esta ação não poderá ser desfeita.</p><p>Tem certeza que deseja excluir a política selecionado?</p>`,
+          descriptionType: "HTML",
+          buttonText: "Excluir"
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result == "delete") {
+          this._http.delete(api.private.politica.delete.replace("{POLITICA_ID}", this.politicaFG.value['id'])).subscribe(
+            (response: any) => {
+              if(response?.message) {
+                this._snackbar.showSnackbarMessages({ message: response.message, type: 'success' });
+              }
+    
+              this.dialogRef.close({ politica: this.politicaFG.value, type: "delete" });
+            }
+          );
+        }
+      });
+      
+    }
   }
 
   private _loadingSegmentos(): void {
@@ -101,7 +152,7 @@ export class PoliticaFormComponent {
     this.clusters = [];
     this.clustersOriginal = [];
 
-    this._http.get(api.private.cluster.get).subscribe(
+    this._http.get(api.private.cluster.getAll).subscribe(
       response => {
         const clusters: Cluster[] = response as any || [];
 
@@ -118,9 +169,7 @@ export class PoliticaFormComponent {
     );
   }
 
-  public onChangeCluster(event$: any): void {
-    
-  }
+  public onChangeCluster(event$: any): void { }
 
   public onChangeSegmento(event$: any): void {
     this.politicaFG.controls['cluster'].setValue(null);
@@ -138,27 +187,34 @@ export class PoliticaFormComponent {
     if(!this.politicaFG.valid) { return; }
 
     let body: any = {
+      nome: this.politicaFG.value['nome'],
       descricao: this.politicaFG.value['descricao'],
-      is_ativo: this.politicaFG.value['is_ativo']      
+      is_ativo: this.politicaFG.value['is_ativo'],
+      cluster_id: this.politicaFG.value['cluster']?.id
     };
 
     if(this.data?.politica?.id) {
-      body['id'] = this.politicaFG.value['id'];
+      if(this.hasAssociation) {
+        delete body['nome'];
+        delete body['cluster_id'];
+      }
 
-      this._http.put(api.private.politica.put, body).subscribe(
+      this._http.put(api.private.politica.put.replace("{POLITICA_ID}", this.politicaFG.value['id']), body).subscribe(
         (response: any) => {
           if(response?.message) {
             this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
           }
 
           this.dialogRef.close({ politica: this.politicaFG.value, type: "update" });
+        },
+        err => {
+          if(err?.error?.error) {
+            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+          }
         }
       );
     }
     else {
-      body['nome'] = this.politicaFG.value['nome'];
-      body['cluster_id'] = this.politicaFG.value['cluster']?.id;
-
       this._http.post(api.private.politica.post, body).subscribe(
         (response: any) => {
           if(response?.message) {
@@ -167,20 +223,24 @@ export class PoliticaFormComponent {
 
           this.dialogRef.close({ politica: this.politicaFG.value, type: "create" });
         },
-        error => {
-          if(error?.error?.error) {
-            this._snackbar.showSnackbarMessages({ message: error.error.error, type: 'error', has_duration: true });
-
-            if(error?.error?.campos_error?.length > 0) {
-              if(error.error.campos_error.includes("nome")) {
-                this.politicaFG.controls['nome'].markAsDirty();
-                this.politicaFG.controls['nome'].markAsTouched();
-                this.politicaFG.controls['nome'].setErrors({ nomeExistente: true });
-              }
-            }
+        err => {
+          if(err?.error?.error) {
+            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
           }
         }
       );
+    }
+  }
+
+  public showErros(e: { error: string, campos_error: string[] }): void {
+    this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
+
+    if(e.campos_error.length > 0) {
+      if(e.campos_error.includes("nome")) {
+        this.politicaFG.controls['nome'].markAsDirty();
+        this.politicaFG.controls['nome'].markAsTouched();
+        this.politicaFG.controls['nome'].setErrors({ nomeExistente: true });
+      }
     }
   }
 

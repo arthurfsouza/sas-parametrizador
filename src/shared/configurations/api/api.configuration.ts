@@ -13,14 +13,18 @@ export const api = {
             put: apiURL + "v1/front/segmentos/{SEGMENTO_ID}"
         },
         cluster: {
-            get: apiURL + "v1/front/clusters",
+            delete: apiURL + "v1/front/clusters/{CLUSTER_ID}",
+            getAll: apiURL + "v1/front/clusters",
+            getByID: apiURL + "v1/front/clusters/{CLUSTER_ID}",
             post: apiURL + "v1/front/clusters",
-            put: apiURL + "v1/front/clusters",
+            put: apiURL + "v1/front/clusters/{CLUSTER_ID}",
         },
         politica: {
-            get: apiURL + "v1/front/politicas",
+            delete: apiURL + "v1/front/politicas/{POLITICA_ID}",
+            getAll: apiURL + "v1/front/politicas",
+            getByID: apiURL + "v1/front/politicas/{POLITICA_ID}",
             post: apiURL + "v1/front/politicas",
-            put: apiURL + "v1/front/politicas",
+            put: apiURL + "v1/front/politicas/{POLITICA_ID}",
         }
     }
 };

@@ -11,4 +11,5 @@ export interface Cluster {
     updated_at?: Date;
     segmento_id: string;
     segmento?: Segmento;
+    has_association?: boolean;
 }

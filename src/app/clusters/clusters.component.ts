@@ -80,7 +80,7 @@ export class ClustersComponent {
     this.originalData = this.data;
     this.dataSource = new MatTableDataSource(this.data);
 
-    this._http.get(api.private.cluster.get).subscribe(
+    this._http.get(api.private.cluster.getAll).subscribe(
       response => {
         const clusters: Cluster[] = response as any || [];
 
@@ -119,7 +119,7 @@ export class ClustersComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(result && result.cluster && result.type == "update") {
+      if(result && result.cluster && (result.type == "update" || result.type == "delete")) {
         this._loadingClusters();
       }
     });

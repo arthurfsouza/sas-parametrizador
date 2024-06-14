@@ -45,14 +45,14 @@
         </div>
     </div>
 
-    <!-- <div class="row segmento-warning" *ngIf="!data?.segmento">
+    <div class="row segmento-warning" *ngIf="hasAssociation">
         <div class="warning-content">
             <mat-icon class="warning-icon">warning</mat-icon>
             <div class="warning-text">
-                <b>Importante: </b>Após clicar em "Finalizar", o nome do Segmento não poderá ser editado!
+                <b>Aviso: </b>Este segmento já possui associação!
             </div>
         </div>
-    </div> -->
+    </div>
 
     <div class="row segmento-footer">
         <div class="col-md-6 col-12" *ngIf="hasAssociation">

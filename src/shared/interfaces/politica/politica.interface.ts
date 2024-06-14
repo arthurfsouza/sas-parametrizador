@@ -11,4 +11,5 @@ export interface Politica {
     updated_at?: Date;
     cluster_id: string;
     cluster?: Cluster;
+    has_association?: boolean;
 }
