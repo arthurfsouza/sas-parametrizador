@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,7 +18,9 @@ import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/m
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 import StringUtils from '../../shared/utils/string/string.utils';
-import { Segmento, Cluster, Politica } from '../../shared/interfaces';
+import { Segmento, Cluster, Politica, Parametro } from '../../shared/interfaces';
+import { api } from '../../shared/configurations';
+
 
 @Component({
   selector: 'app-parametros',
@@ -44,24 +47,20 @@ import { Segmento, Cluster, Politica } from '../../shared/interfaces';
 export class ParametrosComponent {
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
+  private _http = inject(HttpClient);
+
   constructor(public dialog: MatDialog, private _router: Router){
     for(let i = 0; i < 10; i++) { this.data.push(...parametrizadores); }
 
-    // this.data = [];
-
-    this.originalData = this.data;
+    this.data = [];
     this.dataSource = new MatTableDataSource(this.data);
 
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
-      this.data = this.originalData;
-
       if(value.length >= 3) {
-        this.data = this.data.filter(
-          parametrizador => StringUtils.replaceAllSpecialCharacters(parametrizador?.parametro?.nome || "").includes(
-            StringUtils.replaceAllSpecialCharacters(value)
-          )
-        );
+        this._loadingParametros();
       }
+
+      this.dataSource = new MatTableDataSource(this.data);
 
       if(this.paginator) {
         this.paginator.dataSize = this.data.length;
@@ -75,9 +74,8 @@ export class ParametrosComponent {
   });
 
   public displayedColumns: string[] = ["nome", "segmento", "cluster", "politica", "variavel", "versao", "status", "actions"];
-  public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]); // Parametrizador
-  public data: any[] = []; // Parametrizador
-  public originalData: any[] = []; // Parametrizador
+  public dataSource: MatTableDataSource<Parametro> = new MatTableDataSource<Parametro>([]);
+  public data: Parametro[] = [];
 
   public statuses: any[] = [
     { id: 1, nome: "Criação", status: "CREATED" },
@@ -92,6 +90,34 @@ export class ParametrosComponent {
     variavel: { id: 1, nome: "Todos", modo: "todos" },
     statuses: this.statuses,
   };
+
+  ngOnInit(): void {
+    this._loadingParametros();
+  }
+
+  private _loadingParametros(): void {
+    this.data = [];
+    this.dataSource = new MatTableDataSource(this.data);
+
+    const body: any = {
+      offset: 0,
+      limit: 25,
+      // order: { column: "nome", direction: "ASC" },
+    };
+
+    this._http.post(api.private.parametro.getAll, body).subscribe(
+      (response: any) => {
+        const parametros: Parametro[] = response || [];
+
+        console.log(parametros);
+
+        if(parametros && parametros.length > 0) {
+          this.data = parametros;
+          this.dataSource = new MatTableDataSource(this.data);
+        }
+      }
+    );
+  }
   
 
   public onAddParametro(): void {

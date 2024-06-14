@@ -25,6 +25,9 @@ export const api = {
             getByID: apiURL + "v1/front/politicas/{POLITICA_ID}",
             post: apiURL + "v1/front/politicas",
             put: apiURL + "v1/front/politicas/{POLITICA_ID}",
+        },
+        parametro: {
+            getAll: apiURL + "v1/front/parametros/datatable",
         }
     }
 };
