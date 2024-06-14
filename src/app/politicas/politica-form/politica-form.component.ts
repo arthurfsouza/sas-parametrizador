@@ -46,6 +46,7 @@ export class PoliticaFormComponent {
 
       this.getPoliticaByID(this.data.politica.id);
     }
+    else { this.politicaFG.controls['cluster'].disable(); }
 
     this.politicaFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.politicaFG.controls['nome'].setErrors(null);
@@ -68,8 +69,6 @@ export class PoliticaFormComponent {
   public hasAssociation: boolean = true;
 
   ngOnInit(): void {
-    this.politicaFG.controls['cluster'].disable();
-
     this._loadingSegmentos();
     this._loadingClusters();
   }
