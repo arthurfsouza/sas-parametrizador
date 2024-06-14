@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="row cluster-warning" *ngIf="hasAssociation">
+    <div class="row cluster-warning" *ngIf="data?.cluster?.id && hasAssociation">
         <div class="warning-content">
             <mat-icon class="warning-icon">warning</mat-icon>
             <div class="warning-text">
