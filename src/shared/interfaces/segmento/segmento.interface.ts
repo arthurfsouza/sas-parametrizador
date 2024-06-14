@@ -7,5 +7,5 @@ export interface Segmento {
     sas_parent_uri?: string;
     created_at?: Date;
     updated_at?: Date;
-    has_associacoes?: boolean;
+    has_association?: boolean;
 }

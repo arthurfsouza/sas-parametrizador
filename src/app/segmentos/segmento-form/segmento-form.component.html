@@ -55,8 +55,12 @@
     </div>
 
     <div class="row segmento-footer">
-        <div class="col-md-6 col-12">
+        <div class="col-md-6 col-12" *ngIf="!hasAssociation">
             <button mat-stroked-button color="primary" [mat-dialog-close]="true">CANCELAR</button>
+        </div>
+
+        <div class="col-md-6 col-12" *ngIf="hasAssociation">
+            <button mat-stroked-button color="warn" (click)="onDelete()">EXCLUIR</button>
         </div>
 
         <div class="col-md-6 col-12">

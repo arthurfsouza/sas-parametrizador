@@ -4,13 +4,14 @@ import { Component, Inject, inject } from '@angular/core';
 import { debounceTime } from 'rxjs';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarMessagesService } from '../../../shared/services';
+import { ConfirmDialogComponent } from '../../../shared/components';
 import { Segmento } from '../../../shared/interfaces';
 import { api } from '../../../shared/configurations';
 
@@ -36,7 +37,8 @@ export class SegmentoFormComponent {
   private _http = inject(HttpClient);
   private _snackbar = inject(SnackbarMessagesService);
   
-  constructor(public dialogRef: MatDialogRef<SegmentoFormComponent>, @Inject(MAT_DIALOG_DATA) public data?: { segmento: Segmento }) {
+  constructor(public dialogRef: MatDialogRef<SegmentoFormComponent>, public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data?: { segmento: Segmento }) {
     if(this.data?.segmento) {
       this.segmentoFG.controls['id'].setValue(this.data.segmento.id);
 
@@ -55,7 +57,7 @@ export class SegmentoFormComponent {
     is_ativo: new FormControl(true, [Validators.required])
   });
 
-  public hasAssociacoes: boolean = true;
+  public hasAssociation: boolean = true;
 
   public getSegmentoByID(id: string): void {
     this._http.get(api.private.segmento.getByID.replace("{SEGMENTO_ID}", id)).subscribe(
@@ -67,12 +69,42 @@ export class SegmentoFormComponent {
           this.segmentoFG.controls['descricao'].setValue(segmento.descricao);
           this.segmentoFG.controls['is_ativo'].setValue(segmento.is_ativo);
 
-          if(segmento.has_associacoes != null) { this.hasAssociacoes = segmento.has_associacoes; }
+          if(segmento.has_association != null) { this.hasAssociation = segmento.has_association; }
 
-          if(this.hasAssociacoes) { this.segmentoFG.controls['nome'].disable(); }
+          if(this.hasAssociation) { this.segmentoFG.controls['nome'].disable(); }
         }
       }
     )
+  }
+
+  public onDelete(): void {
+    if(!this.hasAssociation && this.segmentoFG.value['id'] != null) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '600px',
+        height: '300px',
+        data: {
+          title: "Exclusão do Segmento",
+          description: `<p>Esta ação não poderá ser desfeita.</p><p>Tem certeza que deseja excluir o segmento selecionado?</p>`,
+          descriptionType: "HTML",
+          buttonText: "Excluir"
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result == "delete") {
+          this._http.delete(api.private.segmento.delete.replace("{SEGMENTO_ID}", this.segmentoFG.value['id'])).subscribe(
+            (response: any) => {
+              if(response?.message) {
+                this._snackbar.showSnackbarMessages({ message: response.message, type: 'success' });
+              }
+    
+              this.dialogRef.close({ segmento: this.segmentoFG.value, type: "delete" });
+            }
+          );
+        }
+      });
+      
+    }
   }
 
   public onSave(): void {
@@ -85,7 +117,7 @@ export class SegmentoFormComponent {
     };
 
     if(this.data?.segmento?.id) {
-      if(this.hasAssociacoes) { delete body['nome']; }
+      if(this.hasAssociation) { delete body['nome']; }
 
       this._http.put(api.private.segmento.put.replace("{SEGMENTO_ID}", this.segmentoFG.value['id']), body).subscribe(
         (response: any) => {

@@ -120,7 +120,7 @@ export class SegmentosComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(result && result.segmento && result.type == "update") {
+      if(result && result.segmento && (result.type == "update" || result.type == "delete")) {
         this._loadingSegmentos();
       }
     });
