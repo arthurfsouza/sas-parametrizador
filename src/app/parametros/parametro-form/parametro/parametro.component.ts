@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import {  MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { ParametroService } from '../../../../shared/services';
+import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
 import { Cluster, Parametro, Politica } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
 import 'moment/locale/pt-br';
@@ -46,6 +46,7 @@ export const CUSTOM_FORMATS = {
 })
 export class ParametroComponent {
   private _http = inject(HttpClient);
+  private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
   constructor() { }
@@ -56,8 +57,7 @@ export class ParametroComponent {
     descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
     modo: new FormControl(null, [Validators.required]),
     data_vigencia: new FormControl(this.minDate, [Validators.required]),
-    hora_vigencia: new FormControl(this.minDate, [Validators.required]),
-    // data_hora_vigencia: new FormControl(new Date(), [Validators.required]),
+    hora_vigencia: new FormControl(null, [Validators.required]),
     cluster: new FormControl(null, [Validators.required]),
     politica: new FormControl(null, [Validators.required])
   });
@@ -69,8 +69,22 @@ export class ParametroComponent {
   public politicasOriginal: Politica[] = [];
 
   ngOnInit(): void {
+    const hours: any = this.minDate.getHours();
+    const minutes: any = this.minDate.getMinutes();
+
+    const hoursAux: any = (hours < 10 ? "0" : "") + hours;
+    const minutesAux: any = (minutes < 10 ? "0" : "") + minutes;
+
+    this.parametroFG.controls['hora_vigencia'].setValue(hoursAux + ":" + minutesAux);
+
+    console.log("Data: ", this.parametroFG.controls['data_vigencia'].value);
+
     this._loadingClusters();
     this._loadingPoliticas();
+
+    if(!this.parametro || !this.parametro.id) {
+      this.parametroFG.controls['politica'].disable();
+    }
 
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) {
@@ -97,6 +111,7 @@ export class ParametroComponent {
 
         if(clusters && clusters.length > 0) {
           this.clusters = clusters.filter(c => c.is_ativo == true && c.segmento?.is_ativo == true);
+          this.parametroFG.controls['politica'].enable();
         }
       }
     );
@@ -125,6 +140,70 @@ export class ParametroComponent {
       this.parametroFG.controls['politica'].enable();
     }
     else { this.parametroFG.controls['politica'].disable(); }    
+  }
+
+  private _loadingParametroByID(id: string): void {
+    this._http.get(api.private.parametro.getByID.replace("{PARAMETRO_ID}", id)).subscribe(
+      response => {
+        console.log(response);
+      }
+    )
+  }
+
+  public onCreate(): Promise<any> {
+    const p = new Promise((resolve) => {
+      const data_vigencia: Date = this.parametroFG.value['data_vigencia'];
+      const hora_vigencia: any = this.parametroFG.value['hora_vigencia'];
+  
+      let data_vigencia_aux: string = data_vigencia.toISOString();
+  
+      if(data_vigencia_aux?.length >= 10) { data_vigencia_aux = data_vigencia_aux.substring(0, 10); }
+  
+      const body: any = {
+        nome: this.parametroFG.value['nome'],
+        descricao: this.parametroFG.value['descricao'],
+        modo: this.parametroFG.value['modo'],
+        data_hora_vigencia: data_vigencia_aux + " " + hora_vigencia + ":00",
+        versao: "1.0",
+        politica_id: this.parametroFG.value['politica']?.id
+      };
+  
+      this._http.post(api.private.parametro.post, body).subscribe(
+        (response: any) => {
+          if(response?.message) {
+            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+  
+            if(response.id) { this._loadingParametroByID(response.id); }
+            resolve(true)
+          }
+        },
+        err => {
+          if(err?.error?.error) {
+            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+          }
+
+          resolve(false)
+        }
+      )
+    });
+    
+    return p;
+  }
+
+  public onUpdate(): void {
+
+  }
+
+  public showErros(e: { error: string, campos_error: string[] }): void {
+    this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
+
+    if(e.campos_error.length > 0) {
+      if(e.campos_error.includes("nome")) {
+        this.parametroFG.controls['nome'].markAsDirty();
+        this.parametroFG.controls['nome'].markAsTouched();
+        this.parametroFG.controls['nome'].setErrors({ nomeExistente: true });
+      }
+    }
   }
 
   public compareObjects(o1: any, o2: any): boolean { return o1?.id === o2?.id; }

@@ -88,21 +88,21 @@ export class ParametroFormComponent {
     else { return true; }
   }
 
-  public onNextButton(): void {
+  public async onNextButton(): Promise<void> {
     if(this.selectedIndex == 0 && this.appParametro && this.appParametro.parametroFG.valid) {
-      // this.parametrizador.parametro = {
-      //   id: 1,
-      //   nome: this.parametrizadorParametro.parametroFG.value['nome'],
-      //   descricao: this.parametrizadorParametro.parametroFG.value['descricao'],
-      //   modo: this.parametrizadorParametro.parametroFG.value['modo'],
-      //   dataVigencia: this.parametrizadorParametro.parametroFG.value['dataVigencia'],
-      //   horaVigencia: this.parametrizadorParametro.parametroFG.value['horaVigencia'],
-      //   cluster: this.parametrizadorParametro.parametroFG.value['cluster'],
-      //   politica: this.parametrizadorParametro.parametroFG.value['politica'],
-      // };
+      let hasParametro: boolean = false;
 
-      // this._parametrizador.setParametrizador(this.parametrizador);
-      // this.selectedIndex = 1;
+      if(this.parametroID || this.parametro.id) { hasParametro = true; }
+      
+      if(!hasParametro) {
+        const p = new Promise(await this.appParametro.onCreate());
+
+        p.then((resolve) => {
+          if(resolve == true) {
+            // this.selectedIndex = 1;
+          }
+        })
+      }      
     }
     // else if(this.selectedIndex == 1 && this.parametrizadorVariaveis && this.parametrizadorVariaveis.variaveisStepperIsValid()) {
     //   this.parametrizador.variaveis = [];

@@ -54,12 +54,12 @@
                 <mat-radio-button value="GLOBAL">Global</mat-radio-button>
             </mat-radio-group>
 
-            <div class="radio-modo-aviso" *ngIf="parametroFG.controls['modo'].value == 'chave'">
+            <div class="radio-modo-aviso" *ngIf="parametroFG.controls['modo'].value == 'CHAVE'">
                <label>*MODO CHAVE</label>
                 <small>Requer que pelo menos uma variável do parâmetro seja marcada como chave.</small>
             </div> 
             
-            <div class="radio-modo-aviso" *ngIf="parametroFG.controls['modo'].value == 'global'">
+            <div class="radio-modo-aviso" *ngIf="parametroFG.controls['modo'].value == 'GLOBAL'">
                 <label>*MODO GLOBAL</label>
                 <small>[ATUALIZAR TEXTO]</small>
              </div>
