@@ -129,8 +129,10 @@ export class ParametrosComponent {
       }
     }
 
+    console.log("Paginator: ", this.paginator.source);
+
     const body: any = {
-      offset: this.paginator.source.currentPage > 0 ? (this.paginator.source.currentPage - 1) : 0,
+      offset: 0,
       limit: this.paginator.source.pageSize || 25,
       order: order,
       filters: this.filters
