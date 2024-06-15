@@ -76,7 +76,9 @@ export class ParametrosComponent {
     parametrosStatus: this.parametrosStatus
   };
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this._loadingParametros();
+  }
 
   private _loadingParametros(): void {
     this.data = [];
