@@ -130,7 +130,7 @@ export class ParametrosComponent {
     }
 
     const body: any = {
-      offset: (this.paginator.source.currentPage - 1) || 0,
+      offset: (this.paginator.source.startIndex) || 0,
       limit: this.paginator.source.pageSize || 25,
       order: order,
       filters: this.filters
