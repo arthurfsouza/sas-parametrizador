@@ -130,8 +130,8 @@ export class ParametrosComponent {
     }
 
     const body: any = {
-      offset: 0,
-      limit: 25,
+      offset: (this.paginator.source.currentPage - 1) || 0,
+      limit: this.paginator.source.pageSize || 25,
       order: order,
       filters: this.filters
     };
@@ -142,13 +142,8 @@ export class ParametrosComponent {
         const datatable: DataTableAPI = response;
 
         if(datatable) {
-          if(datatable.offset) { this.paginator.initialPage = datatable.offset; }
-          // if(datatable.limit) { this.paginator.dataSize = datatable.limit; }
-          if(datatable.order) {
-            // console.log(datatable.order)
-            // this.sort.active = datatable.order.column;
-            // this.sort.direction = datatable.order.direction == "ASC" ? "asc" : "desc";
-          }
+          if(datatable.offset) { this.paginator.initialPage = (datatable.offset + 1); }
+          if(datatable.limit) { this.paginator.pageSize = datatable.limit; }
           if(datatable.count) { this.paginator.dataSize = datatable.count; }
           if(datatable.filters) { this.filters = datatable.filters; }
 
@@ -186,6 +181,7 @@ export class ParametrosComponent {
   }
 
   public onSourceChanged(source$: DatatablePaginatorSource): void {
+    this._loadingParametros();
     console.log("Source Changed: ", source$);
   }
 

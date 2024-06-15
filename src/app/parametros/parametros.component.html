@@ -163,7 +163,7 @@
                 <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhum parâmetro cadastrado.</div>
             </div>
 
-            <datatable-paginator #paginator [dataSize]="data.length" (sourceChanged)="onSourceChanged($event)">
+            <datatable-paginator #paginator [dataSize]="paginator.dataSize" (sourceChanged)="onSourceChanged($event)">
             </datatable-paginator>
         </div>
     </div>
