@@ -107,40 +107,40 @@ export class ParametrosComponent {
       this.sort.direction != null && this.sort.direction != "" ? 
         { column: this.sort.active, direction: this.sort.direction.toUpperCase() } : null;
 
-    const filters: DataTableAPIFilter[] = [];
+    this.filters = [];
 
     if(this.buscaAvancada.segmento?.id) {
-      if(!filters.find(f => f.column == "segmento")) {
-        filters.push({ column: "segmento", value: this.buscaAvancada.segmento.id });
+      if(!this.filters.find(f => f.column == "segmento")) {
+        this.filters.push({ column: "segmento", value: this.buscaAvancada.segmento.id });
       }
     }
 
     if(this.buscaAvancada.cluster?.id) {
-      if(!filters.find(f => f.column == "cluster")) {
-        filters.push({ column: "cluster", value: this.buscaAvancada.cluster.id });
+      if(!this.filters.find(f => f.column == "cluster")) {
+        this.filters.push({ column: "cluster", value: this.buscaAvancada.cluster.id });
       }
     }
 
     if(this.buscaAvancada.politica?.id) {
-      if(!filters.find(f => f.column == "politica")) {
-        filters.push({ column: "politica", value: this.buscaAvancada.politica.id });
+      if(!this.filters.find(f => f.column == "politica")) {
+        this.filters.push({ column: "politica", value: this.buscaAvancada.politica.id });
       }
     }
 
     if(this.buscaAvancada.variavel?.id != 1) {
-      if(!filters.find(f => f.column == "variavel")) {
-        filters.push({ column: "variavel", value: this.buscaAvancada.variavel.modo });
+      if(!this.filters.find(f => f.column == "variavel")) {
+        this.filters.push({ column: "variavel", value: this.buscaAvancada.variavel.modo });
       }
     }
 
     if(this.buscaAvancada.parametrosStatus?.length > 0 && this.buscaAvancada.parametrosStatus?.length < this.parametrosStatus.length) {
-      if(!filters.find(f => f.column == "status")) {
+      if(!this.filters.find(f => f.column == "status")) {
         let statuses: string = "";
         this.buscaAvancada.parametrosStatus.map(ps => statuses += (ps.code + ","));
 
         if(statuses.length > 0) { statuses = statuses.substring(0, statuses.length - 1); }
 
-        filters.push({ column: "status", value: statuses });
+        this.filters.push({ column: "status", value: statuses });
       }
     }
 
@@ -148,6 +148,7 @@ export class ParametrosComponent {
       offset: 0,
       limit: 25,
       order: order,
+      filters: this.filters
     };
 
     // this._http.get("/assets/payload/parametros-datatable.json").subscribe(
@@ -192,8 +193,6 @@ export class ParametrosComponent {
   }
 
   public sortChange(sort: Sort): void {
-    console.log(this.dataSource);
-    console.log(this.sort);
     const data = this.data.slice();
     let sortedData: any[] = [];
 
