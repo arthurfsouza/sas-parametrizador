@@ -52,21 +52,9 @@ export class ParametrosComponent {
   private _http = inject(HttpClient);
 
   constructor(public dialog: MatDialog, private _router: Router){
-    for(let i = 0; i < 10; i++) { this.data.push(...parametrizadores); }
-
-    this.data = [];
-    this.dataSource = new MatTableDataSource(this.data);
-
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       if(value.length >= 3) {
         this._loadingParametros();
-      }
-
-      this.dataSource = new MatTableDataSource(this.data);
-
-      if(this.paginator) {
-        this.paginator.dataSize = this.data.length;
-        this.paginator.setPage(1);
       }
     });
   }
@@ -79,35 +67,32 @@ export class ParametrosComponent {
   public dataSource: MatTableDataSource<Parametro> = new MatTableDataSource<Parametro>([]);
   public data: Parametro[] = [];
 
+  public filters: DataTableAPIFilter[] = [];
   public parametrosStatus: ParametroStatus[] = parametrosStatus.filter(ps => ps.type != "DELETED");
-
   public buscaAvancada: { segmento: Segmento | null; cluster: Cluster | null; politica: Politica | null; variavel: any; parametrosStatus: any[]; } = {
     segmento: null,
     cluster: null,
     politica: null,
     variavel: { id: 1, nome: "Todos", modo: "todos" },
-    parametrosStatus: this.parametrosStatus,
+    parametrosStatus: this.parametrosStatus
   };
-
-  public filters: DataTableAPIFilter[] = [];
 
   ngOnInit(): void {
     this._loadingParametros();
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    // this.dataSource.sort = this.sort;
   }
 
   private _loadingParametros(): void {
     this.data = [];
+    this.filters = [];
     this.dataSource = new MatTableDataSource(this.data);
 
     const order: any = this.sort != null && this.sort.active != null && 
       this.sort.direction != null && this.sort.direction != "" ? 
         { column: this.sort.active, direction: this.sort.direction.toUpperCase() } : null;
-
-    this.filters = [];
 
     if(this.buscaAvancada.segmento?.id) {
       if(!this.filters.find(f => f.column == "segmento")) {
@@ -172,7 +157,11 @@ export class ParametrosComponent {
           if(parametros && parametros.length > 0) {
             this.data = parametros;
             this.dataSource = new MatTableDataSource(this.data);
-            // this.dataSource.sort = this.sort;
+
+            if(this.paginator) {
+              this.paginator.dataSize = this.data.length;
+              this.paginator.setPage(1);
+            }
           }
         }
       }
@@ -193,58 +182,11 @@ export class ParametrosComponent {
   }
 
   public sortChange(sort: Sort): void {
-    const data = this.data.slice();
-    let sortedData: any[] = [];
-
-    if (!sort.active || sort.direction === "") {
-      sortedData = data;
-      
-      if(this.paginator) {
-        this.data = sortedData;
-        this.paginator.setPage(1);
-        this.dataSource = new MatTableDataSource(
-          this.data.slice(this.paginator.source.startIndex, this.paginator.source.endIndex + 1)
-        );
-      }
-      
-      return;
-    }
-
-    sortedData = data.sort((a: any, b: any) => {
-      const isAsc = sort.direction === "asc";
-
-      switch (sort.active) {
-        case "nome":
-          return this.compareOrder(a.parametro.nome, b.parametro.nomme, isAsc);
-        case "segmento":
-          return this.compareOrder(a.parametro.cluster.segmento.nome, b.parametro.cluster.segmento.nome, isAsc);
-        case "cluster":
-          return this.compareOrder(a.parametro.cluster.nome, b.parametro.cluster.nome, isAsc);
-        case "politica":
-          return this.compareOrder(a.parametro.politica.nome, b.parametro.politica.nome, isAsc);
-        case "variavel":
-          return this.compareOrder(a.parametro.modo, b.parametro.modo, isAsc);
-        case "versao":
-          return this.compareOrder(a.versao, b.versao, isAsc);
-        case "status":
-          return this.compareOrder(a.isAtivo ? "ativo" : "inativo", b.isAtivo ? "ativo" : "inativo", isAsc);
-
-        default:
-          return 0;
-      }
-    });
-
-    if(this.paginator) {
-      this.data = sortedData;
-      this.paginator.setPage(1);
-      this.dataSource = new MatTableDataSource(
-        this.data.slice(this.paginator.source.startIndex, this.paginator.source.endIndex + 1)
-      );
-    }
+    this._loadingParametros();
   }
 
   public onSourceChanged(source$: DatatablePaginatorSource): void {
-    this.dataSource = new MatTableDataSource(this.data.slice(source$.startIndex, source$.endIndex + 1));
+    console.log("Source Changed: ", source$);
   }
 
   public removeChip(option: 'segmento' | 'cluster' | 'politica' | 'variavel' | 'parametrosStatus'): void {
@@ -253,6 +195,8 @@ export class ParametrosComponent {
     else if(option == 'politica') { this.buscaAvancada.politica = null; }
     else if(option == 'variavel') { this.buscaAvancada.variavel = { id: 1, nome: "Todos", modo: "todos" }; }
     else if(option == 'parametrosStatus') { this.buscaAvancada.parametrosStatus = this.parametrosStatus; }
+
+    this._loadingParametros();
   }
 
   public getParametrosStatus(): string {
