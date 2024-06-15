@@ -1,4 +1,5 @@
 import { Component, ViewChild, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup } from '@angular/forms';
@@ -17,6 +18,7 @@ import { api } from '../../../shared/configurations';
   selector: 'app-parametro-form',
   standalone: true,
   imports: [
+    CommonModule,
     MatButtonModule,
     MatStepperModule,
     ParametroComponent,
