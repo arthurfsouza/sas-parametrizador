@@ -53,9 +53,7 @@ export class ParametrosComponent {
 
   constructor(public dialog: MatDialog, private _router: Router){
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
-      if(value.length >= 3) {
-        this._loadingParametros();
-      }
+      if(value.length >= 3) { this._loadingParametros(); }
     });
   }
 
@@ -78,13 +76,7 @@ export class ParametrosComponent {
     parametrosStatus: this.parametrosStatus
   };
 
-  ngOnInit(): void {
-    this._loadingParametros();
-  }
-
-  ngAfterViewInit(): void {
-    // this.dataSource.sort = this.sort;
-  }
+  ngOnInit(): void { }
 
   private _loadingParametros(): void {
     this.data = [];
@@ -94,6 +86,12 @@ export class ParametrosComponent {
     const order: any = this.sort != null && this.sort.active != null && 
       this.sort.direction != null && this.sort.direction != "" ? 
         { column: this.sort.active, direction: this.sort.direction.toUpperCase() } : null;
+
+    if(this.filterFG.controls['filter'].value?.length >= 3) {
+      if(!this.filters.find(f => f.column == "nome")) {
+        this.filters.push({ column: "nome", value: this.filterFG.controls['filter'].value });
+      }
+    }
 
     if(this.buscaAvancada.segmento?.id) {
       if(!this.filters.find(f => f.column == "segmento")) {
@@ -148,11 +146,6 @@ export class ParametrosComponent {
         this.datatable = response;
 
         if(this.datatable) {
-          // if(this.datatable.offset) { this.paginator.initialPage = (datatable.offset + 1); }
-          // if(this.datatable.limit) { this.paginator.pageSize = datatable.limit; }
-          // if(this.datatable.count) { this.paginator.dataSize = datatable.count; }
-          // if(this.datatable.filters) { this.filters = datatable.filters; }
-
           const parametros: Parametro[] = this.datatable.items || [];
 
           if(parametros && parametros.length > 0) {
@@ -182,13 +175,9 @@ export class ParametrosComponent {
   }
 
   public onSourceChanged(source$: DatatablePaginatorSource): void {
-    // if(this.paginator) {
-    //   this.paginator.dataSize = source$.
-    //   this.paginator.pageSize = source$.pageSize;
-      
-    // }
+    if(this.paginator?.source?.currentPage) { this.paginator.source.currentPage = 1; }
+    
     this._loadingParametros();
-    console.log("Source Changed: ", source$);
   }
 
   public removeChip(option: 'segmento' | 'cluster' | 'politica' | 'variavel' | 'parametrosStatus'): void {
