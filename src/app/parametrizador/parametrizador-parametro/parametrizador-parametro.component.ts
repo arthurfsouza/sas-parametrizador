@@ -44,7 +44,7 @@ export class ParametrizadorParametroComponent implements OnInit {
   
   public parametroFG: FormGroup = new FormGroup({
     nome: new FormControl(null, [Validators.required, Validators.pattern("[A-Za-z0-9_]+")]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(300)]),
+    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
     modo: new FormControl(null, [Validators.required]),
     dataVigencia: new FormControl(this.minDate, [Validators.required]),
     horaVigencia: new FormControl(this.minDate, [Validators.required]),

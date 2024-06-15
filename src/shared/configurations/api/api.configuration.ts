@@ -28,6 +28,7 @@ export const api = {
         },
         parametro: {
             getAll: apiURL + "v1/front/parametros/datatable",
+            getByID: apiURL + "v1/front/parametros/{PARAMETRO_ID}",
         }
     }
 };

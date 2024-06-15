@@ -161,11 +161,11 @@ export class ParametrosComponent {
   
 
   public onAddParametro(): void {
-    this._router.navigate(["parametrizador"]);
+    this._router.navigate(["parametro"]);
   }
 
   public onDetalhes(row: any): void { // Parametrizador
-    this._router.navigate(["parametrizador/" + row.id]);
+    this._router.navigate(["parametro/" + row.id]);
   }
 
   public compareOrder(a: number | string | Date, b: number | string | Date, isAsc: boolean): number {

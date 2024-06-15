@@ -36,16 +36,16 @@ export const routes: Routes = [
         data: { roles: ["santander5", "santander1"] }
     },
     {
-        path: 'parametrizador',
-        loadComponent: () => import('./parametrizador/parametrizador.component').then(mod => mod.ParametrizadorComponent),
-        title: "Parametrizador",
+        path: 'parametro',
+        loadComponent: () => import('./parametros/parametro-form/parametro-form.component').then(mod => mod.ParametroFormComponent),
+        title: "Parâmetro",
         canActivate: [AuthGuard, PermissionGuard],
         data: { roles: ["santander5", "santander1"] }
     },
     {
-        path: 'parametrizador/:parametrizadorID',
-        loadComponent: () => import('./parametrizador/parametrizador.component').then(mod => mod.ParametrizadorComponent),
-        title: "Parametrizador",
+        path: 'parametro/:parametroID',
+        loadComponent: () => import('./parametros/parametro-form/parametro-form.component').then(mod => mod.ParametroFormComponent),
+        title: "Parâmetro",
         canActivate: [AuthGuard, PermissionGuard],
         data: { roles: ["santander5", "santander1"] }
     },

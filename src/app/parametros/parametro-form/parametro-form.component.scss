@@ -1,0 +1,35 @@
+.parametro-form-container {
+    display: block;
+
+    .parametro-form-topnav {
+        display: flex;
+        background-color: whitesmoke;
+
+        .parametro-form-title {
+            padding: 24px;
+            display: flex;
+        }
+
+        .parametro-form-stepper {
+            margin-left: auto;
+
+            mat-stepper {
+                background-color: whitesmoke;
+            }
+        }
+    }
+
+    .parametro-form-content {
+        .d-none { display: none; }
+        .d-block { display: block; }
+    }
+
+    .parametro-form-footer {
+        div {
+            padding-top: 8px;
+            padding-bottom: 8px;
+
+            button { width: 100%; }
+        }
+    }
+}
