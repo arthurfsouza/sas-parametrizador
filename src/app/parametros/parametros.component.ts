@@ -129,11 +129,14 @@ export class ParametrosComponent {
       }
     }
 
-    console.log("Paginator: ", this.paginator.source);
+    const offset: number = this.paginator?.source?.currentPage > 0 ?
+      (this.paginator.source.currentPage - 1) : 0;
+    const limit: number = this.paginator?.source?.pageSize > 0 ?
+    (this.paginator.source.pageSize) : 25;
 
     const body: any = {
-      offset: 0,
-      limit: this.paginator.source.pageSize || 25,
+      offset: offset,
+      limit: limit,
       order: order,
       filters: this.filters
     };
