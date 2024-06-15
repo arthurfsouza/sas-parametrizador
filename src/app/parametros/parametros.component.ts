@@ -18,8 +18,9 @@ import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/m
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 import StringUtils from '../../shared/utils/string/string.utils';
-import { Segmento, Cluster, Politica, Parametro, DataTableAPI, DataTableAPIFilter } from '../../shared/interfaces';
+import { Segmento, Cluster, Politica, Parametro, DataTableAPI, DataTableAPIFilter, ParametroStatus } from '../../shared/interfaces';
 import { api } from '../../shared/configurations';
+import { parametrosStatus } from '../../shared/mockups';
 
 
 @Component({
@@ -78,19 +79,14 @@ export class ParametrosComponent {
   public dataSource: MatTableDataSource<Parametro> = new MatTableDataSource<Parametro>([]);
   public data: Parametro[] = [];
 
-  public statuses: any[] = [
-    { id: 1, nome: "Criação", status: "CREATED" },
-    { id: 2, nome: "Vigente", status: "ACTIVE" },
-    { id: 3, nome: "Aguardando Decisão de Riscos", status: "AWAITING_RISK_DECISION" },
-    { id: 4, nome: "Excluído", status: "DELETED" }
-  ];
+  public parametrosStatus: ParametroStatus[] = parametrosStatus.filter(ps => ps.type != "DELETED");
 
-  public buscaAvancada: { segmento: Segmento | null; cluster: Cluster | null; politica: Politica | null; variavel: any; statuses: any[]; } = {
+  public buscaAvancada: { segmento: Segmento | null; cluster: Cluster | null; politica: Politica | null; variavel: any; parametrosStatus: any[]; } = {
     segmento: null,
     cluster: null,
     politica: null,
     variavel: { id: 1, nome: "Todos", modo: "todos" },
-    statuses: this.statuses,
+    parametrosStatus: this.parametrosStatus,
   };
 
   public filters: DataTableAPIFilter[] = [];
@@ -107,22 +103,37 @@ export class ParametrosComponent {
     this.data = [];
     this.dataSource = new MatTableDataSource(this.data);
 
+    const order: any = this.sort != null && this.sort.active != null && 
+      this.sort.direction != null && this.sort.direction != "" ? 
+        { column: this.sort.active, direction: this.sort.direction.toUpperCase() } : null;
+
+    const filters: DataTableAPIFilter[] = [];
+
+    if(this.buscaAvancada.segmento?.id) {
+      if(!filters.find(f => f.column == "segmento")) {
+        filters.push({ column: "segmento", value: this.buscaAvancada.segmento.id });
+      }
+    }
+
+
     const body: any = {
       offset: 0,
       limit: 25,
-      // order: { column: "nome", direction: "ASC" },
+      order: order,
     };
 
-    this._http.post(api.private.parametro.getAll, body).subscribe(
+    this._http.get("/assets/payload/parametros-datatable.json").subscribe(
+    // this._http.post(api.private.parametro.getAll, body).subscribe(
       (response: any) => {
         const datatable: DataTableAPI = response;
 
         if(datatable) {
           if(datatable.offset) { this.paginator.initialPage = datatable.offset; }
-          if(datatable.limit) { this.paginator.dataSize = datatable.limit; }
+          // if(datatable.limit) { this.paginator.dataSize = datatable.limit; }
           if(datatable.order) {
-            this.sort.active = datatable.order.column;
-            this.sort.direction = datatable.order.direction == "ASC" ? "asc" : "desc"; 
+            // console.log(datatable.order)
+            // this.sort.active = datatable.order.column;
+            // this.sort.direction = datatable.order.direction == "ASC" ? "asc" : "desc";
           }
           if(datatable.count) { this.paginator.dataSize = datatable.count; }
           if(datatable.filters) { this.filters = datatable.filters; }
@@ -132,6 +143,7 @@ export class ParametrosComponent {
           if(parametros && parametros.length > 0) {
             this.data = parametros;
             this.dataSource = new MatTableDataSource(this.data);
+            // this.dataSource.sort = this.sort;
           }
         }
       }
@@ -152,6 +164,8 @@ export class ParametrosComponent {
   }
 
   public sortChange(sort: Sort): void {
+    console.log(this.dataSource);
+    console.log(this.sort);
     const data = this.data.slice();
     let sortedData: any[] = [];
 
@@ -206,20 +220,26 @@ export class ParametrosComponent {
     this.dataSource = new MatTableDataSource(this.data.slice(source$.startIndex, source$.endIndex + 1));
   }
 
-  public removeChip(option: 'segmento' | 'cluster' | 'politica' | 'variavel' | 'statuses'): void {
+  public removeChip(option: 'segmento' | 'cluster' | 'politica' | 'variavel' | 'parametrosStatus'): void {
     if(option == 'segmento') { this.buscaAvancada.segmento = null; }
     else if(option == 'cluster') { this.buscaAvancada.cluster = null; }
     else if(option == 'politica') { this.buscaAvancada.politica = null; }
     else if(option == 'variavel') { this.buscaAvancada.variavel = { id: 1, nome: "Todos", modo: "todos" }; }
-    else if(option == 'statuses') { this.buscaAvancada.statuses = this.statuses; }
+    else if(option == 'parametrosStatus') { this.buscaAvancada.parametrosStatus = this.parametrosStatus; }
   }
 
-  public getStatuses(): string {
-    if(this.buscaAvancada && this.buscaAvancada.statuses && this.buscaAvancada.statuses.length > 0) {
-      return this.buscaAvancada.statuses.map(status => status.nome).join(", ");
+  public getParametrosStatus(): string {
+    if(this.buscaAvancada && this.buscaAvancada.parametrosStatus && this.buscaAvancada.parametrosStatus.length > 0) {
+      return this.buscaAvancada.parametrosStatus.map(status => status.description).join(", ");
     }
 
     return "";
+  }
+
+  public getStatusName(parametroStatus: ParametroStatus): string {
+    const parametroStatusAux: ParametroStatus | undefined = parametrosStatus.find(ps => ps.type == parametroStatus.type);
+
+    return parametroStatusAux?.description || "-";
   }
 
   public onOpenBuscaAvancada(): void {
@@ -236,7 +256,7 @@ export class ParametrosComponent {
           cluster: result.search.cluster || null,
           politica: result.search.politica || null,
           variavel: result.search.variavel || { id: 1, nome: "Todos", modo: "todos" },
-          statuses: result.search.statuses || this.statuses,
+          parametrosStatus: result.search.parametrosStatus || this.parametrosStatus,
         }
       }
     });

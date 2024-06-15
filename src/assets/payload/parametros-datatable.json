@@ -1,0 +1,375 @@
+{
+    "count": 13,
+    "items": [
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "0613c59e-5407-45a5-a98f-b3c627002674",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14VV4",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "24d27e4d-7dfd-4fb3-980c-94f5b4862914",
+                "nome": "politica1Lucas_teste2"
+            },
+            "politica_id": "24d27e4d-7dfd-4fb3-980c-94f5b4862914",
+            "status": {
+                "code": "001",
+                "description": "Disponível para Revisão",
+                "type": "CREATED"
+            },
+            "status_code": "001",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "52a41448-a5ca-454c-a88b-db3c26b3a8d0",
+            "modo": "GLOBAL",
+            "nome": "teste_lucas_parametro14V3",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "002",
+                "description": "Disponível para Revisão",
+                "type": "UPDATED"
+            },
+            "status_code": "002",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "6bb6429a-43e3-4a57-9477-22d8d1aeceb6",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14V2",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "003",
+                "description": "Disponível para Revisão",
+                "type": "DELETED"
+            },
+            "status_code": "003",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "e566c8e2-110c-481b-b862-931b0bcf2555",
+            "modo": "GLOBAL",
+            "nome": "teste_lucas_parametro14",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "004",
+                "description": "Disponível para Revisão",
+                "type": "AVAILABLE_FOR_REVIEW"
+            },
+            "status_code": "004",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "0613c59e-5407-45a5-a98f-b3c627002674",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14VV4",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "24d27e4d-7dfd-4fb3-980c-94f5b4862914",
+                "nome": "politica1Lucas_teste2"
+            },
+            "politica_id": "24d27e4d-7dfd-4fb3-980c-94f5b4862914",
+            "status": {
+                "code": "005",
+                "description": "Disponível para Revisão",
+                "type": "ANALYTICAL_ENVIRONMENT"
+            },
+            "status_code": "005",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "52a41448-a5ca-454c-a88b-db3c26b3a8d0",
+            "modo": "GLOBAL",
+            "nome": "teste_lucas_parametro14V3",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "006",
+                "description": "Disponível para Revisão",
+                "type": "PENDING_INITIAL_APPROVAL"
+            },
+            "status_code": "006",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "6bb6429a-43e3-4a57-9477-22d8d1aeceb6",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14V2",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "007",
+                "description": "Disponível para Revisão",
+                "type": "INITIAL_APPROVAL_REFUSED"
+            },
+            "status_code": "007",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "e566c8e2-110c-481b-b862-931b0bcf2555",
+            "modo": "GLOBAL",
+            "nome": "teste_lucas_parametro14",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "008",
+                "description": "Disponível para Revisão",
+                "type": "INITIAL_APPROVAL_COMPLETED"
+            },
+            "status_code": "008",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "0613c59e-5407-45a5-a98f-b3c627002674",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14VV4",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "24d27e4d-7dfd-4fb3-980c-94f5b4862914",
+                "nome": "politica1Lucas_teste2"
+            },
+            "politica_id": "24d27e4d-7dfd-4fb3-980c-94f5b4862914",
+            "status": {
+                "code": "009",
+                "description": "Disponível para Revisão",
+                "type": "PENDING_FINAL_APPROVAL"
+            },
+            "status_code": "009",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "52a41448-a5ca-454c-a88b-db3c26b3a8d0",
+            "modo": "GLOBAL",
+            "nome": "teste_lucas_parametro14V3",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "010",
+                "description": "Disponível para Revisão",
+                "type": "FINAL_APPROVAL_REFUSED"
+            },
+            "status_code": "010",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "6bb6429a-43e3-4a57-9477-22d8d1aeceb6",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14V2",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "011",
+                "description": "Disponível para Revisão",
+                "type": "FINAL_APPROVAL_COMPLETED"
+            },
+            "status_code": "011",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "e566c8e2-110c-481b-b862-931b0bcf2555",
+            "modo": "GLOBAL",
+            "nome": "teste_lucas_parametro14",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "012",
+                "description": "Disponível para Revisão",
+                "type": "AWAITING_IMPLEMENTATION"
+            },
+            "status_code": "012",
+            "versao": "V1"
+        },
+        {
+            "descricao": "Teste criação pelo postman.",
+            "id": "e566c8e2-110c-481b-b862-931b0bcf2555",
+            "modo": "CHAVE",
+            "nome": "teste_lucas_parametro14",
+            "politica": {
+                "cluster": {
+                    "id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                    "nome": "cluster_lucas14",
+                    "segmento": {
+                        "id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01",
+                        "nome": "segmento_lucas14"
+                    },
+                    "segmento_id": "2821911d-8b9b-4ba8-8a93-3aeb133f1b01"
+                },
+                "cluster_id": "6037970e-8fec-4928-b12f-6a70cd477f51",
+                "id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+                "nome": "politica_lucas14"
+            },
+            "politica_id": "80d25671-deb6-4d3d-9059-0c73459370f4",
+            "status": {
+                "code": "013",
+                "description": "Disponível para Revisão",
+                "type": "PRODUCTION_ENVIRONMENT"
+            },
+            "status_code": "013",
+            "versao": "V1"
+        }
+    ],
+    "limit": 25,
+    "offset": 0,
+    "order": {
+        "column": "nome",
+        "direction": "DESC"
+    }
+}

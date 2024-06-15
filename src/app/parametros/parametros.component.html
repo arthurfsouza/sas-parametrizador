@@ -72,9 +72,9 @@
                     </button>
                 </mat-chip>
 
-                <mat-chip class="chip-statuses" (removed)="removeChip('statuses')" *ngIf="buscaAvancada.statuses && buscaAvancada.statuses.length != statuses.length">
+                <mat-chip class="chip-statuses" (removed)="removeChip('parametrosStatus')" *ngIf="buscaAvancada.parametrosStatus && buscaAvancada.parametrosStatus.length != parametrosStatus.length">
                     <span class="chip-statuses-span">
-                        Status: {{ getStatuses() }}
+                        Status: {{ getParametrosStatus() }}
                     </span>
                     <button matChipRemove>
                       <mat-icon color="warn">cancel</mat-icon>
@@ -120,8 +120,8 @@
                     <ng-container matColumnDef="variavel">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> VARIÁVEL </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
-                            <div class="parametro-variavel-chave" *ngIf="row.modo == 'CHAVE'">Chave</div>
-                            <div class="parametro-variavel-global" *ngIf="row.modo == 'GLOBAL'">Global</div>
+                            <div class="parametro-variavel-CHAVE" *ngIf="row.modo == 'CHAVE'">Chave</div>
+                            <div class="parametro-variavel-GLOBAL" *ngIf="row.modo == 'GLOBAL'">Global</div>
                         </td>
                     </ng-container>
 
@@ -135,11 +135,9 @@
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> STATUS </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
-                            {{ row?.status?.type }}
-                            <!-- <div class="parametro-status-criado" *ngIf="row.status == 'CREATED'">Criação</div>
-                            <div class="parametro-status-vigente" *ngIf="row.status == 'ACTIVE'">Vigente</div>
-                            <div class="parametro-status-aguardando" *ngIf="row.status == 'AWAITING_RISK_DECISION'">Aguardando Decisão de Riscos</div>
-                            <div class="parametro-status-deletado" *ngIf="row.status == 'DELETED'">Excluído</div> -->
+                            <ng-container *ngIf="row.status">
+                                <div class="parametro-status-{{ row.status.type }}">{{ getStatusName(row.status)}}</div>
+                            </ng-container>
                         </td>
                     </ng-container>
     

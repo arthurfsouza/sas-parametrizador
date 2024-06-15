@@ -87,63 +87,113 @@
                     }
                 }
 
-                .parametro-variavel-chave {
-                    color: #e8fff3;
-                    background-color: rgb(41, 69, 83);
+                .parametro-variavel-CHAVE {
+                    color: white;
+                    background-color: black;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 0px 15px;
-                    border: 1px solid #e8fff3;
+                    border: 1px solid white;
                     text-align: center;
                 }
 
-                .parametro-variavel-global {
-                    color: rgb(41, 69, 83);
-                    background-color: #e8fff3;
+                .parametro-variavel-GLOBAL {
+                    color: black;
+                    background-color: white;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 0px 15px;
-                    border: 1px solid rgb(41, 69, 83);;
+                    border: 1px solid black;
                     text-align: center;
                 }
 
-                .parametro-status-criado {
-                    color: #7239ea;
-                    background-color: #f8f5ff;
+                .parametro-status-CREATED, .parametro-status-UPDATED {
+                    color: white;
+                    background-color: #6f7681;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 0px 15px;
-                    border: 1px solid;
+                    border: 1px solid #6f7681;
                     text-align: center;
                 }
 
-                .parametro-status-vigente {
-                    color: #50cd89;
-                    background-color: #e8fff3;
+                .parametro-status-AVAILABLE_FOR_REVIEW {
+                    color: #6f7681;
+                    background-color: white;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 0px 15px;
-                    border: 1px solid;
+                    border: 1px solid #6f7681;
                     text-align: center;
                 }
 
-                .parametro-status-aguardando {
-                    color: #ffc700;
-                    background-color: #fff8dd;
+                .parametro-status-ANALYTICAL_ENVIRONMENT {
+                    color: white;
+                    background-color: #1071e5;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 0px 15px;
-                    border: 1px solid;
+                    border: 1px solid #1071e5;
                     text-align: center;
                 }
 
-                .parametro-status-deletado {
-                    color: #f1416c;
+                .parametro-status-INITIAL_APPROVAL_REFUSED, .parametro-status-FINAL_APPROVAL_REFUSED {
+                    color: #cc4e00;
                     background-color: #fff5f8;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 0px 15px 5px;
-                    border: 1px solid;
+                    border: 1px solid #cc4e00;
+                    text-align: center;
+                }
+
+                .parametro-status-DELETED {
+                    color: white;
+                    background-color: #cc4e00;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px 5px;
+                    border: 1px solid #cc4e00;
+                    text-align: center;
+                }
+
+                .parametro-status-PENDING_INITIAL_APPROVAL, .parametro-status-PENDING_FINAL_APPROVAL {
+                    color: #fcce14;
+                    background-color: #fff8dd;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid #fcce14;
+                    text-align: center;
+                }
+
+                .parametro-status-AWAITING_IMPLEMENTATION {
+                    color: white;
+                    background-color: #fcce14;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid #fcce14;
+                    text-align: center;
+                }
+
+                .parametro-status-INITIAL_APPROVAL_COMPLETED, .parametro-status-FINAL_APPROVAL_COMPLETED {
+                    color: #54c45e;
+                    background-color: #e8fff3;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid #54c45e;
+                    text-align: center;
+                }
+
+                .parametro-status-PRODUCTION_ENVIRONMENT {
+                    color: white;
+                    background-color: #54c45e;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid #54c45e;
                     text-align: center;
                 }
             }

@@ -67,10 +67,10 @@
         <div class="col-md-4 col-12">
             <mat-form-field class="custom-form-field">
                 <mat-label>STATUS</mat-label>
-                <mat-select name="statuses" formControlName="statuses" [compareWith]="compareObjects" (selectionChange)="onChangeStatus($event)" multiple>
-                  <mat-option *ngFor="let option of statuses" [value]="option"
-                    [disabled]="buscaAvancadaFG.value['statuses'].length == 1 && buscaAvancadaFG.value['statuses'].includes(option)">
-                    {{ option.nome }}
+                <mat-select name="parametrosStatus" formControlName="parametrosStatus" [compareWith]="compareObjects" (selectionChange)="onChangeParametrosStatus($event)" multiple>
+                  <mat-option *ngFor="let option of parametrosStatus" [value]="option"
+                    [disabled]="buscaAvancadaFG.value['parametrosStatus'].length == 1 && buscaAvancadaFG.value['parametrosStatus'].includes(option)">
+                    {{ option.description }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Selecione um ou mais status.</mat-hint>
