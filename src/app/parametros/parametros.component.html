@@ -90,8 +90,8 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '20%' }" class="t-center"> NOME </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
                             <div class="parametro-group">
-                                <div class="parametro-title">{{ row.parametro.nome }}</div>
-                                <div class="parametro-subtitle">{{ row.parametro.descricao }}</div>
+                                <div class="parametro-title">{{ row.nome }}</div>
+                                <div class="parametro-subtitle">{{ row.descricao }}</div>
                             </div>
                         </td>
                     </ng-container>
@@ -99,29 +99,29 @@
                     <ng-container matColumnDef="segmento">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> SEGMENTO </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
-                            {{ row.parametro.cluster.segmento.nome }}
+                            {{ row?.politica?.cluster?.segmento?.nome || "-" }}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="cluster">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> CLUSTER </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
-                            {{ row.parametro.cluster.nome }}
+                            {{ row?.politica?.cluster?.nome || "-" }}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="politica">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '15%' }" class="t-center"> POLÍTICA </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
-                            {{ row.parametro.politica.nome }}
+                            {{ row?.politica?.nome || "-" }}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="variavel">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> VARIÁVEL </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
-                            <div class="parametro-variavel-chave" *ngIf="row.parametro.modo == 'chave'">Chave</div>
-                            <div class="parametro-variavel-global" *ngIf="row.parametro.modo == 'global'">Global</div>
+                            <div class="parametro-variavel-chave" *ngIf="row.modo == 'CHAVE'">Chave</div>
+                            <div class="parametro-variavel-global" *ngIf="row.modo == 'GLOBAL'">Global</div>
                         </td>
                     </ng-container>
 
@@ -135,10 +135,11 @@
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> STATUS </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
-                            <div class="parametro-status-criado" *ngIf="row.status == 'CREATED'">Criação</div>
+                            {{ row?.status?.type }}
+                            <!-- <div class="parametro-status-criado" *ngIf="row.status == 'CREATED'">Criação</div>
                             <div class="parametro-status-vigente" *ngIf="row.status == 'ACTIVE'">Vigente</div>
                             <div class="parametro-status-aguardando" *ngIf="row.status == 'AWAITING_RISK_DECISION'">Aguardando Decisão de Riscos</div>
-                            <div class="parametro-status-deletado" *ngIf="row.status == 'DELETED'">Excluído</div>
+                            <div class="parametro-status-deletado" *ngIf="row.status == 'DELETED'">Excluído</div> -->
                         </td>
                     </ng-container>
     
@@ -146,13 +147,13 @@
                         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
                             <div class="content-table-actions">
-                                <button mat-icon-button matTooltip="Editar parâmetro" (click)="onEditarParametro(row)" *ngIf="row.status == 'CREATED'">
+                                <button mat-icon-button matTooltip="Editar parâmetro" (click)="onEditarParametro(row)" *ngIf="row?.status?.type == 'CREATED'">
                                     <mat-icon>edit</mat-icon>
                                 </button>
-                                <button mat-icon-button matTooltip="Excluir parâmetro" (click)="onDeletarParametro(row)" *ngIf="row.status == 'CREATED'">
+                                <button mat-icon-button matTooltip="Excluir parâmetro" (click)="onDeletarParametro(row)" *ngIf="row?.status?.type == 'CREATED'">
                                     <mat-icon color="warn">delete</mat-icon>
                                 </button>
-                                <button mat-flat-button color="primary" (click)="onDetalhes(row)" *ngIf="row.status != 'CREATED'">Detalhes</button>
+                                <button mat-flat-button color="primary" (click)="onDetalhes(row)" *ngIf="row?.status?.type != 'CREATED'">Detalhes</button>
                             </div>
                         </td>
                     </ng-container>
