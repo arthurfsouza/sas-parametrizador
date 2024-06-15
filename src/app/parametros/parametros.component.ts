@@ -66,6 +66,7 @@ export class ParametrosComponent {
   public displayedColumns: string[] = ["nome", "segmento", "cluster", "politica", "variavel", "versao", "status", "actions"];
   public dataSource: MatTableDataSource<Parametro> = new MatTableDataSource<Parametro>([]);
   public data: Parametro[] = [];
+  public datatable!: DataTableAPI;
 
   public filters: DataTableAPIFilter[] = [];
   public parametrosStatus: ParametroStatus[] = parametrosStatus.filter(ps => ps.type != "DELETED");
@@ -144,15 +145,15 @@ export class ParametrosComponent {
     // this._http.get("/assets/payload/parametros-datatable.json").subscribe(
     this._http.post(api.private.parametro.getAll, body).subscribe(
       (response: any) => {
-        const datatable: DataTableAPI = response;
+        this.datatable = response;
 
-        if(datatable) {
-          if(datatable.offset) { this.paginator.initialPage = (datatable.offset + 1); }
-          if(datatable.limit) { this.paginator.pageSize = datatable.limit; }
-          if(datatable.count) { this.paginator.dataSize = datatable.count; }
-          if(datatable.filters) { this.filters = datatable.filters; }
+        if(this.datatable) {
+          // if(this.datatable.offset) { this.paginator.initialPage = (datatable.offset + 1); }
+          // if(this.datatable.limit) { this.paginator.pageSize = datatable.limit; }
+          // if(this.datatable.count) { this.paginator.dataSize = datatable.count; }
+          // if(this.datatable.filters) { this.filters = datatable.filters; }
 
-          const parametros: Parametro[] = datatable.items || [];
+          const parametros: Parametro[] = this.datatable.items || [];
 
           if(parametros && parametros.length > 0) {
             this.data = parametros;
@@ -181,6 +182,11 @@ export class ParametrosComponent {
   }
 
   public onSourceChanged(source$: DatatablePaginatorSource): void {
+    // if(this.paginator) {
+    //   this.paginator.dataSize = source$.
+    //   this.paginator.pageSize = source$.pageSize;
+      
+    // }
     this._loadingParametros();
     console.log("Source Changed: ", source$);
   }
