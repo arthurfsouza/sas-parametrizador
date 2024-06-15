@@ -92,7 +92,7 @@ export class ParametroFormComponent {
     if(this.selectedIndex == 0 && this.appParametro && this.appParametro.parametroFG.valid) {
       let hasParametro: boolean = false;
 
-      if(this.parametroID || this.parametro.id) { hasParametro = true; }
+      if(this.parametroID || this.parametro?.id) { hasParametro = true; }
       
       if(!hasParametro) {
         const p = new Promise(await this.appParametro.onCreate());
