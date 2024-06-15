@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/parametros-busca-avancada.component';
@@ -18,7 +18,7 @@ import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/m
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
 import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 import StringUtils from '../../shared/utils/string/string.utils';
-import { Segmento, Cluster, Politica, Parametro } from '../../shared/interfaces';
+import { Segmento, Cluster, Politica, Parametro, DataTableAPI, DataTableAPIFilter } from '../../shared/interfaces';
 import { api } from '../../shared/configurations';
 
 
@@ -45,6 +45,7 @@ import { api } from '../../shared/configurations';
   styleUrl: './parametros.component.scss'
 })
 export class ParametrosComponent {
+  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
   private _http = inject(HttpClient);
@@ -83,6 +84,7 @@ export class ParametrosComponent {
     { id: 3, nome: "Aguardando Decisão de Riscos", status: "AWAITING_RISK_DECISION" },
     { id: 4, nome: "Excluído", status: "DELETED" }
   ];
+
   public buscaAvancada: { segmento: Segmento | null; cluster: Cluster | null; politica: Politica | null; variavel: any; statuses: any[]; } = {
     segmento: null,
     cluster: null,
@@ -91,8 +93,14 @@ export class ParametrosComponent {
     statuses: this.statuses,
   };
 
+  public filters: DataTableAPIFilter[] = [];
+
   ngOnInit(): void {
     this._loadingParametros();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
   }
 
   private _loadingParametros(): void {
@@ -107,13 +115,24 @@ export class ParametrosComponent {
 
     this._http.post(api.private.parametro.getAll, body).subscribe(
       (response: any) => {
-        const parametros: Parametro[] = response || [];
+        const datatable: DataTableAPI = response;
 
-        console.log(parametros);
+        if(datatable) {
+          if(datatable.offset) { this.paginator.initialPage = datatable.offset; }
+          if(datatable.limit) { this.paginator.dataSize = datatable.limit; }
+          if(datatable.order) {
+            this.sort.active = datatable.order.column;
+            this.sort.direction = datatable.order.direction == "ASC" ? "asc" : "desc"; 
+          }
+          if(datatable.count) { this.paginator.dataSize = datatable.count; }
+          if(datatable.filters) { this.filters = datatable.filters; }
 
-        if(parametros && parametros.length > 0) {
-          this.data = parametros;
-          this.dataSource = new MatTableDataSource(this.data);
+          const parametros: Parametro[] = datatable.items || [];
+
+          if(parametros && parametros.length > 0) {
+            this.data = parametros;
+            this.dataSource = new MatTableDataSource(this.data);
+          }
         }
       }
     );
