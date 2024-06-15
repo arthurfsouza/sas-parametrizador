@@ -157,11 +157,6 @@ export class ParametrosComponent {
           if(parametros && parametros.length > 0) {
             this.data = parametros;
             this.dataSource = new MatTableDataSource(this.data);
-
-            if(this.paginator) {
-              this.paginator.dataSize = this.data.length;
-              this.paginator.setPage(1);
-            }
           }
         }
       }
