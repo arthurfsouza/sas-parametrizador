@@ -115,15 +115,14 @@ export class ParametrosComponent {
       }
     }
 
-
     const body: any = {
       offset: 0,
       limit: 25,
       order: order,
     };
 
-    this._http.get("/assets/payload/parametros-datatable.json").subscribe(
-    // this._http.post(api.private.parametro.getAll, body).subscribe(
+    // this._http.get("/assets/payload/parametros-datatable.json").subscribe(
+    this._http.post(api.private.parametro.getAll, body).subscribe(
       (response: any) => {
         const datatable: DataTableAPI = response;
 
