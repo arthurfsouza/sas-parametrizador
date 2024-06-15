@@ -35,8 +35,8 @@
         
         <div class="row parametros-content-middle">
             <mat-chip-set #chipSet>
-                <mat-chip class="chip-default" (removed)="removeChip('segmento')" *ngIf="buscaAvancada.segmento">
-                    <span class="chip-default-span">
+                <mat-chip class="chip-folder" (removed)="removeChip('segmento')" *ngIf="buscaAvancada.segmento">
+                    <span class="chip-folder-span">
                         Segmento: {{ buscaAvancada.segmento.nome }}
                     </span>
                     <button matChipRemove>
@@ -44,8 +44,8 @@
                     </button>
                 </mat-chip>
 
-                <mat-chip class="chip-default" (removed)="removeChip('cluster')" *ngIf="buscaAvancada.cluster">
-                    <span class="chip-default-span">
+                <mat-chip class="chip-folder" (removed)="removeChip('cluster')" *ngIf="buscaAvancada.cluster">
+                    <span class="chip-folder-span">
                         Cluster: {{ buscaAvancada.cluster.nome }}
                     </span>
                     <button matChipRemove>
@@ -53,8 +53,8 @@
                     </button>
                 </mat-chip>
 
-                <mat-chip class="chip-default" (removed)="removeChip('politica')" *ngIf="buscaAvancada.politica">
-                    <span class="chip-default-span">
+                <mat-chip class="chip-folder" (removed)="removeChip('politica')" *ngIf="buscaAvancada.politica">
+                    <span class="chip-folder-span">
                         Política: {{ buscaAvancada.politica.nome }}
                     </span>
                     <button matChipRemove>
@@ -62,18 +62,18 @@
                     </button>
                 </mat-chip>
 
-                <mat-chip [ngClass]="{'chip-variavel-chave': buscaAvancada.variavel.modo == 'chave', 'chip-variavel-global': buscaAvancada.variavel.modo == 'global' }"
+                <mat-chip [ngClass]="{'chip-variavel-chave': buscaAvancada.variavel.modo == 'CHAVE', 'chip-variavel-global': buscaAvancada.variavel.modo == 'GLOBAL' }"
                     (removed)="removeChip('variavel')" *ngIf="buscaAvancada.variavel && buscaAvancada.variavel.id != 1">
-                    <span [ngClass]="{'chip-variavel-chave-span': buscaAvancada.variavel.modo == 'chave', 'chip-variavel-global-span': buscaAvancada.variavel.modo == 'global' }">
-                        Variável: {{ buscaAvancada.variavel.modo == 'chave' ? 'Chave' : 'Global' }}
+                    <span [ngClass]="{'chip-variavel-chave-span': buscaAvancada.variavel.modo == 'CHAVE', 'chip-variavel-global-span': buscaAvancada.variavel.modo == 'GLOBAL' }">
+                        Variável: {{ buscaAvancada.variavel.modo == 'CHAVE' ? 'Chave' : 'Global' }}
                     </span>
                     <button matChipRemove>
                       <mat-icon color="warn">cancel</mat-icon>
                     </button>
                 </mat-chip>
 
-                <mat-chip class="chip-statuses" (removed)="removeChip('parametrosStatus')" *ngIf="buscaAvancada.parametrosStatus && buscaAvancada.parametrosStatus.length != parametrosStatus.length">
-                    <span class="chip-statuses-span">
+                <mat-chip (removed)="removeChip('parametrosStatus')" *ngIf="buscaAvancada.parametrosStatus && buscaAvancada.parametrosStatus.length != parametrosStatus.length">
+                    <span>
                         Status: {{ getParametrosStatus() }}
                     </span>
                     <button matChipRemove>

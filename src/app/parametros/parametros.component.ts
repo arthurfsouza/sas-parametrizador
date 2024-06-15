@@ -115,6 +115,35 @@ export class ParametrosComponent {
       }
     }
 
+    if(this.buscaAvancada.cluster?.id) {
+      if(!filters.find(f => f.column == "cluster")) {
+        filters.push({ column: "cluster", value: this.buscaAvancada.cluster.id });
+      }
+    }
+
+    if(this.buscaAvancada.politica?.id) {
+      if(!filters.find(f => f.column == "politica")) {
+        filters.push({ column: "politica", value: this.buscaAvancada.politica.id });
+      }
+    }
+
+    if(this.buscaAvancada.variavel?.id != 1) {
+      if(!filters.find(f => f.column == "variavel")) {
+        filters.push({ column: "variavel", value: this.buscaAvancada.variavel.modo });
+      }
+    }
+
+    if(this.buscaAvancada.parametrosStatus?.length > 0 && this.buscaAvancada.parametrosStatus?.length < this.parametrosStatus.length) {
+      if(!filters.find(f => f.column == "status")) {
+        let statuses: string = "";
+        this.buscaAvancada.parametrosStatus.map(ps => statuses += (ps.code + ","));
+
+        if(statuses.length > 0) { statuses = statuses.substring(0, statuses.length - 1); }
+
+        filters.push({ column: "status", value: statuses });
+      }
+    }
+
     const body: any = {
       offset: 0,
       limit: 25,
@@ -255,9 +284,11 @@ export class ParametrosComponent {
           cluster: result.search.cluster || null,
           politica: result.search.politica || null,
           variavel: result.search.variavel || { id: 1, nome: "Todos", modo: "todos" },
-          parametrosStatus: result.search.parametrosStatus || this.parametrosStatus,
+          parametrosStatus: result.search.parametrosStatus || this.parametrosStatus
         }
       }
+
+      this._loadingParametros();
     });
   }
 

@@ -33,39 +33,30 @@
         }
 
         .parametros-content-middle {
-            .chip-default {
-                background-color: #f5f5f5;
-                border: 1px solid darkgray;
+            .chip-folder {
+                background-color: white;
+                border: 1px solid #fc9432;
 
-                .chip-default-span {
-                    color: darkgray;
+                .chip-folder-span {
+                    color: #fc9432;
                 }
             }
 
             .chip-variavel-chave {                    
-                background-color: rgb(41, 69, 83);
-                border: 1px solid #e8fff3;
+                background-color: black;
+                border: 1px solid white;
 
                 .chip-variavel-chave-span {
-                    color: #e8fff3;
+                    color: white;
                 }
             }
 
             .chip-variavel-global {
-                background-color: #e8fff3;
-                border: 1px solid rgb(41, 69, 83);
+                background-color: white;
+                border: 1px solid black;
 
                 .chip-variavel-global-span {
-                    color: rgb(41, 69, 83);
-                }
-            }
-
-            .chip-statuses {
-                background-color: #ffebcd;
-                border: 1px solid darkorange;
-
-                .chip-statuses-span {
-                    color: darkorange;
+                    color: black;
                 }
             }
         }
