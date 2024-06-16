@@ -72,7 +72,7 @@ export class VariaveisComponent {
           qtd_casas_decimais: result.variavel?.qtd_casas_decimais || null,
           tamanho: result.variavel.tamanho,
           is_chave: result.variavel.is_chave,
-          listas: result.variavel?.listas || null,
+          variavel_lista: result.variavel?.variavel_lista || null,
           parametro_id: this.parametro?.id
         });
 
@@ -98,7 +98,7 @@ export class VariaveisComponent {
             item.qtd_casas_decimais = result.variavel.qtd_casas_decimais || null;
             item.tamanho = result.variavel.tamanho;
             item.is_chave = result.variavel.is_chave;
-            item.listas = result.variavel.listas || null;
+            item.variavel_lista = result.variavel.variavel_lista || null;
 
             break;
           }
@@ -176,7 +176,7 @@ export class VariaveisComponent {
           is_chave: variavel.is_chave,
           tamanho: variavel.tamanho,
           qtd_casas_decimais: variavel.qtd_casas_decimais,
-          variavel_lista: variavel.listas?.length ? variavel.listas.map(l => {
+          variavel_lista: variavel.variavel_lista?.length ? variavel.variavel_lista.map(l => {
             return { nome: l.nome, is_visivel: l.is_visivel }
           }) : []
         })

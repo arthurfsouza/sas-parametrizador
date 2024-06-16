@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper'
-import { ParametrizadorParametroComponent } from './parametrizador-parametro/parametrizador-parametro.component';
-import { ParametrizadorVariaveisComponent } from './parametrizador-variaveis/parametrizador-variaveis.component';
 import { ParametrizadorDadosComponent } from './parametrizador-dados/parametrizador-dados.component';
 import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/parametrizador-revisao.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
@@ -28,8 +26,6 @@ export interface SASAuth {
     CommonModule,
     MatButtonModule,
     MatStepperModule,
-    ParametrizadorParametroComponent,
-    ParametrizadorVariaveisComponent,
     ParametrizadorDadosComponent,
     ParametrizadorRevisaoComponent,
     MenuNavigatorComponent
@@ -38,8 +34,6 @@ export interface SASAuth {
   styleUrl: './parametrizador.component.scss'
 })
 export class ParametrizadorComponent implements OnInit {
-  @ViewChild("parametrizadorParametro") public parametrizadorParametro!: ParametrizadorParametroComponent;
-  @ViewChild("parametrizadorVariaveis") public parametrizadorVariaveis!: ParametrizadorVariaveisComponent;
   @ViewChild("parametrizadorDados") public parametrizadorDados!: ParametrizadorDadosComponent;
   @ViewChild("parametrizadorRevisao") public parametrizadorRevisao!: ParametrizadorRevisaoComponent;
 
@@ -108,39 +102,12 @@ export class ParametrizadorComponent implements OnInit {
   }
 
   public disabledNextButton(): boolean {
-    if(this.selectedIndex == 0 && this.parametrizadorParametro) { return this.parametrizadorParametro.parametroFG.valid; }
-    else if(this.selectedIndex == 1 && this.parametrizadorVariaveis) { return this.parametrizadorVariaveis.variaveisStepperIsValid(); }
-    else if(this.selectedIndex == 2) { return true; }
+    if(this.selectedIndex == 2) { return true; }
     else { return true; }
   }
 
   public onNextButton(): void {
-    if(this.selectedIndex == 0 && this.parametrizadorParametro && this.parametrizadorParametro.parametroFG.valid) {
-      this.parametrizador.parametro = {
-        id: 1,
-        nome: this.parametrizadorParametro.parametroFG.value['nome'],
-        descricao: this.parametrizadorParametro.parametroFG.value['descricao'],
-        modo: this.parametrizadorParametro.parametroFG.value['modo'],
-        dataVigencia: this.parametrizadorParametro.parametroFG.value['dataVigencia'],
-        horaVigencia: this.parametrizadorParametro.parametroFG.value['horaVigencia'],
-        cluster: this.parametrizadorParametro.parametroFG.value['cluster'],
-        politica: this.parametrizadorParametro.parametroFG.value['politica'],
-      };
-
-      this._parametrizador.setParametrizador(this.parametrizador);
-      this.selectedIndex = 1;
-    }
-    else if(this.selectedIndex == 1 && this.parametrizadorVariaveis && this.parametrizadorVariaveis.variaveisStepperIsValid()) {
-      this.parametrizador.variaveis = [];
-
-      this.parametrizadorVariaveis.data.map(variavel => {
-        this.parametrizador.variaveis.push(variavel);
-      })
-
-      this._parametrizador.setParametrizador(this.parametrizador);
-      this.selectedIndex = 2;
-    }
-    else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {
+    if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {
       this.parametrizador.dados = this.parametrizadorDados.getDados() || [];
       this._parametrizador.setParametrizador(this.parametrizador);
       this.selectedIndex = 3;

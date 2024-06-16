@@ -50,10 +50,10 @@ export class VariavelFormComponent {
         this.variavelFG.controls['tamanho'].setValue(this.data.variavel.tamanho);
         this.variavelFG.controls['qtd_casas_decimais'].setValue(this.data.variavel.qtd_casas_decimais);
         this.variavelFG.controls['is_chave'].setValue(this.data.variavel.is_chave);
-        this.variavelFG.controls['listas'].setValue(this.data.variavel.listas);
+        this.variavelFG.controls['variavel_lista'].setValue(this.data.variavel.variavel_lista);
 
-        if(this.data.variavel.listas && this.data.variavel.listas.length > 0) {
-          this.dataListas = this.data.variavel.listas;
+        if(this.data.variavel.variavel_lista && this.data.variavel.variavel_lista.length > 0) {
+          this.dataListas = this.data.variavel.variavel_lista;
           this.dataSource = new MatTableDataSource(this.dataListas);
         }
       }
@@ -66,7 +66,7 @@ export class VariavelFormComponent {
     tamanho: new FormControl(null, [Validators.required]),
     qtd_casas_decimais: new FormControl(null),
     is_chave: new FormControl(true, [Validators.required]),
-    listas: new FormControl(null)
+    variavel_lista: new FormControl(null)
   });
 
   public listasFG: FormGroup = new FormGroup({ item: new FormControl(null, [Validators.required]) });
@@ -99,8 +99,8 @@ export class VariavelFormComponent {
     this.variavelFG.controls['qtd_casas_decimais'].setValidators(null);
     this.variavelFG.controls['qtd_casas_decimais'].reset();
 
-    this.variavelFG.controls['listas'].setValidators(null);
-    this.variavelFG.controls['listas'].reset();
+    this.variavelFG.controls['variavel_lista'].setValidators(null);
+    this.variavelFG.controls['variavel_lista'].reset();
     
     this.listasFG.controls['item'].reset();      
 
@@ -109,8 +109,8 @@ export class VariavelFormComponent {
       this.variavelFG.controls['qtd_casas_decimais'].updateValueAndValidity();
     }
     else if(tipo == "LISTA") {
-      this.variavelFG.controls['listas'].addValidators([Validators.required]);
-      this.variavelFG.controls['listas'].updateValueAndValidity();
+      this.variavelFG.controls['variavel_lista'].addValidators([Validators.required]);
+      this.variavelFG.controls['variavel_lista'].updateValueAndValidity();
     }
   }
 
@@ -133,7 +133,7 @@ export class VariavelFormComponent {
       }
 
       this.dataSource = new MatTableDataSource(this.dataListas);
-      this.variavelFG.controls['listas'].setValue(this.dataListas);
+      this.variavelFG.controls['variavel_lista'].setValue(this.dataListas);
       this.listasFG.controls['item'].reset();
       this.itemID = null;
     }
@@ -157,7 +157,7 @@ export class VariavelFormComponent {
     this.dataListas.splice(index, 1);
 
     this.dataSource = new MatTableDataSource(this.dataListas);
-    this.variavelFG.controls['listas'].setValue(this.dataListas);
+    this.variavelFG.controls['variavel_lista'].setValue(this.dataListas);
   }
 
   public onSave(): void {
