@@ -55,8 +55,8 @@ export class PoliticaFormComponent {
 
   public politicaFG: FormGroup = new FormGroup({
     id: new FormControl(null),
-    nome: new FormControl(null, [Validators.required, Validators.pattern("[A-Za-z0-9_]+")]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(140)]),
+    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
+    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
     is_ativo: new FormControl(true, [Validators.required]),
     cluster: new FormControl(null, [Validators.required]),
     segmento: new FormControl(null, [Validators.required])
@@ -243,7 +243,5 @@ export class PoliticaFormComponent {
     }
   }
 
-  public compareObjects(o1: any, o2: any): boolean {
-    return o1?.id === o2?.id;
-  }
+  public compareObjects(o1: any, o2: any): boolean { return o1?.id === o2?.id; }
 }

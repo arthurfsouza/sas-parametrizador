@@ -1,0 +1,48 @@
+.close-dialog {
+    position: absolute;
+    right: 0;
+}
+
+.variavel-form {
+    height: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;    
+
+    .slide-toggle-group {
+        display: flex;
+
+        .slide-toggle-chave {
+            padding: 0 16px;
+            margin-left: auto;
+        }
+    }
+
+    .listas-fieldset {
+        width: 100%;
+
+        .listas-form {
+            div {
+                button { margin-left: 16px; }
+            }
+        }
+
+        .table-container {
+            height: 170px;
+            overflow: auto;
+        }
+    }
+
+    .variavel-footer {
+        margin-top: auto;
+
+        div {
+            padding-top: 8px;
+            padding-bottom: 8px;
+
+            button { width: 100%; }
+        }
+    }
+}
+
+.icon-buttton { margin: 0 8px; }

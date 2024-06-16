@@ -144,8 +144,13 @@ export class ParametroComponent {
 
   private _loadingParametroByID(id: string): void {
     this._http.get(api.private.parametro.getByID.replace("{PARAMETRO_ID}", id)).subscribe(
-      response => {
-        console.log(response);
+      (response: any) => {
+        if(response) {
+          const parametro: Parametro = response;
+
+          this._parametro.setParametro(parametro);
+          console.log(response);
+        }
       }
     )
   }

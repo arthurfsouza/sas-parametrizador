@@ -2,7 +2,7 @@ export * from './cluster/cluster.interface';
 export * from './dado/dado.interface';
 export * from './data-table-api/data-table-api.interface';
 export * from './evento/evento.interface';
-export * from './file/file.interface';
+export * from './file-sas/file-sas.interface';
 export * from './parametro/parametro.interface';
 export * from './parametro-analitico/parametro-analitico.interface';
 export * from './parametro-status/parametro-status.interface';

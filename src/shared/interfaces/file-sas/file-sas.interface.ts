@@ -1,7 +1,7 @@
 export type FileType = "IMAGE" | "VIDEO" | "DOCUMENT" | "TEXT" | "PDF" | 
     "SPREADSHEET" | "SLIDESHOW" | "FORM" | "JSON" | "OTHER";
 
-export interface File {
+export interface FileSAS {
     id: string;
     name: string;
     extension: string;

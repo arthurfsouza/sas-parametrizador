@@ -1,5 +1,7 @@
+import { Dado } from "../dado/dado.interface";
 import { ParametroStatus } from "../parametro-status/parametro-status.interface";
 import { Politica } from "../politica/politica.interface";
+import { Variavel } from "../variavel/variavel.interface";
 
 export type ParametroModo = "CHAVE" | "GLOBAL";
 
@@ -25,4 +27,7 @@ export interface Parametro {
     politica?: Politica;
     parametro_parent_id?: string;
     parametro_parent?: Parametro;
+
+    variaveis?: Variavel[];
+    dados?: Dado[];
 }

@@ -6,7 +6,6 @@ export interface Dado {
     sas_key: string;
     sas_value: string;
     created_at?: Date;
-    updated_at?: Date;
     parametro_id?: string;
     parametro?: Parametro;
 }

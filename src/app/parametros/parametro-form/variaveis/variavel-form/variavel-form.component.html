@@ -1,1 +1,175 @@
-<p>variavel-form works!</p>
+<div class="close-dialog">
+    <button type="button" mat-icon-button [mat-dialog-close]="true">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<form class="variavel-form" [formGroup]="variavelFG">
+    <h1>{{ data && data.variavel ? 'Edição' : 'Cadastro' }} de Variável</h1>
+
+    <mat-divider></mat-divider>
+
+    <br/>
+
+    <div class="row custom-row-padding slide-toggle-group">
+        <div class="slide-toggle-chave">
+            <mat-slide-toggle labelPosition="before" formControlName="is_chave">
+                USAR COMO CHAVE
+            </mat-slide-toggle>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row custom-row-padding">
+        <div class="col-md-6 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>NOME DA VARIÁVEL</mat-label>
+                <input matInput formControlName="nome" maxlength="100" required>
+                <mat-hint>Apenas letras, números e underline</mat-hint>
+            </mat-form-field>
+        </div>
+        
+        <div class="col-md-6 col-12">
+            <mat-form-field class="custom-form-field">
+                <mat-label>FORMATO DA VARIÁVEL</mat-label>
+                <mat-select name="tipo" formControlName="tipo" [compareWith]="compareObjects" (selectionChange)="onChangeTipo($event)">
+                  <mat-option *ngFor="let option of tipos" [value]="option">
+                    {{ option.nome }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint>Selecione um formato de variável.</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row custom-row-padding">
+        <div class="col-md-6 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>DESCRIÇÃO</mat-label>
+                <textarea #descricao matInput formControlName="descricao" maxlength="350" rows="3" required></textarea>
+                <mat-hint align="start">Digite uma descrição sobre a variável</mat-hint>
+                <mat-hint align="end">{{ descricao.value.length }} / 350</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6 col-12" *ngIf="variavelFG.controls['tipo'].value?.tipo == 'DECIMAL'">
+            <div class="row">
+                <div class="col-12" style="padding-bottom: 8px;">
+                    <mat-form-field class="custom-form-field" appearance="outline">
+                        <mat-label>LIMITE DE TAMANHO</mat-label>
+                        <input matInput placeholder="Máx. de caracteres" formControlName="tamanho" required>
+                        <mat-hint>Apenas números inteiros</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <br/>
+
+                <div class="col-12" style="padding-top: 8px;">
+                    <mat-form-field class="custom-form-field" appearance="outline">
+                        <mat-label>QTD. DE CASAS DECIMAIS</mat-label>
+                        <input matInput placeholder="Casas decimais" formControlName="qtd_casas_decimais" required>
+                        <mat-hint>Apenas números inteiros</mat-hint>
+                    </mat-form-field>
+                </div>                
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12" *ngIf="variavelFG.controls['tipo'].value?.tipo == 'NUMERICO' || variavelFG.controls['tipo'].value?.tipo == 'TEXTO'">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>LIMITE DE TAMANHO</mat-label>
+                <input matInput placeholder="Máx. de caracteres" formControlName="tamanho" required>
+                <mat-hint>Apenas números inteiros</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6 col-12" *ngIf="variavelFG.controls['tipo'].value?.tipo == 'LISTA'">
+            <div class="row">
+                <div class="col-12" style="padding-bottom: 8px;">
+                    <mat-form-field class="custom-form-field" appearance="outline">
+                        <mat-label>LIMITE DE TAMANHO</mat-label>
+                        <input matInput placeholder="Máx. de itens" formControlName="tamanho" required>
+                        <mat-hint>Apenas números inteiros</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <br/>
+
+                <fieldset class="listas-fieldset">
+                    <legend>LISTA DE OPÇÕES</legend>
+
+                    <div class="row listas-form" style="margin-right: 0; margin-left: 0;" [formGroup]="listasFG">
+                        <div class="col-9" style="padding: 8px 0;">
+                            <mat-form-field class="custom-form-field" appearance="outline">
+                                <mat-label>ITEM</mat-label>
+                                <input matInput placeholder="Nome do item" formControlName="item" required>
+                                <mat-hint>Digite um nome para o item</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-3" style="padding: 8px 0;">
+                            <button mat-fab matTooltip="{{ itemID != null ? 'Editar Item' : 'Adicionar Item' }}" color="primary" 
+                                [disabled]="!listasFG.controls['item'].valid" (click)="onSaveItem()">
+                                <mat-icon *ngIf="itemID == null">add</mat-icon>
+                                <mat-icon *ngIf="itemID != null">refresh</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-12 table-container" style="padding-top: 8px;" *ngIf="dataSource">
+                        <table mat-table [dataSource]="dataSource">
+                            <ng-container matColumnDef="checkbox">
+                                <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center">
+                                    <mat-icon matTooltip="Selecionanr item">add_task</mat-icon>
+                                </th>
+                                <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                                    <mat-checkbox [checked]="row.is_visivel" (change)="onChangeCheck($event, row)">
+                                    </mat-checkbox>
+                                </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="nome">
+                                <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '70%' }" class="t-center"> ITEM </th>
+                                <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '70%' }" class="t-start">
+                                    {{ row.nome }}
+                                </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> </th>
+                                <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-center">
+                                    <div class="content-table-actions">
+                                        <mat-icon class="icon-buttton" matTooltip="Editar item" (click)="onEditItem(row)">edit</mat-icon>
+                                        <mat-icon color="warn" class="icon-buttton" matTooltip="Excluir item" (click)="onDeleteItem(row)">delete</mat-icon>
+                                    </div>
+                                </td>
+                            </ng-container>
+            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+            
+                        <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhum item cadastrado.</div>
+                    </div>
+                </fieldset>                
+            </div>
+        </div>
+    </div>
+
+    <div class="row variavel-footer">
+        <div class="offset-md-4 col-md-4 col-12">
+            <button mat-stroked-button color="primary" [mat-dialog-close]="true">
+                CANCELAR
+            </button>
+        </div>
+
+        <div class="col-md-4 col-12">
+            <button mat-flat-button color="primary" [disabled]="!variavelFG.valid"
+                (click)="onSave()">
+                {{ data && data.variavel ? 'EDITAR' : 'CADASTRAR' }}
+            </button>
+        </div>
+    </div>
+</form>

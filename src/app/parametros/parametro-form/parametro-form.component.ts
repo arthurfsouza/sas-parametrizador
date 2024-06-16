@@ -83,7 +83,7 @@ export class ParametroFormComponent {
 
   public disabledNextButton(): boolean {
     if(this.selectedIndex == 0 && this.appParametro) { return this.appParametro.parametroFG.valid; }
-    // else if(this.selectedIndex == 1 && this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
+    else if(this.selectedIndex == 1 && this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
     // else if(this.selectedIndex == 2) { return true; }
     else { return true; }
   }
@@ -98,22 +98,17 @@ export class ParametroFormComponent {
         const p = new Promise(await this.appParametro.onCreate());
 
         p.then((resolve) => {
-          if(resolve == true) {
-            // this.selectedIndex = 1;
-          }
+          if(resolve == true) { this.selectedIndex = 1; }
         })
       }      
     }
-    // else if(this.selectedIndex == 1 && this.parametrizadorVariaveis && this.parametrizadorVariaveis.variaveisStepperIsValid()) {
-    //   this.parametrizador.variaveis = [];
+    else if(this.selectedIndex == 1 && this.appVariaveis && this.appVariaveis.variaveisStepperIsValid()) {
+      const p = new Promise(await this.appVariaveis.onCreate());
 
-    //   this.parametrizadorVariaveis.data.map(variavel => {
-    //     this.parametrizador.variaveis.push(variavel);
-    //   })
-
-    //   this._parametrizador.setParametrizador(this.parametrizador);
-    //   this.selectedIndex = 2;
-    // }
+      p.then((resolve) => {
+        // if(resolve == true) { this.selectedIndex = 2; }
+      });
+    }
     // else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {
     //   this.parametrizador.dados = this.parametrizadorDados.getDados() || [];
     //   this._parametrizador.setParametrizador(this.parametrizador);
