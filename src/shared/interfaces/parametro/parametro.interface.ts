@@ -1,4 +1,5 @@
 import { Dado } from "../dado/dado.interface";
+import { Evento } from "../evento/evento.interface";
 import { ParametroStatus } from "../parametro-status/parametro-status.interface";
 import { Politica } from "../politica/politica.interface";
 import { Variavel } from "../variavel/variavel.interface";
@@ -30,4 +31,5 @@ export interface Parametro {
 
     variaveis?: Variavel[];
     dados?: Dado[];
+    eventos?: Evento[];
 }

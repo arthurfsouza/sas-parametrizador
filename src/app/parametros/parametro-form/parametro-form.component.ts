@@ -84,29 +84,25 @@ export class ParametroFormComponent {
   public disabledNextButton(): boolean {
     if(this.selectedIndex == 0 && this.appParametro) { return this.appParametro.parametroFG.valid; }
     else if(this.selectedIndex == 1 && this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
-    // else if(this.selectedIndex == 2) { return true; }
+    else if(this.selectedIndex == 2) { return true; }
     else { return true; }
   }
 
-  public async onNextButton(): Promise<void> {
+  public onNextButton(): void {
     if(this.selectedIndex == 0 && this.appParametro && this.appParametro.parametroFG.valid) {
       let hasParametro: boolean = false;
 
       if(this.parametroID || this.parametro?.id) { hasParametro = true; }
       
       if(!hasParametro) {
-        const p = new Promise(await this.appParametro.onCreate());
-
-        p.then((resolve) => {
-          if(resolve == true) { this.selectedIndex = 1; }
-        })
+        this.appParametro.onCreate().subscribe(result => {
+          if(result == true) { this.selectedIndex = 1; }
+        });
       }      
     }
     else if(this.selectedIndex == 1 && this.appVariaveis && this.appVariaveis.variaveisStepperIsValid()) {
-      const p = new Promise(await this.appVariaveis.onCreate());
-
-      p.then((resolve) => {
-        // if(resolve == true) { this.selectedIndex = 2; }
+      this.appVariaveis.onCreate().subscribe(result => {
+        if(result == true) { this.selectedIndex = 2; }
       });
     }
     // else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {

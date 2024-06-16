@@ -13,10 +13,10 @@
                 <mat-step [stepControl]="variaveisStepperFG">
                     <ng-template matStepLabel>Variáveis</ng-template>
                 </mat-step>
-                <!-- <mat-step [stepControl]="dadosStepperFG">
+                <mat-step [stepControl]="dadosStepperFG">
                     <ng-template matStepLabel>Dados</ng-template>
                 </mat-step>
-                <mat-step [stepControl]="revisaoStepperFG">
+                <!-- <mat-step [stepControl]="revisaoStepperFG">
                     <ng-template matStepLabel>Revisão</ng-template>
                 </mat-step> -->
             </mat-stepper>
@@ -30,10 +30,10 @@
         <app-variaveis #appVariaveis
             [ngClass]="{'d-block': selectedIndex == 1, 'd-none': selectedIndex != 1}">
         </app-variaveis>
-        <!-- <app-dados #appDados
+        <app-dados #appDados
             [ngClass]="{'d-block': selectedIndex == 2, 'd-none': selectedIndex != 2}">
         </app-dados>
-        <app-revisao #appRevisao
+        <!-- <app-revisao #appRevisao
             [ngClass]="{'d-block': selectedIndex == 3, 'd-none': selectedIndex != 3}">
         </app-revisao> -->
     </div>

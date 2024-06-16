@@ -12,6 +12,7 @@ import { ParametroService, SnackbarMessagesService } from '../../../../shared/se
 import { Cluster, Parametro, Politica } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
 import 'moment/locale/pt-br';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export const CUSTOM_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -152,44 +153,45 @@ export class ParametroComponent {
     )
   }
 
-  public onCreate(): Promise<any> {
-    const p = new Promise((resolve) => {
-      const data_vigencia: Date = this.parametroFG.value['data_vigencia'];
-      const hora_vigencia: any = this.parametroFG.value['hora_vigencia'];
-  
-      let data_vigencia_aux: string = data_vigencia.toISOString();
-  
-      if(data_vigencia_aux?.length >= 10) { data_vigencia_aux = data_vigencia_aux.substring(0, 10); }
-  
-      const body: any = {
-        nome: this.parametroFG.value['nome'],
-        descricao: this.parametroFG.value['descricao'],
-        modo: this.parametroFG.value['modo'],
-        data_hora_vigencia: data_vigencia_aux + " " + hora_vigencia + ":00",
-        versao: "1.0",
-        politica_id: this.parametroFG.value['politica']?.id
-      };
-  
-      this._http.post(api.private.parametro.post, body).subscribe(
-        (response: any) => {
-          if(response?.message) {
-            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
-  
-            if(response.id) { this._loadingParametroByID(response.id); }
-            resolve(true)
-          }
-        },
-        err => {
-          if(err?.error?.error) {
-            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
-          }
+  public onCreate(): Observable<boolean> {
+    const subject = new BehaviorSubject(false);
 
-          resolve(false)
+    const data_vigencia: Date = this.parametroFG.value['data_vigencia'];
+    const hora_vigencia: any = this.parametroFG.value['hora_vigencia'];
+
+    let data_vigencia_aux: string = data_vigencia.toISOString();
+
+    if(data_vigencia_aux?.length >= 10) { data_vigencia_aux = data_vigencia_aux.substring(0, 10); }
+
+    const body: any = {
+      nome: this.parametroFG.value['nome'],
+      descricao: this.parametroFG.value['descricao'],
+      modo: this.parametroFG.value['modo'],
+      data_hora_vigencia: data_vigencia_aux + " " + hora_vigencia + ":00",
+      versao: "1.0",
+      politica_id: this.parametroFG.value['politica']?.id
+    };
+
+    this._http.post(api.private.parametro.post, body).subscribe(
+      (response: any) => {
+        if(response?.message) {
+          this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+
+          if(response.id) { this._loadingParametroByID(response.id); }
+          
+          subject.next(true);
         }
-      )
-    });
+      },
+      err => {
+        if(err?.error?.error) {
+          this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+        }
+
+        subject.next(false);
+      }
+    )
     
-    return p;
+    return subject.asObservable();
   }
 
   public onUpdate(): void {

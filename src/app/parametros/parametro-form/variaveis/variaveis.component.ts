@@ -14,6 +14,7 @@ import { Parametro, Variavel } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
 
 import StringUtils from '../../../../shared/utils/string/string.utils';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-variaveis',
@@ -164,44 +165,44 @@ export class VariaveisComponent {
     )
   }
 
-  public onCreate(): Promise<any> {
-    const p = new Promise((resolve) => {
-      const variaveis: any[] = [];
+  public onCreate(): Observable<boolean> {
+    const subject = new BehaviorSubject(false);
+    const variaveis: any[] = [];
 
-      this.data.map(variavel => {
-        variaveis.push({
-          nome: variavel.nome,
-          descricao: variavel.descricao,
-          tipo: variavel.tipo,
-          is_chave: variavel.is_chave,
-          tamanho: variavel.tamanho,
-          qtd_casas_decimais: variavel.qtd_casas_decimais,
-          variavel_lista: variavel.variavel_lista?.length ? variavel.variavel_lista.map(l => {
-            return { nome: l.nome, is_visivel: l.is_visivel }
-          }) : []
-        })
-      });
-  
-      this._http.post(api.private.parametro.variavel.post.replace("{PARAMETRO_ID}", this.parametro.id), variaveis).subscribe(
-        (response: any) => {
-          if(response?.message) {
-            this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
-  
-            if(response.id) { this._loadingParametroByID(response.id); }
-            resolve(true)
-          }
-        },
-        err => {
-          if(err?.error?.error) {
-            this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
-          }
-
-          resolve(false)
-        }
-      )
+    this.data.map(variavel => {
+      variaveis.push({
+        nome: variavel.nome,
+        descricao: variavel.descricao,
+        tipo: variavel.tipo,
+        is_chave: variavel.is_chave,
+        tamanho: variavel.tamanho,
+        qtd_casas_decimais: variavel.qtd_casas_decimais,
+        variavel_lista: variavel.variavel_lista?.length ? variavel.variavel_lista.map(l => {
+          return { nome: l.nome, is_visivel: l.is_visivel }
+        }) : []
+      })
     });
+
+    this._http.post(api.private.parametro.variavel.post.replace("{PARAMETRO_ID}", this.parametro.id), variaveis).subscribe(
+      (response: any) => {
+        if(response?.message) {
+          this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+
+          if(response.id) { this._loadingParametroByID(response.id); }
+
+          subject.next(true);
+        }
+      },
+      err => {
+        if(err?.error?.error) {
+          this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+        }
+
+        subject.next(false);
+      }
+    );
     
-    return p;
+    return subject.asObservable();
   }
 
   public showErros(e: { error: string, campos_error: string[] }): void {

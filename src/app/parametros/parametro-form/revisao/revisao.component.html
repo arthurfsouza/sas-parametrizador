@@ -1,1 +1,178 @@
-<p>revisao works!</p>
+<mat-card class="revisao">
+    <h1>Detalhamento</h1>
+
+    <div class="row revisao-parametro" style="margin: 16px 0;">
+        <div>{{ parametro.nome || "-" }}</div>
+    </div>
+
+    <div class="row" style="margin: 16px 0;">
+        <div class="col-md-8 col-12">
+            <div class="row">
+                <div class="col-md-4 col-12 revisao-detalhes">
+                    <label>POLÍTICA</label>
+                    <span>{{ parametro.politica?.nome || "-" }}</span>                    
+                </div>
+
+                <div class="col-md-4 col-12 revisao-detalhes">
+                    <label>CLUSTER</label>
+                    <span>{{ parametro.politica?.cluster?.nome || "-" }}</span> 
+                </div>
+
+                <div class="col-md-4 col-12 revisao-detalhes">
+                    <label>SEGMENTO</label>
+                    <span>{{ parametro.politica?.cluster?.segmento?.nome || "-" }}</span>
+                </div>
+
+                <div class="col-md-4 col-12 revisao-detalhes">
+                    <label>TIPO DE VARIÁVEL</label>
+                    <span>{{ parametro.modo == "CHAVE" ? "Chave" : "Global" }}</span>
+                </div>
+
+                <div class="col-md-8 col-12 revisao-detalhes">
+                    <label>MODIFICADO POR</label>
+                    <span>ARTHUR FERREIRA</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-12 revisao-dark">
+            <div class="row">
+                <div class="col-md-9 col-12 revisao-detalhes">
+                    <label>DATA DA VIGÊNCIA</label>
+                    <span>{{ getDataVigencia() }}</span>
+                </div>
+
+                <div class="col-md-3 col-12 revisao-detalhes">
+                    <label>VERSÃO</label>
+                    <span>{{ parametro.versao }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mat-accordion class="revisao-accordion">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Variáveis</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="accordion-variaveis" *ngIf="dataSourceVariaveis">
+                <table mat-table [dataSource]="dataSourceVariaveis">        
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '40%' }" class="t-center"> NOME </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '40%' }" class="t-start">
+                            {{ row.nome }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> TIPO </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
+                            <span *ngIf="row.tipo == 'DECIMAL'">Decimal</span>
+                            <span *ngIf="row.tipo == 'NUMERICO'">Numérico</span>
+                            <span *ngIf="row.tipo == 'TEXTO'">Texto</span>
+                            <span *ngIf="row.tipo == 'LISTA'">Lista</span>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="is_chave">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> CHAVE </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                            {{ row.is_chave == true ? "Sim" : "Não" }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="tamanho">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> TAMANHO </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                            {{ row.tamanho }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="qtd_casas_decimais">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> QTD. CASAS DECIMAIS </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
+                            {{ row.tipo == "DECIMAL" ? row.qtd_casas_decimais : "Não se aplica" }}
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsVariaveis"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsVariaveis;"></tr>
+                </table>
+    
+                <div class="empty-message" *ngIf="dataSourceVariaveis.data.length === 0">Nenhuma variável cadastrada.</div>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Dados</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="accordion-dados" *ngIf="dataSourceDados">
+                <table mat-table [dataSource]="dataSourceDados">
+                    <ng-container *ngFor="let column of displayedColumnsDados">
+                        <ng-container [matColumnDef]="column">
+                            <th mat-header-cell *matHeaderCellDef class="t-center"> {{ column }} </th>
+                            <td mat-cell *matCellDef="let row" class="t-start">
+                                {{ row[column] }}
+                            </td>
+                        </ng-container>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsDados"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsDados;"></tr>
+                </table>
+
+                <div class="empty-message" *ngIf="dataSourceDados.data.length === 0">Nenhuma dado cadastrado.</div>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Histórico</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="accordion-dados" *ngIf="dataSourceEventos">
+                <table mat-table [dataSource]="dataSourceEventos">        
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '40%' }" class="t-center"> EVENTO </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '40%' }" class="t-start">
+                            {{ row.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sas_user_name">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '30%' }" class="t-center"> RESPONSÁVEL </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '30%' }" class="t-start">
+                            {{ row.sas_user_name }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="created_at">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> DATA E HORA DA OCORRÊNCIA </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
+                            {{ row.created_at }}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"></th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                            <div class="content-table-actions">
+                                <button type="button" mat-icon-button matTooltip="Informação">
+                                    <mat-icon>info</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsEventos"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsEventos;"></tr>
+                </table>
+    
+                <div class="empty-message" *ngIf="dataSourceEventos.data.length === 0">Nenhum evento cadastrado.</div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</mat-card>

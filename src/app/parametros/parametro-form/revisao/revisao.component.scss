@@ -1,0 +1,41 @@
+.revisao {
+    padding: 32px;
+    background-color: #3f51b5;
+    color: white;
+
+    .revisao-parametro {
+        padding: 16px;        
+        background-color: darkblue;
+        color: lightgray;
+        font-size: 32px;
+        font-weight: 500;
+        border: 1px solid lightgray;    
+        border-radius: 5px;    
+    }
+
+    .revisao-detalhes {
+        padding: 16px 0;
+        display: flex;
+        flex-direction: column;
+
+        label { color: lightgray; }
+
+        span {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+    }
+
+    .revisao-dark {
+        padding: 16px;    
+        background-color: darkblue;
+        color: lightgray;
+        border: 1px solid lightgray;    
+        border-radius: 5px;
+
+        div {
+            padding: 0 8px;
+        }
+    }
+}
