@@ -39,7 +39,7 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="chave">
+                <ng-container matColumnDef="is_chave">
                     <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> CHAVE </th>
                     <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
                         {{ row.is_chave == true ? "Sim" : "Não" }}
@@ -53,7 +53,7 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="qtdCasasDecimais">
+                <ng-container matColumnDef="qtd_casas_decimais">
                     <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> QTD. CASAS DECIMAIS </th>
                     <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
                         {{ row.tipo == "DECIMAL" ? row.qtd_casas_decimais : "Não se aplica" }}
