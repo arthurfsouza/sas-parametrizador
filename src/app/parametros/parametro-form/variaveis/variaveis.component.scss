@@ -1,0 +1,26 @@
+.variaveis-content {
+    display: block;
+
+    .variaveis-top {
+        display: flex;
+
+        .variaveis-add {
+            padding: 16px;
+            margin-left: auto;            
+        }
+    }
+
+    .variaveis-upload {
+        display: flex;
+        padding: 16px;
+        
+        button {
+            min-width: 200px;
+            margin-left: auto;
+        }
+    }
+
+    .variaveis-table {
+        
+    }
+}

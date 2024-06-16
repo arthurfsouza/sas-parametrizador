@@ -1,19 +1,31 @@
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { VariavelFormComponent } from './variavel-form/variavel-form.component';
 import { VariavelUploadComponent } from './variavel-upload/variavel-upload.component';
 import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
 import { Parametro, Variavel } from '../../../../shared/interfaces';
+import { api } from '../../../../shared/configurations';
 
 import StringUtils from '../../../../shared/utils/string/string.utils';
-import { api } from '../../../../shared/configurations';
 
 @Component({
   selector: 'app-variaveis',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatTableModule,
+    MatTooltipModule
+  ],
   templateUrl: './variaveis.component.html',
   styleUrl: './variaveis.component.scss'
 })
