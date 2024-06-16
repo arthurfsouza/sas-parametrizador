@@ -33,9 +33,7 @@ export function initApp(_dialog: MatDialog, _localStorage: LocalStorageService, 
       async (resolve) => {
         const auth: Auth = _localStorage.getStorageData("auth");
 
-        if(auth) {
-          console.log("Auth: ", auth);
-        }
+        if(auth) { _auth.initSchedule(); }
         else {
           const dialogRef = _dialog.open(LoginComponent, {
             width: '400px',
@@ -44,11 +42,9 @@ export function initApp(_dialog: MatDialog, _localStorage: LocalStorageService, 
           });
       
           await dialogRef.afterClosed().toPromise().then(result => {
-            console.log(result);
+            if(result == "closed") { _auth.initSchedule(); }
           })
         }
-
-        _auth.initSchedule();
 
         resolve(true);
         return;

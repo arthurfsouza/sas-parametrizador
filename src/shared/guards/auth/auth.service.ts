@@ -17,7 +17,7 @@ export class AuthService {
         this._auth = this._localStorage.getStorageData("auth");
 
         if(this._auth && this._auth.connection_flag) {
-            const source = interval(1000 * 60 * 1); // A cada 5 minutos
+            const source = interval(1000 * 60 * 5); // A cada 5 minutos
 
             source.subscribe((val) => {
                 const now: Date = new Date();

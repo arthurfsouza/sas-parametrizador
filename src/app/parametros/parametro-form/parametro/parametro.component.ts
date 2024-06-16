@@ -77,8 +77,6 @@ export class ParametroComponent {
 
     this.parametroFG.controls['hora_vigencia'].setValue(hoursAux + ":" + minutesAux);
 
-    console.log("Data: ", this.parametroFG.controls['data_vigencia'].value);
-
     this._loadingClusters();
     this._loadingPoliticas();
 
@@ -149,7 +147,6 @@ export class ParametroComponent {
           const parametro: Parametro = response;
 
           this._parametro.setParametro(parametro);
-          console.log(response);
         }
       }
     )

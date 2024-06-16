@@ -11,7 +11,6 @@ import { ParametrizadorRevisaoComponent } from './parametrizador-revisao/paramet
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { ParametrizadorService } from './parametrizador.service';
 import { ActivatedRoute } from '@angular/router';
-import { parametrizadores } from '../../shared/mockups/parametrizador.mockup';
 
 export interface SASAuth {
   access_token: string;
@@ -69,7 +68,7 @@ export class ParametrizadorComponent implements OnInit {
       console.log(params);
       if(params['parametrizadorID']) {
         this.parametrizadorID = params['parametrizadorID'];
-        const parametrizador: any | undefined = parametrizadores.find(p => p.id == this.parametrizadorID); // Parametrizador
+        const parametrizador: any = null; // Parametrizador
 
         if(parametrizador) { this._parametrizador.setParametrizador(parametrizador); }
       }

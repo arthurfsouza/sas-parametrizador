@@ -276,7 +276,7 @@ export class VariavelUploadComponent {
             qtd_casas_decimais: qtdCasasDecimais,
             is_chave: chave,
             listas: [],
-            parametro_id: this.parametro.id
+            parametro_id: this.parametro?.id
           },
           controle: {
             nomeObrigatorio: nomeObrigatorio,

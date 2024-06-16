@@ -68,12 +68,12 @@ export class VariaveisComponent {
           id: StringUtils.uuidv4(),
           nome: result.variavel.nome,
           descricao: result.variavel.descricao,
-          tipo: result.variavel.tipo.codigo,
+          tipo: result.variavel.tipo?.tipo || null,
           qtd_casas_decimais: result.variavel?.qtd_casas_decimais || null,
           tamanho: result.variavel.tamanho,
           is_chave: result.variavel.is_chave,
           listas: result.variavel?.listas || null,
-          parametro_id: this.parametro.id
+          parametro_id: this.parametro?.id
         });
 
         this.dataSource = new MatTableDataSource(this.data);
