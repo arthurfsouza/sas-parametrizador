@@ -12,10 +12,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmDialogComponent } from '../../../../shared/components';
 import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
 import { DigitOnlyDirective } from '../../../../shared/directives';
-import { Parametro, Variavel, VariavelLista } from '../../../../shared/interfaces';
+import { Dado, Parametro, Variavel, VariavelLista, VariavelTipo } from '../../../../shared/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { api } from '../../../../shared/configurations';
+import StringUtils from '../../../../shared/utils/string/string.utils';
 
 @Component({
   selector: 'app-dados',
@@ -79,11 +80,12 @@ export class DadosComponent {
 
   public onCreate(): Observable<boolean> {
     const subject = new BehaviorSubject(false);
-    const dados: any[] = [];
+    const dados: any[] = this._prepareDados();
 
     console.log("DadosFG: ", this.dadosFG.controls['dados'].value);
     console.log("Dados FormArray: ", this._dados.value);
     console.log("Dados [Abastract Control]: ", this.dados());
+    console.log("Dados Preparados: ", dados)
 
     // this._http.post(api.private.parametro.dado.post.replace("{PARAMETRO_ID}", this.parametro.id), dados).subscribe(
     //   (response: any) => {
@@ -105,6 +107,65 @@ export class DadosComponent {
     // );
     
     return subject.asObservable();
+  }
+
+  private _prepareDados(): Dado[] {
+    const dados: Dado[] = [];
+    const displayedColumnsDados = [];
+
+    if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
+      for(let varAux of this.parametro.variaveis) { displayedColumnsDados.push(varAux.nome); }
+    }
+
+    if(this._dados && this._dados.value && this._dados.value.length > 0) {
+      for(let dado of this._dados.value) {
+        let dadoAux: any = dado;
+        let obj: any = { };
+        let sasKeys: string[] = [];
+        let sasValues: string[] = [];
+        let sasType: any = null;
+
+        if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
+          if(this.parametro.modo == "GLOBAL") {
+            sasType = "TEXTO";
+
+            if(this.parametro.variaveis.length == 1) {
+              const variavelTipo: VariavelTipo = this.parametro.variaveis[0].tipo;
+  
+              if(variavelTipo == "DECIMAL" || variavelTipo == "NUMERICO") { sasType = variavelTipo; }
+            }
+          }
+
+          for(let variavel of this.parametro.variaveis) {
+            const dadoVar: any = dadoAux['dado-control-' + variavel.id];
+
+            if(variavel.tipo == "LISTA") {
+              const val: any = (dadoVar || []).map((d: any) => d.nome).join(";");
+
+              obj[variavel.nome] = val;
+
+              if(variavel.is_chave) { sasKeys.push(val); }
+              else { sasValues.push(val); }
+            }
+            else {                
+              if(variavel.is_chave) { sasKeys.push(dadoVar); }
+              else { sasValues.push(dadoVar); }
+            }                 
+          }
+
+          dados.push({
+            id: StringUtils.uuidv4(),
+            informacao: obj,
+            sas_key: sasKeys.join("|"),
+            sas_value: sasValues.join("|"),
+            sas_type: sasType,
+            parametro_id: this.parametro.id
+          });
+        } 
+      }
+    }
+
+    return dados;
   }
 
   public initDados(): void {
