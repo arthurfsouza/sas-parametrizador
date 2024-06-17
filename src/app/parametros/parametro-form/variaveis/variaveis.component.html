@@ -19,11 +19,20 @@
 
     <mat-divider></mat-divider>
 
-    <div class="row variaveis-warning" *ngIf="checkVariavelModo()">
+    <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelModo()">
         <div class="warning-content">
-            <mat-icon class="warning-icon">warning</mat-icon>
+            <mat-icon class="warning-icon">error</mat-icon>
             <div class="warning-text">
-                <b>Aviso: </b>Nenhuma variável do tipo "CHAVE" cadastrada!
+                <b>Importante: </b>Obrigatório o preenchimento de pelo menos 1 variável como "CHAVE"!
+            </div>
+        </div>
+    </div>
+
+    <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelLista()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">error</mat-icon>
+            <div class="warning-text">
+                <b>Importante: </b>Há variáveis do tipo "Lista" sem uma lista associada!
             </div>
         </div>
     </div>

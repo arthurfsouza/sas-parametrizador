@@ -186,7 +186,6 @@ export class VariaveisComponent {
       (response: any) => {
         if(response) {
           const parametro: Parametro = response;
-
           this._parametro.setParametro(parametro);
         }
       }
