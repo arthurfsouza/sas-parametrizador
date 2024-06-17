@@ -170,10 +170,15 @@ export class ParametrosComponent {
 
   public onAddParametro(): void {
     this._parametro.setParametro(null);
+    this._parametro.setIsEditavel(true);
+
     this._router.navigate(["parametro"]);
   }
 
   public onDetalhes(row: Parametro): void {
+    this._parametro.setParametro(null);
+    this._parametro.setIsEditavel(true);
+    
     this._router.navigate(["parametro/" + row.id]);
   }
 
