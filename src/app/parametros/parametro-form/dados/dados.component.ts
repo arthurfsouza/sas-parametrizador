@@ -82,29 +82,24 @@ export class DadosComponent {
     const subject = new BehaviorSubject(false);
     const dados: any[] = this._prepareDados();
 
-    console.log("DadosFG: ", this.dadosFG.controls['dados'].value);
-    console.log("Dados FormArray: ", this._dados.value);
-    console.log("Dados [Abastract Control]: ", this.dados());
-    console.log("Dados Preparados: ", dados)
+    this._http.post(api.private.parametro.dado.post.replace("{PARAMETRO_ID}", this.parametro.id), dados).subscribe(
+      (response: any) => {
+        if(response?.message) {
+          this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
 
-    // this._http.post(api.private.parametro.dado.post.replace("{PARAMETRO_ID}", this.parametro.id), dados).subscribe(
-    //   (response: any) => {
-    //     if(response?.message) {
-    //       this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+          if(this.parametro.id) { this._loadingParametroByID(this.parametro.id); }
 
-    //       if(this.parametro.id) { this._loadingParametroByID(this.parametro.id); }
+          subject.next(true);
+        }
+      },
+      err => {
+        if(err?.error?.error) {
+          this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+        }
 
-    //       subject.next(true);
-    //     }
-    //   },
-    //   err => {
-    //     if(err?.error?.error) {
-    //       this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
-    //     }
-
-    //     subject.next(false);
-    //   }
-    // );
+        subject.next(false);
+      }
+    );
     
     return subject.asObservable();
   }
@@ -147,7 +142,9 @@ export class DadosComponent {
               if(variavel.is_chave) { sasKeys.push(val); }
               else { sasValues.push(val); }
             }
-            else {                
+            else {
+              obj[variavel.nome] = dadoVar;
+
               if(variavel.is_chave) { sasKeys.push(dadoVar); }
               else { sasValues.push(dadoVar); }
             }                 
