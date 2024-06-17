@@ -84,7 +84,7 @@ export class ParametroFormComponent {
   public disabledNextButton(): boolean {
     if(this.selectedIndex == 0 && this.appParametro) { return this.appParametro.parametroFG.valid; }
     else if(this.selectedIndex == 1 && this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
-    else if(this.selectedIndex == 2) { return true; }
+    else if(this.selectedIndex == 2 && this.appDados) { return this.appDados.dadosFG.valid; }
     else { return true; }
   }
 
@@ -103,6 +103,11 @@ export class ParametroFormComponent {
     else if(this.selectedIndex == 1 && this.appVariaveis && this.appVariaveis.variaveisStepperIsValid()) {
       this.appVariaveis.onCreate().subscribe(result => {
         if(result == true) { this.selectedIndex = 2; }
+      });
+    }
+    else if(this.selectedIndex == 2 && this.appDados && this.appDados.dadosFG.valid) {
+      this.appDados.onCreate().subscribe(result => {
+        if(result == true) { this.selectedIndex = 3; }
       });
     }
     // else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {

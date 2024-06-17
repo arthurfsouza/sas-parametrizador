@@ -47,7 +47,7 @@ export class VariavelFormComponent {
       if(this.data && this.data.variaveis) { this.variaveis = this.data.variaveis; }
 
       if(this.data && this.data.variavel) {
-        console.log("Variavável: ", this.data.variavel);
+        console.log("Variável: ", this.data.variavel);
         this._initValidators(this.data.variavel.tipo);
 
         this.variavelFG.controls['nome'].setValue(this.data.variavel.nome);
@@ -70,8 +70,8 @@ export class VariavelFormComponent {
         if(value && this.variaveis.length > 0) {
           let variavel!: Variavel | undefined;
 
-          if(this.data.variavel) { variavel = this.variaveis.find(v => v.nome == value);  }
-          else { variavel = this.variaveis.find(v => v.nome == value && v.id != this.data.variavel.id) }
+          if(this.data.variavel) { variavel = this.variaveis.find(v => v.nome == value && v.id != this.data.variavel.id);  }
+          else { variavel = this.variaveis.find(v => v.nome == value) }
           
           if(variavel) {
             this.variavelFG.controls['nome'].markAsDirty();

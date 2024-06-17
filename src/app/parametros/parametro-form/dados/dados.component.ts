@@ -10,9 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmDialogComponent } from '../../../../shared/components';
-import { ParametroService } from '../../../../shared/services';
+import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
 import { DigitOnlyDirective } from '../../../../shared/directives';
 import { Parametro, Variavel, VariavelLista } from '../../../../shared/interfaces';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { api } from '../../../../shared/configurations';
 
 @Component({
   selector: 'app-dados',
@@ -35,6 +38,8 @@ import { Parametro, Variavel, VariavelLista } from '../../../../shared/interface
   styleUrl: './dados.component.scss'
 })
 export class DadosComponent {
+  private _http = inject(HttpClient);
+  private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
   constructor(public dialog: MatDialog, private _fb: FormBuilder){ }
@@ -59,6 +64,47 @@ export class DadosComponent {
         }
       }
     });
+  }
+
+  private _loadingParametroByID(id: string): void {
+    this._http.get(api.private.parametro.getByID.replace("{PARAMETRO_ID}", id)).subscribe(
+      (response: any) => {
+        if(response) {
+          const parametro: Parametro = response;
+          this._parametro.setParametro(parametro);
+        }
+      }
+    )
+  }
+
+  public onCreate(): Observable<boolean> {
+    const subject = new BehaviorSubject(false);
+    const dados: any[] = [];
+
+    console.log("DadosFG: ", this.dadosFG.controls['dados'].value);
+    console.log("Dados FormArray: ", this._dados.value);
+    console.log("Dados [Abastract Control]: ", this.dados());
+
+    // this._http.post(api.private.parametro.dado.post.replace("{PARAMETRO_ID}", this.parametro.id), dados).subscribe(
+    //   (response: any) => {
+    //     if(response?.message) {
+    //       this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+
+    //       if(this.parametro.id) { this._loadingParametroByID(this.parametro.id); }
+
+    //       subject.next(true);
+    //     }
+    //   },
+    //   err => {
+    //     if(err?.error?.error) {
+    //       this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+    //     }
+
+    //     subject.next(false);
+    //   }
+    // );
+    
+    return subject.asObservable();
   }
 
   public initDados(): void {
@@ -175,6 +221,10 @@ export class DadosComponent {
     }
 
     return fg;
+  }
+
+  public showErros(e: { error: string, campos_error: string[] }): void {
+    this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
   }
 
   public dados(): AbstractControl[] {

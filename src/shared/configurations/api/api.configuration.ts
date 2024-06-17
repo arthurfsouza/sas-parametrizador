@@ -30,7 +30,8 @@ export const api = {
             getAll: apiURL + "v1/front/parametros/datatable",
             getByID: apiURL + "v1/front/parametros/{PARAMETRO_ID}",
             post: apiURL + "v1/front/parametros",
-            variavel: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/variaveis" }
+            variavel: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/variaveis" },
+            dado: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/dados" }
         }
     }
 };
