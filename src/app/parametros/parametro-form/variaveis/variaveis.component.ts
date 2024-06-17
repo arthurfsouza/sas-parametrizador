@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VariavelFormComponent } from './variavel-form/variavel-form.component';
 import { VariavelUploadComponent } from './variavel-upload/variavel-upload.component';
 import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
-import { Parametro, Variavel } from '../../../../shared/interfaces';
+import { Parametro, Variavel, VariavelLista } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
 
 import StringUtils from '../../../../shared/utils/string/string.utils';
@@ -60,7 +60,7 @@ export class VariaveisComponent {
     const dialogRef = this.dialog.open(VariavelFormComponent, {
       width: '800px',
       height: '100vh',
-      data: { }
+      data: { variaveis: this.data }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -86,7 +86,7 @@ export class VariaveisComponent {
     const dialogRef = this.dialog.open(VariavelFormComponent, {
       width: '800px',
       height: '100vh',
-      data: { variavel: row }
+      data: { variaveis: this.data, variavel: row }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -125,21 +125,49 @@ export class VariaveisComponent {
     this.dataSource = new MatTableDataSource(this.data);
   }
 
-  public variaveisStepperIsValid(): boolean {
-    let valid: boolean = false;
+  public checkVariavelModo(): boolean {
+    let valid: boolean = true;
 
     if(this.parametro) {
       const hasGlobalKey: boolean = this.parametro.modo == "CHAVE";
 
       if(hasGlobalKey) {
-        const variaveisWithKeys: Variavel[] = this.data.filter(d => d.is_chave == true);
+        const variaveisWithKeys: Variavel[] = this.data.filter(d => d.is_chave == true) || [];
 
-        if(variaveisWithKeys && variaveisWithKeys.length > 0) { valid = true; }
+        if(variaveisWithKeys && variaveisWithKeys.length == 0) { valid = false; }
       }
-      else { valid = (this.data.length > 0); }
+    }
+    else { valid = false; }
+
+    return valid;
+  }
+
+  public checkVariavelLista(): boolean {
+    let valid: boolean = true;
+
+    const variaveisWithLista: Variavel[] = this.data.filter(d => d.tipo == "LISTA") || [];
+
+    for(let vl of variaveisWithLista) {
+      if(vl.variaveis_lista && vl.variaveis_lista.length > 0) {
+        const variaveisListaVisiveis: VariavelLista[] = vl.variaveis_lista.filter(l => l.is_visivel == true) || [];
+
+        if(variaveisListaVisiveis && variaveisListaVisiveis.length == 0) {
+          valid = false;
+          break;
+        }
+      }
+      else { valid = false; }
     }
 
     return valid;
+  }
+
+  public variaveisStepperIsValid(): boolean {
+    let validModo: boolean = this.checkVariavelModo();
+    let validLista: boolean = this.checkVariavelLista();
+    let validLength: boolean = this.data.length > 0;
+    
+    return validModo && validLista && validLength;
   }
 
   public onOpenVariaveisUpload(): void {

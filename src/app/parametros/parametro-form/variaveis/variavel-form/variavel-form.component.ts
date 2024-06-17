@@ -1,5 +1,6 @@
 import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { debounceTime } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -42,7 +43,9 @@ export class VariavelFormComponent {
   private _parametro = inject(ParametroService);
 
   constructor(
-    public dialogRef: MatDialogRef<VariavelFormComponent>, @Inject(MAT_DIALOG_DATA) public data: { variavel: Variavel }) {
+    public dialogRef: MatDialogRef<VariavelFormComponent>, @Inject(MAT_DIALOG_DATA) public data: { variaveis: Variavel[]; variavel: Variavel }) {
+      if(this.data && this.data.variaveis) { this.variaveis = this.data.variaveis; }
+
       if(this.data && this.data.variavel) {
         this._initValidators(this.data.variavel.tipo);
 
@@ -59,6 +62,23 @@ export class VariavelFormComponent {
           this.dataSource = new MatTableDataSource(this.dataListas);
         }
       }
+
+      this.variavelFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
+        this.variavelFG.controls['nome'].setErrors(null);
+
+        if(value && this.variaveis.length > 0) {
+          let variavel!: Variavel | undefined;
+
+          if(this.data.variavel) { variavel = this.variaveis.find(v => v.nome == value);  }
+          else { variavel = this.variaveis.find(v => v.nome == value && v.id != this.data.variavel.id) }
+          
+          if(variavel) {
+            this.variavelFG.controls['nome'].markAsDirty();
+            this.variavelFG.controls['nome'].markAsTouched();
+            this.variavelFG.controls['nome'].setErrors({ nomeExistente: true });
+          }
+        }
+      })
   }
 
   public parametro!: Parametro;
@@ -75,6 +95,7 @@ export class VariavelFormComponent {
 
   public listasFG: FormGroup = new FormGroup({ item: new FormControl(null, [Validators.required]) });
 
+  public variaveis: Variavel[] = [];
   public tipos: { id: number; nome: string; tipo: VariavelTipo }[] = variaveisTipo;
 
   public displayedColumns: string[] = ["checkbox", "nome", "actions"];

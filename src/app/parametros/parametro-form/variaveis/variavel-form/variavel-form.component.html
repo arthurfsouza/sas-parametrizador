@@ -27,6 +27,9 @@
                 <mat-label>NOME DA VARIÁVEL</mat-label>
                 <input matInput formControlName="nome" maxlength="100" required>
                 <mat-hint>Apenas letras, números e underline</mat-hint>
+                <mat-error *ngIf="variavelFG.controls['nome'].hasError('nomeExistente')">
+                    Já existe uma variável com o nome informado.
+                </mat-error>
             </mat-form-field>
         </div>
         
