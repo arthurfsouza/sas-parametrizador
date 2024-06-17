@@ -49,6 +49,7 @@ export class DadosComponent {
 
   public displayedColumns: string[] = [];
   public variaveis: Variavel[] = [];
+  public dados: Dado[] = [];
 
   public dadosFG: FormGroup = new FormGroup({ dados: this._fb.array([]) });
   private _dados: FormArray = <FormArray>this.dadosFG.get('dados');
@@ -59,8 +60,9 @@ export class DadosComponent {
         this.parametro = parametro;
 
         if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
-          this.variaveis = this.parametro.variaveis;
-          
+          this.variaveis = this.parametro.variaveis || [];
+          this.dados = this.parametro.dados || [];
+
           this.initDados();
         }
       }
@@ -172,8 +174,26 @@ export class DadosComponent {
       for(let varAux of this.parametro.variaveis) { this.displayedColumns.push("dado-control-" + varAux.id); }
     }
 
-    this.displayedColumns.push("dado-control-actions");      
-    this._patchDado(1);
+    this.displayedColumns.push("dado-control-actions");
+    
+    if(this.dados && this.dados.length > 0) {
+      for(let i = 1; i++; i < this.dados.length) {
+        const dado: Dado = this.dados[i];
+        let obj: any = { };
+        
+        this.displayedColumns.map(dl => {
+          const variavelID: string = dl.replace("dado-control-", "");
+          const variavelValue: any = dado.informacao[variavelID] || null;
+
+          if(variavelValue) { obj[dl] = variavelValue }
+        });
+
+        console.log("Obj: ", obj);
+
+        this._patchDado(i, obj);
+      }
+    }
+    
   }
 
   public getColumnID(column: string): any { return column.replace("dado-control-", ""); }
@@ -285,7 +305,7 @@ export class DadosComponent {
     this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
   }
 
-  public dados(): AbstractControl[] {
+  public dadosControl(): AbstractControl[] {
     let formGroup: any = this.dadosFG.get('dados');
     
     return formGroup.controls;

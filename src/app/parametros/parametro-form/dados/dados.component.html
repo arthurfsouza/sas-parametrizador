@@ -10,7 +10,7 @@
             </thead>
           
             <tbody>
-              <tr *ngFor="let dado of dados(); let i = index" [formGroupName]="i">
+              <tr *ngFor="let dado of dadosControl(); let i = index" [formGroupName]="i">
                 <ng-container *ngFor="let column of displayedColumns">
                     <td *ngIf="column != 'dado-control-actions'">
                         <ng-container *ngIf="getColumnVariable(column)?.tipo == 'DECIMAL'">                            
