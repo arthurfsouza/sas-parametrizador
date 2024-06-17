@@ -88,8 +88,8 @@ export class VariavelUploadComponent {
             if(variavel.tipo == 'LISTA') {
               let data: any[] = [];
 
-              if(variavel && variavel.variavel_lista && variavel.variavel_lista.length > 0) {
-                data = variavel.variavel_lista.map((l: any) => { return {
+              if(variavel && variavel.variaveis_lista && variavel.variaveis_lista.length > 0) {
+                data = variavel.variaveis_lista.map((l: any) => { return {
                   lista: { id: l.id, nome: l.nome, ativo: l.is_visivel },
                   controle: { nomeObrigatorio: false, ativoObrigatorio: false, ativoNaoBooleano: false }
                 }});
@@ -136,7 +136,7 @@ export class VariavelUploadComponent {
       if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
         for(let variavel of this.parametro.variaveis) {
           if(variavel.nome === row.nome) {
-            variavel.variavel_lista = row.data.map((d: any) => { return { id: d.lista.id, nome: d.lista.nome, checked: d.lista.is_visivel } });
+            variavel.variaveis_lista = row.data.map((d: any) => { return { id: d.lista.id, nome: d.lista.nome, checked: d.lista.is_visivel } });
             break;
           }
         }
@@ -275,7 +275,7 @@ export class VariavelUploadComponent {
             tamanho: tamanho,
             qtd_casas_decimais: qtdCasasDecimais,
             is_chave: chave,
-            variavel_lista: [],
+            variaveis_lista: [],
             parametro_id: this.parametro?.id
           },
           controle: {

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Variavel, VariavelLista, VariavelTipo } from '../../../../../shared/interfaces';
+import { ParametroService } from '../../../../../shared/services';
+import { Parametro, Variavel, VariavelLista, VariavelTipo } from '../../../../../shared/interfaces';
 import { variaveisTipo } from '../../../../../shared/mockups';
 
 import StringUtils from '../../../../../shared/utils/string/string.utils';
@@ -38,9 +39,10 @@ import StringUtils from '../../../../../shared/utils/string/string.utils';
   styleUrl: './variavel-form.component.scss'
 })
 export class VariavelFormComponent {
+  private _parametro = inject(ParametroService);
+
   constructor(
-    public dialogRef: MatDialogRef<VariavelFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { variavel: Variavel }) {
+    public dialogRef: MatDialogRef<VariavelFormComponent>, @Inject(MAT_DIALOG_DATA) public data: { variavel: Variavel }) {
       if(this.data && this.data.variavel) {
         this._initValidators(this.data.variavel.tipo);
 
@@ -50,14 +52,16 @@ export class VariavelFormComponent {
         this.variavelFG.controls['tamanho'].setValue(this.data.variavel.tamanho);
         this.variavelFG.controls['qtd_casas_decimais'].setValue(this.data.variavel.qtd_casas_decimais);
         this.variavelFG.controls['is_chave'].setValue(this.data.variavel.is_chave);
-        this.variavelFG.controls['variavel_lista'].setValue(this.data.variavel.variavel_lista);
+        this.variavelFG.controls['variaveis_lista'].setValue(this.data.variavel.variaveis_lista);
 
-        if(this.data.variavel.variavel_lista && this.data.variavel.variavel_lista.length > 0) {
-          this.dataListas = this.data.variavel.variavel_lista;
+        if(this.data.variavel.variaveis_lista && this.data.variavel.variaveis_lista.length > 0) {
+          this.dataListas = this.data.variavel.variaveis_lista;
           this.dataSource = new MatTableDataSource(this.dataListas);
         }
       }
   }
+
+  public parametro!: Parametro;
 
   public variavelFG: FormGroup = new FormGroup({
     nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
@@ -66,7 +70,7 @@ export class VariavelFormComponent {
     tamanho: new FormControl(null, [Validators.required]),
     qtd_casas_decimais: new FormControl(null),
     is_chave: new FormControl(true, [Validators.required]),
-    variavel_lista: new FormControl(null)
+    variaveis_lista: new FormControl(null)
   });
 
   public listasFG: FormGroup = new FormGroup({ item: new FormControl(null, [Validators.required]) });
@@ -77,6 +81,20 @@ export class VariavelFormComponent {
   public dataSource: MatTableDataSource<VariavelLista> = new MatTableDataSource<VariavelLista>([]);
   public dataListas: VariavelLista[] = [];
   public itemID: string | null = null;
+
+  ngOnInit(): void {
+    this._parametro.getParametro().subscribe(parametro => {
+      if(parametro) {
+        this.parametro = parametro;
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    if(this.parametro) {
+      if(this.parametro.modo == "GLOBAL") { this.variavelFG.controls['is_chave'].setValue(false); }
+    }
+  }
 
   public onChangeTipo(event$: any): void {
     if(event$ && event$.value && event$.value.tipo) { this._initValidators(event$.value.tipo); }
@@ -99,8 +117,8 @@ export class VariavelFormComponent {
     this.variavelFG.controls['qtd_casas_decimais'].setValidators(null);
     this.variavelFG.controls['qtd_casas_decimais'].reset();
 
-    this.variavelFG.controls['variavel_lista'].setValidators(null);
-    this.variavelFG.controls['variavel_lista'].reset();
+    this.variavelFG.controls['variaveis_lista'].setValidators(null);
+    this.variavelFG.controls['variaveis_lista'].reset();
     
     this.listasFG.controls['item'].reset();      
 
@@ -109,8 +127,8 @@ export class VariavelFormComponent {
       this.variavelFG.controls['qtd_casas_decimais'].updateValueAndValidity();
     }
     else if(tipo == "LISTA") {
-      this.variavelFG.controls['variavel_lista'].addValidators([Validators.required]);
-      this.variavelFG.controls['variavel_lista'].updateValueAndValidity();
+      this.variavelFG.controls['variaveis_lista'].addValidators([Validators.required]);
+      this.variavelFG.controls['variaveis_lista'].updateValueAndValidity();
     }
   }
 
@@ -133,7 +151,7 @@ export class VariavelFormComponent {
       }
 
       this.dataSource = new MatTableDataSource(this.dataListas);
-      this.variavelFG.controls['variavel_lista'].setValue(this.dataListas);
+      this.variavelFG.controls['variaveis_lista'].setValue(this.dataListas);
       this.listasFG.controls['item'].reset();
       this.itemID = null;
     }
@@ -157,7 +175,7 @@ export class VariavelFormComponent {
     this.dataListas.splice(index, 1);
 
     this.dataSource = new MatTableDataSource(this.dataListas);
-    this.variavelFG.controls['variavel_lista'].setValue(this.dataListas);
+    this.variavelFG.controls['variaveis_lista'].setValue(this.dataListas);
   }
 
   public onSave(): void {

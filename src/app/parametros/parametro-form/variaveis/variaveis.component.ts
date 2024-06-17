@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,7 +15,6 @@ import { Parametro, Variavel } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
 
 import StringUtils from '../../../../shared/utils/string/string.utils';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-variaveis',
@@ -73,7 +73,7 @@ export class VariaveisComponent {
           qtd_casas_decimais: result.variavel?.qtd_casas_decimais || null,
           tamanho: result.variavel.tamanho,
           is_chave: result.variavel.is_chave,
-          variavel_lista: result.variavel?.variavel_lista || null,
+          variaveis_lista: result.variavel?.variaveis_lista || null,
           parametro_id: this.parametro?.id
         });
 
@@ -99,7 +99,7 @@ export class VariaveisComponent {
             item.qtd_casas_decimais = result.variavel.qtd_casas_decimais || null;
             item.tamanho = result.variavel.tamanho;
             item.is_chave = result.variavel.is_chave;
-            item.variavel_lista = result.variavel.variavel_lista || null;
+            item.variaveis_lista = result.variavel.variaveis_lista || null;
 
             break;
           }
@@ -177,7 +177,7 @@ export class VariaveisComponent {
         is_chave: variavel.is_chave,
         tamanho: variavel.tamanho,
         qtd_casas_decimais: variavel.qtd_casas_decimais,
-        variavel_lista: variavel.variavel_lista?.length ? variavel.variavel_lista.map(l => {
+        variaveis_lista: variavel.variaveis_lista?.length ? variavel.variaveis_lista.map(l => {
           return { nome: l.nome, is_visivel: l.is_visivel }
         }) : []
       })

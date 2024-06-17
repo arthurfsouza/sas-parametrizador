@@ -11,7 +11,7 @@
 
     <br/>
 
-    <div class="row custom-row-padding slide-toggle-group">
+    <div class="row custom-row-padding slide-toggle-group" *ngIf="parametro.modo == 'CHAVE'">
         <div class="slide-toggle-chave">
             <mat-slide-toggle labelPosition="before" formControlName="is_chave">
                 USAR COMO CHAVE

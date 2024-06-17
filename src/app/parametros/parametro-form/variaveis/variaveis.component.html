@@ -19,6 +19,15 @@
 
     <mat-divider></mat-divider>
 
+    <div class="row variaveis-warning" *ngIf="variaveisStepperIsValid()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <div class="warning-text">
+                <b>Aviso: </b>Nenhuma variável do tipo "CHAVE" cadastrada!
+            </div>
+        </div>
+    </div>
+
     <div class="variaveis-table">
         <div class="table-container" *ngIf="dataSource">
             <table mat-table [dataSource]="dataSource">

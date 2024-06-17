@@ -108,7 +108,7 @@ export class DadosComponent {
   public getListItems(column: string): VariavelLista[] {
     const id: any = this.getColumnID(column);
     const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
-    const variavelLista: VariavelLista[] = variavel ? variavel.variavel_lista?.filter((l: any) => l.checked == true) || [] : [];
+    const variavelLista: VariavelLista[] = variavel ? variavel.variaveis_lista?.filter((l: any) => l.checked == true) || [] : [];
 
     return variavelLista;
   }

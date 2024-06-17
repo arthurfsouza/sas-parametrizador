@@ -15,7 +15,7 @@ export interface Variavel {
     parametro_id: string;
     parametro?: Parametro;
 
-    variavel_lista?: VariavelLista[];
+    variaveis_lista?: VariavelLista[];
 }
 
 export interface VariavelUpload {

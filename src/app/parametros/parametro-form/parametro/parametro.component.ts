@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {  MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
+import { MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
 import { Cluster, Parametro, Politica } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
+
 import 'moment/locale/pt-br';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 export const CUSTOM_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -32,6 +34,7 @@ export const CUSTOM_FORMATS = {
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatIconModule,
     MatInputModule,
     MatRadioModule,
     MatSelectModule,
@@ -42,7 +45,7 @@ export const CUSTOM_FORMATS = {
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS },
-    {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'}
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ]
 })
 export class ParametroComponent {
