@@ -3,6 +3,8 @@
 
     .segmentos-topnav {
         display: flex;
+        margin-left: 0px;
+        margin-right: 0px;
         background-color: whitesmoke;
 
         .segmentos-title {
@@ -14,6 +16,8 @@
     .segmentos-content {
         display: block;
         padding: 16px 24px;
+        margin-left: 0px;
+        margin-right: 0px;
 
         .segmentos-content-top {
             display: flex;

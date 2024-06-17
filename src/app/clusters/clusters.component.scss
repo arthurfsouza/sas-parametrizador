@@ -3,6 +3,8 @@
 
     .clusters-topnav {
         display: flex;
+        margin-left: 0px;
+        margin-right: 0px;
         background-color: whitesmoke;
 
         .clusters-title {
@@ -14,6 +16,8 @@
     .clusters-content {
         display: block;
         padding: 16px 24px;
+        margin-left: 0px;
+        margin-right: 0px;
 
         .clusters-content-top {
             .content-top-filter {

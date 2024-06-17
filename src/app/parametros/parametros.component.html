@@ -1,4 +1,4 @@
-<div class="parametros-container container">
+<div class="parametros-container">
     <div class="row parametros-topnav">
         <div class="parametros-title">
             <menu-navigator></menu-navigator>
@@ -127,7 +127,7 @@
 
                     <ng-container matColumnDef="versao">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '5%' }" class="t-center"> VERSÃO </th>
-                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '5%' }" class="t-start">
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '5%' }" class="t-center">
                             {{ row.versao }}
                         </td>
                     </ng-container>

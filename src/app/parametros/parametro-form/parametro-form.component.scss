@@ -3,6 +3,8 @@
 
     .parametro-form-topnav {
         display: flex;
+        margin-left: 0px;
+        margin-right: 0px;
         background-color: whitesmoke;
 
         .parametro-form-title {
@@ -20,11 +22,17 @@
     }
 
     .parametro-form-content {
+        margin-left: 15px;
+        margin-right: 15px;
+
         .d-none { display: none; }
         .d-block { display: block; }
     }
 
     .parametro-form-footer {
+        margin-left: 0px;
+        margin-right: 0px;
+
         div {
             padding-top: 8px;
             padding-bottom: 8px;

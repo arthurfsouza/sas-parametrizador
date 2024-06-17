@@ -3,6 +3,8 @@
 
     .politicas-topnav {
         display: flex;
+        margin-left: 0px;
+        margin-right: 0px;
         background-color: whitesmoke;
 
         .politicas-title {
@@ -14,6 +16,8 @@
     .politicas-content {
         display: block;
         padding: 16px 24px;
+        margin-left: 0px;
+        margin-right: 0px;
 
         .politicas-content-top {
             .content-top-filter {
