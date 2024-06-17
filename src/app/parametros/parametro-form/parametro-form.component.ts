@@ -53,7 +53,7 @@ export class ParametroFormComponent {
 
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
-      if(parametro) { this.parametro = parametro; }
+      if(parametro) { this.parametro = parametro; console.log("Parâmetro: ", this.parametro); }
     });
 
     // this._parametro.setParametro(this.parametro);

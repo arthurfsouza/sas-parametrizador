@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { interval } from "rxjs";
 import { addSeconds } from 'date-fns';
-import { LocalStorageService } from "../../services";
+import { DataStorage, LocalStorageService } from "../../services";
 import { Auth } from "./auth.interface";
 import { api } from "../../configurations";
 
@@ -12,6 +12,12 @@ export class AuthService {
     private _localStorage = inject(LocalStorageService);
 
     private _auth!: Auth;
+
+    constructor() {
+        this._localStorage.getStorage().subscribe((dataStorage: DataStorage) => {
+            if(dataStorage?.type == "auth") { this._auth = dataStorage?.data; }
+        });
+    }
 
     public initSchedule(): void {
         this._auth = this._localStorage.getStorageData("auth");
@@ -28,6 +34,13 @@ export class AuthService {
                     this._auth = this._refreshToken(this._auth);
                 }
             });
+        }
+    }
+
+    public logout(): void {
+        if(this._auth) {
+            this._localStorage.storageData({ type: 'auth', data: null });
+            window.location.reload();
         }
     }
 

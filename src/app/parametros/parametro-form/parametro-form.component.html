@@ -16,9 +16,9 @@
                 <mat-step [stepControl]="dadosStepperFG">
                     <ng-template matStepLabel>Dados</ng-template>
                 </mat-step>
-                <!-- <mat-step [stepControl]="revisaoStepperFG">
+                <mat-step [stepControl]="revisaoStepperFG">
                     <ng-template matStepLabel>Revisão</ng-template>
-                </mat-step> -->
+                </mat-step>
             </mat-stepper>
         </div>
     </div>
@@ -33,9 +33,9 @@
         <app-dados #appDados
             [ngClass]="{'d-block': selectedIndex == 2, 'd-none': selectedIndex != 2}">
         </app-dados>
-        <!-- <app-revisao #appRevisao
+        <app-revisao #appRevisao
             [ngClass]="{'d-block': selectedIndex == 3, 'd-none': selectedIndex != 3}">
-        </app-revisao> -->
+        </app-revisao>
     </div>
 
     <div class="row parametro-form-footer">
