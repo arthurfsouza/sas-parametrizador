@@ -79,7 +79,7 @@ export class VariavelUploadComponent {
             variaveis.push({
               nome: variavel.nome,
               descricao: variavel.descricao,
-              chave: variavel.is_chave ? "true" : "false",
+              is_chave: variavel.is_chave ? "true" : "false",
               tipo: variavel.tipo,
               tamanho: variavel.tamanho.toString(),
               qtd_casas_decimais: variavel.qtd_casas_decimais?.toString() || null,
@@ -90,7 +90,7 @@ export class VariavelUploadComponent {
 
               if(variavel && variavel.variaveis_lista && variavel.variaveis_lista.length > 0) {
                 data = variavel.variaveis_lista.map((l: any) => { return {
-                  lista: { id: l.id, nome: l.nome, ativo: l.is_visivel },
+                  lista: { id: l.id, nome: l.nome, is_visivel: l.is_visivel },
                   controle: { nomeObrigatorio: false, ativoObrigatorio: false, ativoNaoBooleano: false }
                 }});
               }
