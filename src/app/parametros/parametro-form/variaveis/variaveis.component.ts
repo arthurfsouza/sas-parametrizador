@@ -215,7 +215,7 @@ export class VariaveisComponent {
         if(response?.message) {
           this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
 
-          if(response.id) { this._loadingParametroByID(response.id); }
+          if(this.parametro.id) { this._loadingParametroByID(this.parametro.id); }
 
           subject.next(true);
         }
