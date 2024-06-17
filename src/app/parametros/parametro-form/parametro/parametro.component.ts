@@ -96,16 +96,17 @@ export class ParametroComponent {
           this.parametroFG.controls['cluster'].setValue(this.parametro.politica?.cluster);
           this.parametroFG.controls['politica'].setValue(this.parametro.politica);
 
-          const dataVigencia: Date = this.parametro.data_hora_vigencia;
-          const hours: any = dataVigencia.getHours();
-          const minutes: any = dataVigencia.getMinutes();
-
-          const hoursAux: any = (hours < 10 ? "0" : "") + hours;
-          const minutesAux: any = (minutes < 10 ? "0" : "") + minutes;
-
-          this.parametroFG.controls['data_vigencia'].setValue(Date);
-          this.parametroFG.controls['hora_vigencia'].setValue(hoursAux + ":" + minutesAux);
-
+          if(this.parametro.data_hora_vigencia) {
+            const dataVigencia: Date = new Date(this.parametro.data_hora_vigencia);
+            const hours: any = dataVigencia.getHours();
+            const minutes: any = dataVigencia.getMinutes();
+  
+            const hoursAux: any = (hours < 10 ? "0" : "") + hours;
+            const minutesAux: any = (minutes < 10 ? "0" : "") + minutes;
+  
+            this.parametroFG.controls['data_vigencia'].setValue(dataVigencia);
+            this.parametroFG.controls['hora_vigencia'].setValue(hoursAux + ":" + minutesAux);
+          }
         }
       }
     });

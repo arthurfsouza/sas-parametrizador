@@ -99,10 +99,12 @@ export class RevisaoComponent {
     }
   }
 
-  public getDataVigencia(): string {
-    let dataVigencia: Date = this.parametro.data_hora_vigencia;    
+  public getDataVigencia(): Date {
+    let dataVigencia: Date = new Date();
+    
+    if(this.parametro.data_hora_vigencia) { dataVigencia = new Date(this.parametro.data_hora_vigencia); }
 
-    return dataVigencia.toLocaleDateString() || "-";
+    return dataVigencia;
   }
 
   public initEventos(): void {

@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-md-9 col-12 revisao-detalhes">
                     <label>DATA DA VIGÊNCIA</label>
-                    <span>{{ getDataVigencia() }}</span>
+                    <span>{{ getDataVigencia() | date: 'dd/MM/yyyy' }}</span>
                 </div>
 
                 <div class="col-md-3 col-12 revisao-detalhes">
