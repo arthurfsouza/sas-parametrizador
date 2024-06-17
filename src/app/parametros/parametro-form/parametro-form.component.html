@@ -7,13 +7,13 @@
         </div>
         <div class="parametro-form-stepper">
             <mat-stepper linear #stepper labelPosition="bottom" [selectedIndex]="selectedIndex" (selectedIndexChange)="onStepperChange($event)">
-                <mat-step [stepControl]="parametroStepperFG">
+                <mat-step [stepControl]="parametroStepperFG" [completed]="parametroCompleted()">
                     <ng-template matStepLabel>Parâmetro</ng-template>
                 </mat-step>
-                <mat-step [stepControl]="variaveisStepperFG">
+                <mat-step [stepControl]="variaveisStepperFG" [editable]="parametroIsEditavel" [completed]="variaveisCompleted()">
                     <ng-template matStepLabel>Variáveis</ng-template>
                 </mat-step>
-                <mat-step [stepControl]="dadosStepperFG">
+                <mat-step [stepControl]="dadosStepperFG" [editable]="parametroIsEditavel" [completed]="dadosCompleted()">
                     <ng-template matStepLabel>Dados</ng-template>
                 </mat-step>
                 <mat-step [stepControl]="revisaoStepperFG">

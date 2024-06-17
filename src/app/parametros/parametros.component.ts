@@ -16,6 +16,7 @@ import { ParametrosBuscaAvancadaComponent } from './parametros-busca-avancada/pa
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { MenuNavigatorComponent } from '../../shared/components/menu-navigator/menu-navigator.component';
 import { DatatablePaginatorComponent, DatatablePaginatorSource } from '../../shared/components/datatable-paginator/datatable-paginator.component';
+import { ParametroService, SnackbarMessagesService } from '../../shared/services';
 import { Segmento, Cluster, Politica, Parametro, DataTableAPI, DataTableAPIFilter, ParametroStatus } from '../../shared/interfaces';
 import { parametrosStatus } from '../../shared/mockups';
 import { api } from '../../shared/configurations';
@@ -47,6 +48,8 @@ export class ParametrosComponent {
   @ViewChild("paginator") public paginator!: DatatablePaginatorComponent;
 
   private _http = inject(HttpClient);
+  private _snackbar = inject(SnackbarMessagesService);
+  private _parametro = inject(ParametroService);
 
   constructor(public dialog: MatDialog, private _router: Router){
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
@@ -72,6 +75,14 @@ export class ParametrosComponent {
     variavel: { id: 1, nome: "Todos", modo: "todos" },
     parametrosStatus: this.parametrosStatus
   };
+
+  public statusParaDetalhes: string[] = [
+    "AVAILABLE_FOR_REVIEW", "ANALYTICAL_ENVIRONMENT",
+    "PENDING_INITIAL_APPROVAL", "INITIAL_APPROVAL_REFUSED", 
+    "INITIAL_APPROVAL_COMPLETED", "PENDING_FINAL_APPROVAL",
+    "FINAL_APPROVAL_REFUSED", "FINAL_APPROVAL_COMPLETED",
+    "AWAITING_IMPLEMENTATION", "PRODUCTION_ENVIRONMENT"
+  ];
 
   ngOnInit(): void { 
     this._loadingParametros();
@@ -158,10 +169,11 @@ export class ParametrosComponent {
   
 
   public onAddParametro(): void {
+    this._parametro.setParametro(null);
     this._router.navigate(["parametro"]);
   }
 
-  public onDetalhes(row: any): void { // Parametrizador
+  public onDetalhes(row: Parametro): void {
     this._router.navigate(["parametro/" + row.id]);
   }
 
@@ -225,17 +237,17 @@ export class ParametrosComponent {
     });
   }
 
-  public onEditarParametro(row: any): void { // Parametrizador
-    this._router.navigate(["parametrizador/" + row.id]);
+  public onEditarParametro(row: Parametro): void {
+    this._router.navigate(["parametro/" + row.id]);
   }
 
-  public onDeletarParametro(row: any): void { // Parametrizador
+  public onDeletarParametro(row: Parametro): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '600px',
       height: '300px',
       data: {
         title: "EXCLUSÃO DE PARÂMETRO",
-        description: `<p>Você tem certeza que deseja excluir o parâmetro <b>${row.parametro?.nome}</b>?</p>`,
+        description: `<p>Você tem certeza que deseja excluir o parâmetro <b>${row?.nome}</b>?</p>`,
         descriptionType: "HTML",
         buttonText: "Excluir"
       }
@@ -243,8 +255,23 @@ export class ParametrosComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if(result == "delete") {
-        console.log("Excluir Parâmetro");
+        this._http.delete(api.private.parametro.delete.replace("{PARAMETRO_ID}", row.id)).subscribe(
+          (response: any) => {
+            if(response?.message) {
+              this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+            }
+          },
+          err => {
+            if(err?.error?.error) {
+              this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+            }
+          }
+        );
       }
     });
+  }
+
+  public showErros(e: { error: string, campos_error: string[] }): void {
+    this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
   }
 }

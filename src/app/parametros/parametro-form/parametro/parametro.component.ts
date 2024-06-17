@@ -67,6 +67,7 @@ export class ParametroComponent {
   });
 
   public parametro!: Parametro;
+  public parametroIsEditavel: boolean = true;
   
   public clusters: Cluster[] = [];
   public politicas: Politica[] = [];
@@ -111,6 +112,20 @@ export class ParametroComponent {
             this.parametroFG.controls['hora_vigencia'].setValue(hoursAux + ":" + minutesAux);
           }
         }
+      }
+    });
+
+    this._parametro.getIsEditavel().subscribe(isEditavel => {
+      this.parametroIsEditavel = isEditavel;
+
+      if(!this.parametroIsEditavel) {
+        this.parametroFG.controls['nome'].disable();
+        this.parametroFG.controls['descricao'].disable();
+        this.parametroFG.controls['modo'].disable();
+        this.parametroFG.controls['data_vigencia'].disable();
+        this.parametroFG.controls['hora_vigencia'].disable();
+        this.parametroFG.controls['cluster'].disable();
+        this.parametroFG.controls['politica'].disable();
       }
     });
   }
@@ -207,8 +222,45 @@ export class ParametroComponent {
     return subject.asObservable();
   }
 
-  public onUpdate(): void {
+  public onUpdate(): Observable<boolean> {
+    const subject = new BehaviorSubject(false);
 
+    const data_vigencia: Date = this.parametroFG.value['data_vigencia'];
+    const hora_vigencia: any = this.parametroFG.value['hora_vigencia'];
+
+    let data_vigencia_aux: string = data_vigencia.toISOString();
+
+    if(data_vigencia_aux?.length >= 10) { data_vigencia_aux = data_vigencia_aux.substring(0, 10); }
+
+    const body: any = {
+      nome: this.parametroFG.value['nome'],
+      descricao: this.parametroFG.value['descricao'],
+      modo: this.parametroFG.value['modo'],
+      data_hora_vigencia: data_vigencia_aux + " " + hora_vigencia + ":00",
+      versao: "1.0",
+      politica_id: this.parametroFG.value['politica']?.id
+    };
+
+    this._http.put(api.private.parametro.put.replace("{PARAMETRO_ID}", this.parametro.id), body).subscribe(
+      (response: any) => {
+        if(response?.message) {
+          this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+
+          if(this.parametro.id) { this._loadingParametroByID(this.parametro.id); }
+          
+          subject.next(true);
+        }
+      },
+      err => {
+        if(err?.error?.error) {
+          this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+        }
+
+        subject.next(false);
+      }
+    )
+    
+    return subject.asObservable();
   }
 
   public showErros(e: { error: string, campos_error: string[] }): void {

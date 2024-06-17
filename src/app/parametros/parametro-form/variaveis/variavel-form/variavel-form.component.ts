@@ -47,7 +47,6 @@ export class VariavelFormComponent {
       if(this.data && this.data.variaveis) { this.variaveis = this.data.variaveis; }
 
       if(this.data && this.data.variavel) {
-        console.log("Variável: ", this.data.variavel);
         this._initValidators(this.data.variavel.tipo);
 
         this.variavelFG.controls['nome'].setValue(this.data.variavel.nome);

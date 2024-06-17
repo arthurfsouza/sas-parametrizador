@@ -27,9 +27,11 @@ export const api = {
             put: apiURL + "v1/front/politicas/{POLITICA_ID}",
         },
         parametro: {
+            delete: apiURL + "v1/front/parametros/{PARAMETRO_ID}",
             getAll: apiURL + "v1/front/parametros/datatable",
             getByID: apiURL + "v1/front/parametros/{PARAMETRO_ID}",
             post: apiURL + "v1/front/parametros",
+            put: apiURL + "v1/front/parametros/{PARAMETRO_ID}",
             variavel: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/variaveis" },
             dado: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/dados" }
         }

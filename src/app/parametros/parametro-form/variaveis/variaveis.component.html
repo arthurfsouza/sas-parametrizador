@@ -28,6 +28,15 @@
         </div>
     </div>
 
+    <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelValue()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">error</mat-icon>
+            <div class="warning-text">
+                <b>Importante: </b>Obrigatório o preenchimento de pelo menos 1 variável diferente de "CHAVE"!
+            </div>
+        </div>
+    </div>
+
     <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelLista()">
         <div class="warning-content">
             <mat-icon class="warning-icon">error</mat-icon>

@@ -145,13 +145,15 @@
                         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
                             <div class="content-table-actions">
-                                <button mat-icon-button matTooltip="Editar parâmetro" (click)="onEditarParametro(row)" *ngIf="row?.status?.type == 'CREATED'">
+                                <button mat-icon-button matTooltip="Editar parâmetro" (click)="onEditarParametro(row)" *ngIf="['CREATED', 'UPDATED'].includes(row?.status?.type)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
-                                <button mat-icon-button matTooltip="Excluir parâmetro" (click)="onDeletarParametro(row)" *ngIf="row?.status?.type == 'CREATED'">
+                                <button mat-icon-button matTooltip="Excluir parâmetro" (click)="onDeletarParametro(row)" *ngIf="['CREATED', 'UPDATED'].includes(row?.status?.type)">
                                     <mat-icon color="warn">delete</mat-icon>
                                 </button>
-                                <button mat-flat-button color="primary" (click)="onDetalhes(row)" *ngIf="row?.status?.type != 'CREATED'">Detalhes</button>
+                                <button mat-flat-button color="primary" (click)="onDetalhes(row)" *ngIf="statusParaDetalhes.includes(row?.status?.type)">
+                                    Detalhes
+                                </button>
                             </div>
                         </td>
                     </ng-container>

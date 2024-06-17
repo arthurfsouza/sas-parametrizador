@@ -94,7 +94,7 @@ export class VariaveisComponent {
         for(let item of this.data) {
           if(item.id == row.id) {
             item.nome = result.variavel.nome;
-            item.tipo = result.variavel.tipo.codigo;
+            item.tipo = result.variavel.tipo?.tipo || null;
             item.descricao = result.variavel.descricao;
             item.qtd_casas_decimais = result.variavel.qtd_casas_decimais || null;
             item.tamanho = result.variavel.tamanho;
@@ -123,6 +123,19 @@ export class VariaveisComponent {
     this.data.splice(index, 1);
 
     this.dataSource = new MatTableDataSource(this.data);
+  }
+
+  public checkVariavelValue(): boolean {
+    let valid: boolean = true;
+
+    if(this.parametro) {
+      const variaveisWithValues: Variavel[] = this.data.filter(d => d.is_chave == false) || [];
+
+      if(variaveisWithValues && variaveisWithValues.length == 0) { valid = false; }
+    }
+    else { valid = false; }
+
+    return valid;
   }
 
   public checkVariavelModo(): boolean {
@@ -164,10 +177,11 @@ export class VariaveisComponent {
 
   public variaveisStepperIsValid(): boolean {
     let validModo: boolean = this.checkVariavelModo();
+    let validValue: boolean = this.checkVariavelValue();
     let validLista: boolean = this.checkVariavelLista();
     let validLength: boolean = this.data.length > 0;
     
-    return validModo && validLista && validLength;
+    return validModo && validValue && validLista && validLength;
   }
 
   public onOpenVariaveisUpload(): void {

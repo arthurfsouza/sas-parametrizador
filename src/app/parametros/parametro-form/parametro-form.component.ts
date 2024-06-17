@@ -48,6 +48,7 @@ export class ParametroFormComponent {
 
   public parametro!: Parametro;
   public parametroID!: string;
+  public parametroIsEditavel: boolean = true;
 
   public selectedIndex: number = 0;
 
@@ -56,7 +57,7 @@ export class ParametroFormComponent {
       if(parametro) { this.parametro = parametro; console.log("Parâmetro: ", this.parametro); }
     });
 
-    // this._parametro.setParametro(this.parametro);
+    this._parametro.getIsEditavel().subscribe(isEditavel => { this.parametroIsEditavel = isEditavel; });
 
     this._activated.params.subscribe(params => {
       if(params['parametroID']) {
@@ -70,9 +71,12 @@ export class ParametroFormComponent {
   private _loadingParametro(): void {
     if(this.parametroID) {
       this._http.get(api.private.parametro.getByID.replace("{PARAMETRO_ID}", this.parametroID)).subscribe(
-        response => {
-          console.log(response);
-          // this._parametro.setParametro(this.parametro);
+        (response: any) => {
+          if(response && response.status_code) {
+            this._parametro.setParametro(this.parametro);
+
+            if(!["001", "002"].includes(response.status_code)) { this._parametro.setIsEditavel(false); }
+          }
         }
       )
     }
@@ -81,34 +85,66 @@ export class ParametroFormComponent {
 
   public onStepperChange(index$: number): void { this.selectedIndex = index$; }
 
+  public parametroCompleted(): boolean { 
+    if(this.appParametro) { return this.appParametro.parametroFG.valid; }
+   
+    return false;
+  }
+
+  public variaveisCompleted(): boolean { 
+    if(this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
+   
+    return false;
+  }
+
+  public dadosCompleted(): boolean { 
+    if(this.appDados) { return this.appDados.dadosFG.valid; }
+   
+    return false;
+  }
+
   public disabledNextButton(): boolean {
-    if(this.selectedIndex == 0 && this.appParametro) { return this.appParametro.parametroFG.valid; }
-    else if(this.selectedIndex == 1 && this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
-    else if(this.selectedIndex == 2 && this.appDados) { return this.appDados.dadosFG.valid; }
+    if(this.selectedIndex == 0) { return this.parametroCompleted(); }
+    else if(this.selectedIndex == 1) { return this.variaveisCompleted(); }
+    else if(this.selectedIndex == 2) { return this.dadosCompleted(); }
     else { return true; }
   }
 
   public onNextButton(): void {
-    if(this.selectedIndex == 0 && this.appParametro && this.appParametro.parametroFG.valid) {
+    if(this.selectedIndex == 0 && this.parametroCompleted()) {
       let hasParametro: boolean = false;
 
       if(this.parametroID || this.parametro?.id) { hasParametro = true; }
       
-      if(!hasParametro) {
-        this.appParametro.onCreate().subscribe(result => {
-          if(result == true) { this.selectedIndex = 1; }
+      if(this.parametroIsEditavel) {
+        if(!hasParametro) {
+          this.appParametro.onCreate().subscribe(result => {
+            if(result == true) { this.selectedIndex = 1; }
+          });
+        }
+        else {
+          this.appParametro.onUpdate().subscribe(result => {
+            if(result == true) { this.selectedIndex = 1; }
+          });
+        }
+      }
+      else { this.selectedIndex = 1; }
+    }
+    else if(this.selectedIndex == 1 && this.variaveisCompleted()) {
+      if(this.parametroIsEditavel) {
+        this.appVariaveis.onCreate().subscribe(result => {
+          if(result == true) { this.selectedIndex = 2; }
         });
-      }      
+      }
+      else { this.selectedIndex = 2; }      
     }
-    else if(this.selectedIndex == 1 && this.appVariaveis && this.appVariaveis.variaveisStepperIsValid()) {
-      this.appVariaveis.onCreate().subscribe(result => {
-        if(result == true) { this.selectedIndex = 2; }
-      });
-    }
-    else if(this.selectedIndex == 2 && this.appDados && this.appDados.dadosFG.valid) {
-      this.appDados.onCreate().subscribe(result => {
-        if(result == true) { this.selectedIndex = 3; }
-      });
+    else if(this.selectedIndex == 2 && this.dadosCompleted()) {
+      if(this.parametroIsEditavel) {
+        this.appDados.onCreate().subscribe(result => {
+          if(result == true) { this.selectedIndex = 3; }
+        });
+      }
+      else { this.selectedIndex = 3; }      
     }
     // else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {
     //   this.parametrizador.dados = this.parametrizadorDados.getDados() || [];
