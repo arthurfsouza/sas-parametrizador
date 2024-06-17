@@ -100,20 +100,9 @@ export class RevisaoComponent {
   }
 
   public getDataVigencia(): string {
-    let dataVigencia: string = "-";
-    // let dataVigencia: any = this.parametro?.data_hora_vigencia || null;
-    // let horaVigencia: any = this.parametro?.parametro?.horaVigencia || null;
+    let dataVigencia: Date = this.parametro.data_hora_vigencia;    
 
-
-    // if(horaVigencia && dataVigencia && dataVigencia._d) {
-    //   dataFormat = dataVigencia._d.toLocaleDateString() + " - " + horaVigencia;
-    // }
-
-    if(this.parametro && this.parametro.data_hora_vigencia) {
-      dataVigencia = this.parametro.data_hora_vigencia?.toLocaleDateString() || "-";
-    }
-
-    return dataVigencia;
+    return dataVigencia.toLocaleDateString() || "-";
   }
 
   public initEventos(): void {
