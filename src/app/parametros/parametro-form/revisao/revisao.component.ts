@@ -100,7 +100,7 @@ export class RevisaoComponent {
   }
 
   public getDataVigencia(): string {
-    // let dataFormat: string = "-";
+    let dataVigencia: string = "-";
     // let dataVigencia: any = this.parametro?.data_hora_vigencia || null;
     // let horaVigencia: any = this.parametro?.parametro?.horaVigencia || null;
 
@@ -109,7 +109,11 @@ export class RevisaoComponent {
     //   dataFormat = dataVigencia._d.toLocaleDateString() + " - " + horaVigencia;
     // }
 
-    return this.parametro?.data_hora_vigencia?.toLocaleDateString() || "-";
+    if(this.parametro && this.parametro.data_hora_vigencia) {
+      dataVigencia = this.parametro.data_hora_vigencia?.toLocaleDateString() || "-";
+    }
+
+    return dataVigencia;
   }
 
   public initEventos(): void {
