@@ -146,9 +146,14 @@ export class RevisaoComponent {
 
   public initEventos(): void {
     this.dataEventos = this.parametro.eventos || [];
+    this.dataSourceEventos = new MatTableDataSource(this.dataEventos);
 
     if(this.dataEventos && this.dataEventos.length > 0) {
-      this.dataSourceEventos = new MatTableDataSource(this.dataEventos.reverse());
+      for(let evento of this.dataEventos) {
+        evento.parametro_status = this.parametroStatus.find((ps: any) => ps.code = evento.status_code);
+      }
+      
+      this.dataSourceEventos = new MatTableDataSource(this.dataEventos);
     }
   }
 
