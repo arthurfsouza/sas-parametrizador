@@ -94,7 +94,7 @@ export class RevisaoComponent {
       if(acao.status_code == "005") {
         const body: any = { status_code: "005", justificativa: null };
 
-        this._http.post(api.private.parametro.post.replace("{PARAMETRO_ID}", this.parametro.id), body).subscribe(
+        this._http.post(api.private.parametro.status.post.replace("{PARAMETRO_ID}", this.parametro.id), body).subscribe(
           (response: any) => {
             if(response?.message) {
               this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
