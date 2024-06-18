@@ -20,6 +20,24 @@
         }
     }
 
+    .variaveis-warning {
+        padding: 15px;
+        margin-top: auto;
+        
+        .warning-content {
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            border: 2px solid rgb(255, 130, 50);            
+            border-radius: 5px;
+            background-color: rgb(255, 234, 212);
+
+            .warning-icon { color: rgb(255, 130, 50); }
+
+            .warning-text { margin-left: 15px; }
+        }
+    }
+
     .variaveis-error {
         padding: 15px;
         margin-top: auto;

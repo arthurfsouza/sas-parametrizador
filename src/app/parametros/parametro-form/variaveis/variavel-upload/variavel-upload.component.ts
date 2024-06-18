@@ -90,8 +90,8 @@ export class VariavelUploadComponent {
 
               if(variavel && variavel.variaveis_lista && variavel.variaveis_lista.length > 0) {
                 data = variavel.variaveis_lista.map((l: any) => { return {
-                  lista: { id: l.id, nome: l.nome, is_visivel: l.is_visivel },
-                  controle: { nomeObrigatorio: false, ativoObrigatorio: false, ativoNaoBooleano: false }
+                  variaveis_lista: { id: l.id, nome: l.nome, is_visivel: l.is_visivel },
+                  controle: { nomeObrigatorio: false, isVisivelObrigatorio: false, isVisivelNaoBooleano: false }
                 }});
               }
 
@@ -136,7 +136,7 @@ export class VariavelUploadComponent {
       if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
         for(let variavel of this.parametro.variaveis) {
           if(variavel.nome === row.nome) {
-            variavel.variaveis_lista = row.data.map((d: any) => { return { id: d.lista.id, nome: d.lista.nome, checked: d.lista.is_visivel } });
+            variavel.variaveis_lista = row.data.map((d: any) => { return { id: d.variaveis_lista.id, nome: d.variaveis_lista.nome, is_visivel: d.variaveis_lista.is_visivel } });
             break;
           }
         }
@@ -204,9 +204,11 @@ export class VariavelUploadComponent {
         let nome: string = row["nome"] || null;
         let nomeObrigatorio: boolean = false;
         let nomeInvalido: boolean = false;
+        let nomeEnorme: boolean = false;
         let expNome: RegExp = new RegExp(/^[A-Za-z0-9_]+$/);
   
         if(!nome) { nomeObrigatorio = true; }
+        else if(nome.length > 100) { nomeEnorme = true; }
         else if(!expNome.test(nome)) { nomeInvalido = true; }
   
         let tipo: string = row["tipo"] || null;
@@ -221,7 +223,7 @@ export class VariavelUploadComponent {
         let descricaoEnorme: boolean = false;
   
         if(!descricao) { descricaoObrigatorio = true; }
-        else if(descricao.length > 60) { descricaoEnorme = true; }
+        else if(descricao.length > 350) { descricaoEnorme = true; }
   
         let tamanho: any = row["tamanho"] || null;
         let tamanhoObrigatorio: boolean = false;
@@ -238,19 +240,19 @@ export class VariavelUploadComponent {
           }
         }
   
-        let qtdCasasDecimais: any = row["qtd_casas_decimais"] || null;
+        let qtd_casas_decimais: any = row["qtd_casas_decimais"] || null;
         let qtdCasasDecimaisObrigatorio: boolean = false;
         let qtdCasasDecimaisNaoNumerico: boolean = false;
         let qtdCasasDecimaisIgualZero: boolean = false;
   
         if(tipo == "DECIMAL") {
-          if(!qtdCasasDecimais) { qtdCasasDecimaisObrigatorio = true; }
+          if(!qtd_casas_decimais) { qtdCasasDecimaisObrigatorio = true; }
           else {
-            if(isNaN(qtdCasasDecimais)) { qtdCasasDecimaisNaoNumerico = true; }
+            if(isNaN(qtd_casas_decimais)) { qtdCasasDecimaisNaoNumerico = true; }
             else {
-              qtdCasasDecimais = Number.parseInt(qtdCasasDecimais);
+              qtd_casas_decimais = Number.parseInt(qtd_casas_decimais);
   
-              if(qtdCasasDecimais <= 0) { qtdCasasDecimaisIgualZero = true; }
+              if(qtd_casas_decimais <= 0) { qtdCasasDecimaisIgualZero = true; }
             }
           }
         }
@@ -273,13 +275,14 @@ export class VariavelUploadComponent {
             tipo: tipo as "DECIMAL" | "NUMERICO" | "TEXTO" | "LISTA",
             descricao: descricao,
             tamanho: tamanho,
-            qtd_casas_decimais: qtdCasasDecimais,
+            qtd_casas_decimais: qtd_casas_decimais,
             is_chave: chave,
             variaveis_lista: [],
             parametro_id: this.parametro?.id
           },
           controle: {
             nomeObrigatorio: nomeObrigatorio,
+            nomeEnorme: nomeEnorme,
             nomeInvalido: nomeInvalido,
             tipoObrigatorio: tipoObrigatorio,
             tipoInexistente: tipoInexistente,
@@ -330,20 +333,20 @@ export class VariavelUploadComponent {
     
           if(!nome) { nomeObrigatorio = true; }
     
-          let ativo: any = item["is_visivel"] || null;
-          let ativoObrigatorio: boolean = false;
-          let ativoNaoBooleano: boolean = false;
+          let is_visivel: any = item["is_visivel"] || null;
+          let isVisivelObrigatorio: boolean = false;
+          let isVisivelNaoBooleano: boolean = false;
     
-          if(!ativo) { ativoObrigatorio = true; }
+          if(!is_visivel) { isVisivelObrigatorio = true; }
           else {
-            if(ativo == "true") { ativo = true; }
-            else if(ativo == "false") { ativo = false; }
-            else { ativoNaoBooleano = true; }
+            if(is_visivel == "true") { is_visivel = true; }
+            else if(is_visivel == "false") { is_visivel = false; }
+            else { isVisivelNaoBooleano = true; }
           }
 
           row.data.push({
-            lista: { id: nextID, nome: nome, is_visivel: ativo },
-            controle: { nomeObrigatorio: nomeObrigatorio, ativoObrigatorio: ativoObrigatorio, ativoNaoBooleano: ativoNaoBooleano }          
+            variaveis_lista: { id: nextID, nome: nome, is_visivel: is_visivel },
+            controle: { nomeObrigatorio: nomeObrigatorio, isVisivelObrigatorio: isVisivelObrigatorio, isVisivelNaoBooleano: isVisivelNaoBooleano }          
           });
         }
       }
@@ -363,7 +366,7 @@ export class VariavelUploadComponent {
     for(let row of this.data1) {
       if(row.controle) {
         const controle = row.controle;
-        rowErrorFlag =  controle.nomeObrigatorio || controle.nomeInvalido ||
+        rowErrorFlag =  controle.nomeObrigatorio || controle.nomeEnorme || controle.nomeInvalido ||
                         controle.tipoObrigatorio || controle.tipoInexistente ||
                         controle.descricaoObrigatorio || controle.descricaoEnorme ||
                         controle.tamanhoObrigatorio || controle.tamanhoNaoNumerico ||
@@ -415,7 +418,7 @@ export class VariavelUploadComponent {
 
       for(let item of row.data) {
         if(item.controle) {
-          rowErrorFlag =  item.controle.nomeObrigatorio || item.controle.ativoObrigatorio || item.controle.ativoNaoBooleano;
+          rowErrorFlag =  item.controle.nomeObrigatorio || item.controle.isVisivelObrigatorio || item.controle.isVisivelNaoBooleano;
         }
 
         if(rowErrorFlag) { break; }

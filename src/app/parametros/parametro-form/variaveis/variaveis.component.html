@@ -19,6 +19,18 @@
 
     <mat-divider></mat-divider>
 
+    <div class="row variaveis-warning" *ngIf="parametro?.modo == 'GLOBAL' && data.length > 0 && checkGlobal()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <div class="warning-text">
+                <p><b>Aviso:</b></p>
+                <p>O cadastro da variável Global no SAS será considerado do tipo <b>"Texto"</b> nos seguintes cenários:</p>
+                <p>1. Caso seja adicionado apenas 1 variável e o seu tipo de dado seja diferente de "Decimal" e "Numérico".</p>
+                <p>2. Caso seja adicionado 2 ou mais variáveis.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelModo()">
         <div class="warning-content">
             <mat-icon class="warning-icon">error</mat-icon>

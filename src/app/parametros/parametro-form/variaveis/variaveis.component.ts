@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VariavelFormComponent } from './variavel-form/variavel-form.component';
 import { VariavelUploadComponent } from './variavel-upload/variavel-upload.component';
 import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
-import { Parametro, Variavel, VariavelLista } from '../../../../shared/interfaces';
+import { Parametro, Variavel, VariavelLista, VariavelTipo } from '../../../../shared/interfaces';
 import { api } from '../../../../shared/configurations';
 
 import StringUtils from '../../../../shared/utils/string/string.utils';
@@ -125,13 +125,30 @@ export class VariaveisComponent {
     this.dataSource = new MatTableDataSource(this.data);
   }
 
+  public checkGlobal(): boolean {
+    let isText: boolean = false;
+
+    if(this.data.length > 1) { isText = true; }
+    else {
+      const tipo: VariavelTipo = this.data[0].tipo;
+
+      if(!['DECIMAL', 'NUMERICO'].includes(tipo)) { isText = true; }
+    }
+
+    return isText;
+  }
+
   public checkVariavelValue(): boolean {
     let valid: boolean = true;
 
     if(this.parametro) {
-      const variaveisWithValues: Variavel[] = this.data.filter(d => d.is_chave == false) || [];
+      const hasGlobalKey: boolean = this.parametro.modo == "CHAVE";
 
-      if(variaveisWithValues && variaveisWithValues.length == 0) { valid = false; }
+      if(hasGlobalKey) {
+        const variaveisWithValues: Variavel[] = this.data.filter(d => d.is_chave == false) || [];
+
+        if(variaveisWithValues && variaveisWithValues.length == 0) { valid = false; }
+      }      
     }
     else { valid = false; }
 

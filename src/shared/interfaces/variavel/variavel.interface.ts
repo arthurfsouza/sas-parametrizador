@@ -22,6 +22,7 @@ export interface VariavelUpload {
     variavel: Variavel;
     controle: {
       nomeObrigatorio: boolean;
+      nomeEnorme: boolean;
       nomeInvalido: boolean;
       tipoObrigatorio: boolean;
       tipoInexistente: boolean;

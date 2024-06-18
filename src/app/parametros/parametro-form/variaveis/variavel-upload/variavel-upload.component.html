@@ -63,11 +63,12 @@
                                                 <div class="validator-group-value-subtitle">{{ row.variavel.descricao }}</div>
                                             </div>
                                             <div class="validator-group-errors">
-                                                <div *ngIf="row.controle.nomeObrigatorio">Nome obrigatório</div>
-                                                <div *ngIf="row.controle.nomeInvalido">Nome inválido</div>
+                                                <div *ngIf="row.controle.nomeObrigatorio">"nome" obrigatório</div>
+                                                <div *ngIf="row.controle.nomeEnorme">"nome" maior que o limite permimtido (100 caracteres)</div>
+                                                <div *ngIf="row.controle.nomeInvalido">"nome" inválido</div>
 
-                                                <div *ngIf="row.controle.descricaoObrigatorio">Descrição obrigatória</div>
-                                                <div *ngIf="row.controle.descricaoEnorme">Descrição maior que o limite permimtido (60 caracteres)</div>
+                                                <div *ngIf="row.controle.descricaoObrigatorio">"descricao" obrigatória</div>
+                                                <div *ngIf="row.controle.descricaoEnorme">"descricao" maior que o limite permimtido (350 caracteres)</div>
                                             </div>
                                         </div>                                
                                     </td>
@@ -85,8 +86,8 @@
                                                 <span *ngIf="!['DECIMAL','NUMERICO','TEXTO','LISTA'].includes(row.variavel.tipo)">{{ row.variavel.tipo }}</span>
                                             </div>
                                             <div class="validator-group-errors">
-                                                <div *ngIf="row.controle.tipoObrigatorio">Tipo obrigatório</div>
-                                                <div *ngIf="row.controle.tipoInexistente">Tipo inválido</div>
+                                                <div *ngIf="row.controle.tipoObrigatorio">"tipo" obrigatório</div>
+                                                <div *ngIf="row.controle.tipoInexistente">"tipo" inválido</div>
                                             </div>
                                         </div>
                                     </td>
@@ -100,8 +101,8 @@
                                                 {{ row.variavel.is_chave == true ? "Sim" : (row.variavel.is_chave == false ? "Não" : row.variavel.is_chave) }}
                                             </div>
                                             <div class="validator-group-errors">
-                                                <div *ngIf="row.controle.chaveObrigatorio">Chave obrigatória</div>
-                                                <div *ngIf="row.controle.chaveNaoBooleano">Chave inválida</div>
+                                                <div *ngIf="row.controle.chaveObrigatorio">"is_chave" obrigatória</div>
+                                                <div *ngIf="row.controle.chaveNaoBooleano">"is_chave" inválida</div>
                                             </div>
                                         </div>
                                     </td>
@@ -115,9 +116,9 @@
                                                 {{ row.variavel.tamanho }}
                                             </div>
                                             <div class="validator-group-errors">
-                                                <div *ngIf="row.controle.tamanhoObrigatorio">Tamanho obrigatório</div>
-                                                <div *ngIf="row.controle.tamanhoNaoNumerico">Tamanho não numérico</div>
-                                                <div *ngIf="row.controle.tamanhoIgualZero">Tamanho inválido</div>
+                                                <div *ngIf="row.controle.tamanhoObrigatorio">"tamanho" obrigatório</div>
+                                                <div *ngIf="row.controle.tamanhoNaoNumerico">"tamanho" não numérico</div>
+                                                <div *ngIf="row.controle.tamanhoIgualZero">"tamanho" inválido</div>
                                             </div>
                                         </div>                                        
                                     </td>
@@ -131,9 +132,9 @@
                                                 {{ row.variavel.tipo == "DECIMAL" ? row.variavel.qtd_casas_decimais : "Não se aplica" }}
                                             </div>
                                             <div class="validator-group-errors">
-                                                <div *ngIf="row.controle.qtdCasasDecimaisObrigatorio">Tamanho obrigatório</div>
-                                                <div *ngIf="row.controle.qtdCasasDecimaisNaoNumerico">Tamanho não numérico</div>
-                                                <div *ngIf="row.controle.qtdCasasDecimaisIgualZero">Tamanho inválido</div>
+                                                <div *ngIf="row.controle.qtdCasasDecimaisObrigatorio">"qtd_casas_decimais" obrigatório</div>
+                                                <div *ngIf="row.controle.qtdCasasDecimaisNaoNumerico">"qtd_casas_decimais" não numérico</div>
+                                                <div *ngIf="row.controle.qtdCasasDecimaisIgualZero">"qtd_casas_decimais" inválido</div>
                                             </div>
                                         </div>                                        
                                     </td>
@@ -239,9 +240,9 @@
                                         <tr *ngFor="let item of element.data">
                                             <td colspan="3">
                                                 <div class="validator-group">
-                                                    <div class="validator-group-value">{{ item.lista.nome }}</div>
+                                                    <div class="validator-group-value">{{ item.variaveis_lista.nome }}</div>
                                                     <div class="validator-group-errors">
-                                                        <div *ngIf="item.controle.nomeObrigatorio">Nome obrigatório</div>
+                                                        <div *ngIf="item.controle.nomeObrigatorio">"nome" obrigatório</div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -249,11 +250,11 @@
                                             <td colspan="1">
                                                 <div class="validator-group">
                                                     <div class="validator-group-value">
-                                                        {{ item.lista.is_visivel == true ? "Sim" : (item.lista.is_visivel == false ? "Não" : item.lista.is_visivel) }}
+                                                        {{ item.variaveis_lista.is_visivel == true ? "Sim" : (item.variaveis_lista.is_visivel == false ? "Não" : item.variaveis_lista.is_visivel) }}
                                                     </div>
                                                     <div class="validator-group-errors">
-                                                        <div *ngIf="item.controle.ativoObrigatorio">Ativo obrigatória</div>
-                                                        <div *ngIf="item.controle.ativoNaoBooleano">Ativo inválido</div>
+                                                        <div *ngIf="item.controle.isVisivelObrigatorio">"is_visivel" obrigatório</div>
+                                                        <div *ngIf="item.controle.isVisivelNaoBooleano">"is_visivel" inválido</div>
                                                     </div>
                                                 </div>
                                             </td>
