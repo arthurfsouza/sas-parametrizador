@@ -180,7 +180,7 @@
         </mat-expansion-panel>
     </mat-accordion>
 
-    <div class="row revisao-actions" style="margin: 16px 0;">
+    <div class="row revisao-actions" style="margin: 16px 0;" *ngIf="['001', '002'].includes(parametro.status_code)">
         <form class="revisao-actions-form" [formGroup]="acoesFG">
             <fieldset class="variavel-lista-fieldset">
                 <legend>AÇÕES</legend>
