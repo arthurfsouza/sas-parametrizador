@@ -193,7 +193,7 @@ export class DadosComponent {
         this._patchDado(i, obj);
       }
     }
-    
+    else { this._patchDado(1); } 
   }
 
   public getColumnID(column: string): any { return column.replace("dado-control-", ""); }
