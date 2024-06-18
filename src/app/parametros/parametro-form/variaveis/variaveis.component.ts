@@ -38,6 +38,7 @@ export class VariaveisComponent {
   constructor(public dialog: MatDialog){ }
   
   public parametro!: Parametro;
+  public parametroIsEditavel: boolean = true;
   
   public displayedColumns: string[] = ["nome", "tipo", "is_chave", "tamanho", "qtd_casas_decimais", "actions"];
   public dataSource: MatTableDataSource<Variavel> = new MatTableDataSource<Variavel>([]);
@@ -54,6 +55,8 @@ export class VariaveisComponent {
         this.dataSource = new MatTableDataSource(this.data);
       }
     });
+
+    this._parametro.getIsEditavel().subscribe(isEditavel => { this.parametroIsEditavel = isEditavel; });
   }
 
   public onAddVariavel(): void {
