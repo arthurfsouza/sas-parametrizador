@@ -46,6 +46,7 @@ export class DadosComponent {
   constructor(public dialog: MatDialog, private _fb: FormBuilder){ }
   
   public parametro!: Parametro;
+  public parametroIsEditavel: boolean = true;
 
   public displayedColumns: string[] = [];
   public variaveis: Variavel[] = [];
@@ -73,6 +74,8 @@ export class DadosComponent {
         }
       }
     });
+
+    this._parametro.getIsEditavel().subscribe(isEditavel => { this.parametroIsEditavel = isEditavel; });
   }
 
   private _loadingParametroByID(id: string): void {
@@ -181,26 +184,13 @@ export class DadosComponent {
     }
 
     if(this.parametro && this.parametro.modo == "CHAVE") { this.displayedColumns.push("dado-control-actions"); }
-    
-    console.log("Displayed Columns: ", this.displayedColumns.join(", "));
-    
+
     if(this.dados && this.dados.length > 0) {
-      for(let i = 1; i++; i < this.dados.length) {
-        const dado: Dado = this.dados[i];
-        console.log("Dado: ", dado);
-        // let obj: any = { };
-        
-        // this.displayedColumns.map(dl => {
-        //   const variavelID: string = dl.replace("dado-control-", "");
-        //   const variavelValue: any = dado.informacao[variavelID] || null;
-
-        //   if(variavelValue) { obj[dl] = variavelValue }
-        // });
-
-        // this._patchDado(i, obj);
-      }
+      this.dados.map((dado, index) => {
+        this._patchDado((index + 1), dado?.informacao);
+      });
     }
-    // else { this._patchDado(1); } 
+    else { this._patchDado(1); }
   }
 
   public getColumnID(column: string): any { return column.replace("dado-control-", ""); }
@@ -296,13 +286,33 @@ export class DadosComponent {
   }
 
   private _patchDadoFG(id: number, value?: any): FormGroup {
-    let fg: FormGroup = this._fb.group({ "dado-control-id": new FormControl(id, [Validators.required]) });
+    let fg: FormGroup = this._fb.group({ "dado-control-id": new FormControl(id, [Validators.required]) });    
 
     for(let varAux of this.variaveis) {
+      const variaveis_lista: VariavelLista[] = [];
+      let fgValue: any = value ? value[varAux.nome] : null;
+
+
+      if(varAux.tipo == "LISTA" && fgValue) {
+        const opcoes: string[] = fgValue.split(";") || [];
+
+        if(opcoes && opcoes.length > 0) {
+          opcoes.map(op => {
+            const variavel_lista: VariavelLista | undefined = varAux.variaveis_lista?.find(vl => vl.nome == op);
+
+            if(variavel_lista) { variaveis_lista.push(variavel_lista); }
+          })
+        }
+
+        if(variaveis_lista.length > 0) { fgValue = variaveis_lista; }
+      }
+
       fg.addControl(
         "dado-control-" + varAux.id,
-        new FormControl(value ? value["dado-control-" + varAux.id] : null, [Validators.required])
+        new FormControl(fgValue, [Validators.required])
       );
+
+      if(!this.parametroIsEditavel) { fg.disable(); }
     }
 
     return fg;

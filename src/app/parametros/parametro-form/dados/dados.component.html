@@ -82,11 +82,12 @@
 
                     <td *ngIf="column == 'dado-control-actions'">
                         <div class="content-table-actions">
-                            <button type="button" mat-icon-button matTooltip="Adicionar linha" (click)="onAddLine()">
+                            <button type="button" mat-icon-button matTooltip="Adicionar linha" 
+                                [disabled]="!parametroIsEditavel" (click)="onAddLine()">
                                 <mat-icon>add_notes</mat-icon>
                             </button>
                             <button type="button" color="warn" mat-icon-button matTooltip="Excluir linha" 
-                                [disabled]="getDados().length == 1" (click)="onDeleteLine(dado)">
+                                [disabled]="getDados().length == 1 || !parametroIsEditavel" (click)="onDeleteLine(dado)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </div>
