@@ -180,24 +180,27 @@ export class DadosComponent {
       for(let varAux of this.parametro.variaveis) { this.displayedColumns.push("dado-control-" + varAux.id); }
     }
 
-    if(this.parametro && this.parametro.modo == "CHAVE") { this.displayedColumns.push("dado-control-actions"); }    
+    if(this.parametro && this.parametro.modo == "CHAVE") { this.displayedColumns.push("dado-control-actions"); }
+    
+    console.log("Displayed Columns: ", this.displayedColumns.join(", "));
     
     if(this.dados && this.dados.length > 0) {
       for(let i = 1; i++; i < this.dados.length) {
         const dado: Dado = this.dados[i];
-        let obj: any = { };
+        console.log("Dado: ", dado);
+        // let obj: any = { };
         
-        this.displayedColumns.map(dl => {
-          const variavelID: string = dl.replace("dado-control-", "");
-          const variavelValue: any = dado.informacao[variavelID] || null;
+        // this.displayedColumns.map(dl => {
+        //   const variavelID: string = dl.replace("dado-control-", "");
+        //   const variavelValue: any = dado.informacao[variavelID] || null;
 
-          if(variavelValue) { obj[dl] = variavelValue }
-        });
+        //   if(variavelValue) { obj[dl] = variavelValue }
+        // });
 
-        this._patchDado(i, obj);
+        // this._patchDado(i, obj);
       }
     }
-    else { this._patchDado(1); } 
+    // else { this._patchDado(1); } 
   }
 
   public getColumnID(column: string): any { return column.replace("dado-control-", ""); }
