@@ -65,6 +65,10 @@ export class DadosComponent {
           this.variaveis = this.parametro.variaveis || [];
           this.dados = this.parametro.dados || [];
 
+          let formArray: FormArray = <FormArray>this.dadosFG.get('dados');
+
+          while(formArray.length !== 0) { formArray.removeAt(0); }
+
           this.initDados();
         }
       }
