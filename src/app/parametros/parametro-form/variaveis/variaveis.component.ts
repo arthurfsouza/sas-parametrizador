@@ -47,11 +47,11 @@ export class VariaveisComponent {
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) {
         this.parametro = parametro;
+        this.data = [];
 
-        if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
-          this.data = this.parametro.variaveis;
-          this.dataSource = new MatTableDataSource(this.data);
-        }
+        if(this.parametro.variaveis && this.parametro.variaveis.length > 0) { this.data = this.parametro.variaveis; }
+
+        this.dataSource = new MatTableDataSource(this.data);
       }
     });
   }

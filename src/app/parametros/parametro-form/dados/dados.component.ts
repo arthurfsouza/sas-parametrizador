@@ -58,6 +58,8 @@ export class DadosComponent {
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) {
         this.parametro = parametro;
+        this.variaveis = [];
+        this.dados = [];
 
         if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
           this.variaveis = this.parametro.variaveis || [];
@@ -230,7 +232,7 @@ export class DadosComponent {
   public getListItems(column: string): VariavelLista[] {
     const id: any = this.getColumnID(column);
     const variavel: Variavel | undefined = this.variaveis.find(v => v.id == id);
-    const variavelLista: VariavelLista[] = variavel ? variavel.variaveis_lista?.filter((l: any) => l.checked == true) || [] : [];
+    const variavelLista: VariavelLista[] = variavel ? variavel.variaveis_lista?.filter((l: any) => l.is_visivel == true) || [] : [];
 
     return variavelLista;
   }
