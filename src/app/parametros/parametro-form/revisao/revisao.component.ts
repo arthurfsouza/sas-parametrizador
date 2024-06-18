@@ -158,7 +158,12 @@ export class RevisaoComponent {
         }
       }
 
-      this.dataSourceEventos = new MatTableDataSource(this.dataEventos);
+      this.dataSourceEventos = new MatTableDataSource(this.dataEventos.sort((a: Evento, b: Evento) => {
+        const dataA: Date = a.created_at != null ? new Date(a.created_at) : new Date();
+        const dataB: Date = b.created_at != null ? new Date(b.created_at) : new Date();
+
+        return this.compareOrder(dataA, dataB, false);
+      }));
     }
   }
 
@@ -176,6 +181,10 @@ export class RevisaoComponent {
 
   public showErros(e: { error: string, campos_error: string[] }): void {
     this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
+  }
+  
+  public compareOrder(a: number | string | Date, b: number | string | Date, isAsc: boolean): number {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   public compareObjects(o1: any, o2: any): boolean { return o1?.id === o2?.id; }

@@ -139,7 +139,8 @@ export class ParametroComponent {
 
         if(clusters && clusters.length > 0) {
           this.clusters = clusters.filter(c => c.is_ativo == true && c.segmento?.is_ativo == true);
-          this.parametroFG.controls['politica'].enable();
+
+          if(this.parametroIsEditavel) { this.parametroFG.controls['politica'].enable(); }          
         }
       }
     );
