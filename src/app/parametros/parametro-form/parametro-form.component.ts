@@ -86,19 +86,25 @@ export class ParametroFormComponent {
 
   public onStepperChange(index$: number): void { this.selectedIndex = index$; }
 
-  public parametroCompleted(): boolean { 
-    if(this.appParametro) { return this.appParametro.parametroFG.valid; }
+  public parametroCompleted(): boolean {  
+    if(!this.parametroIsEditavel) { return true; }
+
+    if(this.appParametro) { return this.appParametro.parametroFG.valid; }   
    
     return false;
   }
 
-  public variaveisCompleted(): boolean { 
+  public variaveisCompleted(): boolean {
+    if(!this.parametroIsEditavel) { return true; }
+
     if(this.appVariaveis) { return this.appVariaveis.variaveisStepperIsValid(); }
    
     return false;
   }
 
-  public dadosCompleted(): boolean { 
+  public dadosCompleted(): boolean {
+    if(!this.parametroIsEditavel) { return true; }
+    
     if(this.appDados) { return this.appDados.dadosFG.valid; }
    
     return false;
