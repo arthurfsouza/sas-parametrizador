@@ -73,7 +73,8 @@ export class ParametroFormComponent {
       this._http.get(api.private.parametro.getByID.replace("{PARAMETRO_ID}", this.parametroID)).subscribe(
         (response: any) => {
           if(response && response.status_code) {
-            this._parametro.setParametro(this.parametro);
+            const parametro: Parametro = response;
+            this._parametro.setParametro(parametro);
 
             if(!["001", "002"].includes(response.status_code)) { this._parametro.setIsEditavel(false); }
           }
