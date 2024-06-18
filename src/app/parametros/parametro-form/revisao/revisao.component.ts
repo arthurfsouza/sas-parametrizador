@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -8,15 +11,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ParametroService } from '../../../../shared/services';
-import { Dado, Evento, Parametro, ParametroStatus, Variavel } from '../../../../shared/interfaces';
+import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
+import { Dado, Evento, Parametro, ParametroStatus, ParametroStatusCode, Variavel } from '../../../../shared/interfaces';
 import { parametrosStatus } from '../../../../shared/mockups';
+import { api, general } from '../../../../shared/configurations';
 
 @Component({
   selector: 'app-revisao',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
@@ -30,9 +36,11 @@ import { parametrosStatus } from '../../../../shared/mockups';
   styleUrl: './revisao.component.scss'
 })
 export class RevisaoComponent {
+  private _http = inject(HttpClient);
+  private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
-  constructor(){ }
+  constructor(private _router: Router){ }
 
   public parametro!: Parametro;
 
@@ -50,6 +58,21 @@ export class RevisaoComponent {
 
   public parametroStatus: ParametroStatus[] = parametrosStatus;
 
+  public acoesFG: FormGroup = new FormGroup({
+    acao: new FormControl(null, [Validators.required])
+  });
+
+  public acoes: { id: number; status_code: ParametroStatusCode, description: string }[] = [
+    // { id: 1, status_code: "002", description: "Editar Parâmetro" },
+    // { id: 2, status_code: "004", description: "Disponibilizar para Revisão" },
+    { id: 3, status_code: "005", description: "Enviar para Ambiente de Homologação" },
+    // { id: 4, status_code: "007", description: "Recusar: Riscos" },
+    // { id: 5, status_code: "008", description: "Aprovar: Riscos" },
+    // { id: 6, status_code: "010", description: "Recusar: T&O" },
+    // { id: 7, status_code: "011", description: "Aprovar: T&O" },
+    // { id: 8, status_code: "013", description: "Gerar nova Versão" }
+  ];
+
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) {
@@ -60,6 +83,33 @@ export class RevisaoComponent {
         this.initEventos();
       }
     });
+  }
+
+  public onChangeAcao(event$: any): void { }
+
+  public onSaveStatus(): void {
+    if(this.acoesFG.valid) {
+      const acao: { id: number; status_code: ParametroStatusCode, description: string } = this.acoesFG.value['acao'];
+
+      if(acao.status_code == "005") {
+        const body: any = { status_code: "005", justificativa: null };
+
+        this._http.post(api.private.parametro.post.replace("{PARAMETRO_ID}", this.parametro.id), body).subscribe(
+          (response: any) => {
+            if(response?.message) {
+              this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+
+              this._router.navigate([general.routes.private.parametros]);
+            }
+          },
+          err => {
+            if(err?.error?.error) {
+              this.showErros({ error: err.error.error, campos_error: err.error.campos_error || [] });
+            }
+          }
+        )
+      }
+    }
   }
 
   public initVariaveis(): void {
@@ -123,4 +173,10 @@ export class RevisaoComponent {
 
     return parametroStatus?.description || "";
   }
+
+  public showErros(e: { error: string, campos_error: string[] }): void {
+    this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
+  }
+
+  public compareObjects(o1: any, o2: any): boolean { return o1?.id === o2?.id; }
 }

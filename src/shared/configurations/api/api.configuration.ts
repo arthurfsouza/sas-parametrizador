@@ -33,7 +33,8 @@ export const api = {
             post: apiURL + "v1/front/parametros",
             put: apiURL + "v1/front/parametros/{PARAMETRO_ID}",
             variavel: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/variaveis" },
-            dado: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/dados" }
+            dado: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/dados" },
+            status: { post: apiURL + "v1/front/parametros/{PARAMETRO_ID}/status" }
         }
     }
 };
