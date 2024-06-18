@@ -54,7 +54,7 @@ export class ParametroFormComponent {
 
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
-      if(parametro) { this.parametro = parametro; console.log("Parâmetro: ", this.parametro); }
+      if(parametro) { this.parametro = parametro; }
     });
 
     this._parametro.getIsEditavel().subscribe(isEditavel => { this.parametroIsEditavel = isEditavel; });
@@ -147,13 +147,5 @@ export class ParametroFormComponent {
       }
       else { this.selectedIndex = 3; }      
     }
-    // else if(this.selectedIndex == 2 && this.parametrizadorDados && this.parametrizadorDados.dadosFG.valid) {
-    //   this.parametrizador.dados = this.parametrizadorDados.getDados() || [];
-    //   this._parametrizador.setParametrizador(this.parametrizador);
-    //   this.selectedIndex = 3;
-    // }
-    // else {
-    //   console.log("End!!!");
-    // }
   }
 }
