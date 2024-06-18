@@ -174,7 +174,7 @@ export class DadosComponent {
       for(let varAux of this.parametro.variaveis) { this.displayedColumns.push("dado-control-" + varAux.id); }
     }
 
-    this.displayedColumns.push("dado-control-actions");
+    if(this.parametro && this.parametro.modo == "CHAVE") { this.displayedColumns.push("dado-control-actions"); }    
     
     if(this.dados && this.dados.length > 0) {
       for(let i = 1; i++; i < this.dados.length) {
@@ -187,8 +187,6 @@ export class DadosComponent {
 
           if(variavelValue) { obj[dl] = variavelValue }
         });
-
-        console.log("Obj: ", obj);
 
         this._patchDado(i, obj);
       }

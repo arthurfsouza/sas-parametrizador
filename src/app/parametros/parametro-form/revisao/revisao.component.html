@@ -30,7 +30,7 @@
 
                 <div class="col-md-8 col-12 revisao-detalhes">
                     <label>MODIFICADO POR</label>
-                    <span>ARTHUR FERREIRA</span>
+                    <span>{{ parametro.sas_user_name || "-" }}</span>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-md-9 col-12 revisao-detalhes">
                     <label>DATA DA VIGÊNCIA</label>
-                    <span>{{ getDataVigencia() | date: 'dd/MM/yyyy HH:mm' }}</span>
+                    <span>{{ getDate(parametro.data_hora_vigencia) | date: 'dd/MM/yyyy HH:mm' }}</span>
                 </div>
 
                 <div class="col-md-3 col-12 revisao-detalhes">
@@ -138,7 +138,11 @@
                     <ng-container matColumnDef="nome">
                         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '40%' }" class="t-center"> EVENTO </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '40%' }" class="t-start">
-                            {{ row.nome }}
+                            <ng-container *ngIf="row.status_code">
+                                <div class="parametro-status-{{ getStatusType(row.status_code) }}">
+                                    {{ getStatusName(row.status_code)}}
+                                </div>
+                            </ng-container>
                         </td>
                     </ng-container>
 
@@ -152,7 +156,7 @@
                     <ng-container matColumnDef="created_at">
                         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> DATA E HORA DA OCORRÊNCIA </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
-                            {{ row.created_at }}
+                            {{ getDate(row.created_at) | date: 'dd/MM/yyyy HH:mm' }}
                         </td>
                     </ng-container>
     

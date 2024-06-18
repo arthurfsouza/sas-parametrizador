@@ -9,7 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ParametroService } from '../../../../shared/services';
-import { Evento, Parametro, Variavel } from '../../../../shared/interfaces';
+import { Dado, Evento, Parametro, ParametroStatus, Variavel } from '../../../../shared/interfaces';
+import { parametrosStatus } from '../../../../shared/mockups';
 
 @Component({
   selector: 'app-revisao',
@@ -47,6 +48,8 @@ export class RevisaoComponent {
   public dataSourceEventos: MatTableDataSource<Evento> = new MatTableDataSource<Evento>([]);
   public dataEventos: Evento[] = [];
 
+  public parametroStatus: ParametroStatus[] = parametrosStatus;
+
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) {
@@ -78,14 +81,14 @@ export class RevisaoComponent {
 
     if(this.parametro.dados && this.parametro.dados.length > 0) {
       for(let dado of this.parametro.dados) {
-        let dadoAux: any = dado;
+        let dadoAux: Dado = dado;
         let obj: any = { };
 
         if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
           for(let variavel of this.parametro.variaveis) {
-            const dadoVar: any = dadoAux['dado-control-' + variavel.id];
+            const dadoVar: any = dadoAux.informacao[variavel.nome];
   
-            if(variavel.tipo == "LISTA") { obj[variavel.nome] = (dadoVar || []).map((d: any) => d.nome).join(", "); }
+            if(variavel.tipo == "LISTA") { obj[variavel.nome] = (dadoVar || []).map((d: any) => d.nome).join("; "); }
             else { obj[variavel.nome] = dadoVar; }                   
           }
         }        
@@ -99,13 +102,7 @@ export class RevisaoComponent {
     }
   }
 
-  public getDataVigencia(): Date {
-    let dataVigencia: Date = new Date();
-    
-    if(this.parametro.data_hora_vigencia) { dataVigencia = new Date(this.parametro.data_hora_vigencia); }
-
-    return dataVigencia;
-  }
+  public getDate(date: any): Date { return new Date(date); }
 
   public initEventos(): void {
     this.dataEventos = this.parametro.eventos || [];
@@ -113,5 +110,17 @@ export class RevisaoComponent {
     if(this.dataEventos && this.dataEventos.length > 0) {
       this.dataSourceEventos = new MatTableDataSource(this.dataEventos.reverse());
     }
+  }
+
+  public getStatusType(status_code: string): string {
+    const parametroStatus: ParametroStatus | undefined = this.parametroStatus.find((ps: any) => ps.code = status_code);
+
+    return parametroStatus?.type || "";
+  }
+
+  public getStatusName(status_code: string): string {
+    const parametroStatus: ParametroStatus | undefined = this.parametroStatus.find((ps: any) => ps.code = status_code);
+
+    return parametroStatus?.description || "";
   }
 }
