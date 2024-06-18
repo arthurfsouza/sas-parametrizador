@@ -150,9 +150,14 @@ export class RevisaoComponent {
 
     if(this.dataEventos && this.dataEventos.length > 0) {
       for(let evento of this.dataEventos) {
-        evento.parametro_status = this.parametroStatus.find((ps: any) => ps.code = evento.status_code);
+        for(let status of this.parametroStatus) {
+          if(status.code == evento.status_code) {
+            evento.parametro_status = status;
+            break;
+          }
+        }
       }
-      
+
       this.dataSourceEventos = new MatTableDataSource(this.dataEventos);
     }
   }

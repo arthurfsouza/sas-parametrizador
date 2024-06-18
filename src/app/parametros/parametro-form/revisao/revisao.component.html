@@ -149,7 +149,7 @@
                     <ng-container matColumnDef="sas_user_name">
                         <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '30%' }" class="t-center"> RESPONSÁVEL </th>
                         <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '30%' }" class="t-start">
-                            {{ row.sas_user_name }}
+                            {{ row.sas_user_name || "Santander API" }}
                         </td>
                     </ng-container>
     
