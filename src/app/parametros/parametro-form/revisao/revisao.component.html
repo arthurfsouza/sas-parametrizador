@@ -185,8 +185,8 @@
             <fieldset class="variavel-lista-fieldset">
                 <legend>AÇÕES</legend>
     
-                <div class="row variavel-lista-form" style="margin-right: 0; margin-left: 0;">
-                    <div class="col-md-6 col-12" style="padding: 8px 0;">
+                <div class="row">
+                    <div class="offset-md-6 col-md-6 col-12" style="padding: 8px 0;">
                         <mat-form-field class="custom-form-field">
                             <mat-label>Ações Disponíveis</mat-label>
                             <mat-select name="acao" formControlName="acao" [compareWith]="compareObjects" (selectionChange)="onChangeAcao($event)">
@@ -194,12 +194,14 @@
                                 {{ option.description }}
                               </mat-option>
                             </mat-select>
-                            <mat-hint>Selecione uma ação</mat-hint>
+                            <mat-hint style="color: black;">Selecione uma ação</mat-hint>
                         </mat-form-field>
                     </div>
-                    
-                    <div class="col-md-4 col-12" style="padding: 8px 0;">
-                        <button mat-raised-button color="primary" [disabled]="!acoesFG.controls['acao'].valid" (click)="onSaveStatus()">
+                </div>
+
+                <div class="row variavel-lista-form">                    
+                    <div class="offset-md-6 col-md-6 col-12" style="padding: 8px 0;">
+                        <button mat-raised-button color="primary" style="width: 100%;" [disabled]="!acoesFG.controls['acao'].valid" (click)="onSaveStatus()">
                             <mat-icon *ngIf="acoesFG.controls['acao'].value?.status_code == '005'">insights</mat-icon>
                             Salvar
                         </button>
