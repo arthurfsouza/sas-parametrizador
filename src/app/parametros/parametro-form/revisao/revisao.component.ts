@@ -131,19 +131,20 @@ export class RevisaoComponent {
 
     if(this.parametro.dados && this.parametro.dados.length > 0) {
       for(let dado of this.parametro.dados) {
-        let dadoAux: Dado = dado;
-        let obj: any = { };
+        let informacao = dado.informacao || { };
+        // let dadoAux: Dado = dado;
+        // let obj: any = { };
 
-        if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
-          for(let variavel of this.parametro.variaveis) {
-            const dadoVar: any = dadoAux.informacao[variavel.nome];
+        // if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
+        //   for(let variavel of this.parametro.variaveis) {
+        //     const dadoVar: any = dadoAux.informacao;
   
-            if(variavel.tipo == "LISTA") { obj[variavel.nome] = (dadoVar || []).map((d: any) => d.nome).join("; "); }
-            else { obj[variavel.nome] = dadoVar; }                   
-          }
-        }        
+        //     if(variavel.tipo == "LISTA") { obj[variavel.nome] = (dadoVar || []).map((d: any) => d.nome).join("; "); }
+        //     else { obj[variavel.nome] = dadoVar; }                   
+        //   }
+        // }        
 
-        this.dataDados.push(obj)
+        this.dataDados.push(informacao)
       }
     }
 
