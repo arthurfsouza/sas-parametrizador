@@ -1,0 +1,21 @@
+.login-container {
+    padding: 16px;
+    
+    form {
+        .login-fieldset {
+            border-radius: 5px;
+        }
+
+        .login-button {
+            padding: 15px;
+
+            button { width: 100%; }
+        }
+
+        .login-connection {
+            section {
+                text-align: end;
+            }
+        }
+    }
+}

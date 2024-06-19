@@ -1,0 +1,51 @@
+<div class="parametro-form-container">
+    <div class="row parametro-form-topnav">
+        <div class="parametro-form-title">
+            <menu-navigator></menu-navigator>
+            <h1 *ngIf="!parametroID">Cadastro de Parâmetro</h1>
+            <h1 *ngIf="parametroID">Edição de Parâmetro</h1>            
+        </div>
+        <div class="parametro-form-stepper">
+            <mat-stepper linear #stepper labelPosition="bottom" [selectedIndex]="selectedIndex" (selectedIndexChange)="onStepperChange($event)">
+                <mat-step [stepControl]="parametroStepperFG" [completed]="parametroCompleted()">
+                    <ng-template matStepLabel>Parâmetro</ng-template>
+                </mat-step>
+                <mat-step [stepControl]="variaveisStepperFG" [editable]="parametroIsEditavel" [completed]="variaveisCompleted()">
+                    <ng-template matStepLabel>Variáveis</ng-template>
+                </mat-step>
+                <mat-step [stepControl]="dadosStepperFG" [editable]="parametroIsEditavel" [completed]="dadosCompleted()">
+                    <ng-template matStepLabel>Dados</ng-template>
+                </mat-step>
+                <mat-step [stepControl]="revisaoStepperFG">
+                    <ng-template matStepLabel>Revisão</ng-template>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+
+    <div class="parametro-form-content">
+        <app-parametro #appParametro
+            [ngClass]="{'d-block': selectedIndex == 0, 'd-none': selectedIndex != 0}">
+        </app-parametro>
+        <app-variaveis #appVariaveis
+            [ngClass]="{'d-block': selectedIndex == 1, 'd-none': selectedIndex != 1}">
+        </app-variaveis>
+        <app-dados #appDados
+            [ngClass]="{'d-block': selectedIndex == 2, 'd-none': selectedIndex != 2}">
+        </app-dados>
+        <app-revisao #appRevisao
+            [ngClass]="{'d-block': selectedIndex == 3, 'd-none': selectedIndex != 3}">
+        </app-revisao>
+    </div>
+
+    <div class="row parametro-form-footer" *ngIf="selectedIndex < 3">
+        <div class="offset-md-4 col-md-4 col-12">
+            <button mat-stroked-button color="primary">CANCELAR</button>
+        </div>
+
+        <div class="col-md-4 col-12">
+            <button mat-flat-button color="primary" [disabled]="!disabledNextButton()"
+                (click)="onNextButton()">SALVAR E AVANÇAR</button>
+        </div>
+    </div>
+</div>

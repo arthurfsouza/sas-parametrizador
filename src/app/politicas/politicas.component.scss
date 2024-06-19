@@ -1,0 +1,75 @@
+.politicas-container {
+    display: block;
+
+    .politicas-topnav {
+        display: flex;
+        margin-left: 0px;
+        margin-right: 0px;
+        background-color: whitesmoke;
+
+        .politicas-title {
+            padding: 24px;
+            display: flex;
+        }
+    }
+
+    .politicas-content {
+        display: block;
+        padding: 16px 24px;
+        margin-left: 0px;
+        margin-right: 0px;
+
+        .politicas-content-top {
+            .content-top-filter {
+
+            }
+
+            .content-top-add {
+                display: flex;
+
+                button {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        .politicas-content-bottom {
+            .table-container {
+                width: 100%;
+
+                .politica-group {
+                    display: block;
+
+                    .politica-title {
+
+                    }
+
+                    .politica-subtitle {
+                        font-size: 12px;
+                        color: lightslategrey;
+                    }
+                }
+
+                .politica-status-ativo {
+                    color: #50cd89;
+                    background-color: #e8fff3;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px;
+                    border: 1px solid;
+                    text-align: center;
+                }
+
+                .politica-status-inativo {
+                    color: #f1416c;
+                    background-color: #fff5f8;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 0px 15px 5px;
+                    border: 1px solid;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

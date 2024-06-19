@@ -1,0 +1,49 @@
+.close-dialog {
+    position: absolute;
+    right: 0;
+}
+
+.cluster-form {
+    height: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;    
+
+    .slide-toggle-group {
+        display: flex;
+
+        .slide-toggle-ativo {
+            padding: 0 16px;
+            margin-left: auto;
+        }
+    }
+
+    .cluster-warning {
+        padding: 15px;
+        margin-top: auto;
+        
+        .warning-content {
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            border: 2px solid rgb(255, 130, 50);            
+            border-radius: 5px;
+            background-color: rgb(255, 234, 212);
+
+            .warning-icon { color: rgb(255, 130, 50); }
+
+            .warning-text { margin-left: 15px; }
+        }
+    }
+
+    .cluster-footer {
+        margin-top: auto;
+
+        div {
+            padding-top: 8px;
+            padding-bottom: 8px;
+
+            button { width: 100%; }
+        }
+    }
+}

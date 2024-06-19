@@ -1,0 +1,84 @@
+<div class="close-dialog">
+    <button type="button" mat-icon-button [mat-dialog-close]="true">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<form class="cluster-form" [formGroup]="clusterFG">
+    <h1>{{ data && data.cluster ? 'Edição' : 'Cadastro' }} de Cluster</h1>
+
+    <mat-divider></mat-divider>
+
+    <br/>
+
+    <div class="row custom-row-padding slide-toggle-group">
+        <div class="slide-toggle-ativo">
+            <mat-slide-toggle labelPosition="before" formControlName="is_ativo">
+                Disponibilidade para Uso
+            </mat-slide-toggle>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row custom-row-padding">
+        <div class="col-md-6 col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>NOME DO CLUSTER</mat-label>
+                <input matInput formControlName="nome" maxlength="100" required>
+                <mat-hint>Apenas letras, números e underline</mat-hint>
+                <mat-error *ngIf="clusterFG.controls['nome'].hasError('nomeExistente')">
+                    Nome já cadastrado (paro o Seguimento informado).
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <mat-form-field class="custom-form-field">
+                <mat-label>SEGMENTO ASSOCIADO</mat-label>
+                <mat-select name="segmento" formControlName="segmento" [compareWith]="compareObjects" (selectionChange)="onChangeSegmento($event)">
+                  <mat-option *ngFor="let option of segmentos" [value]="option">
+                    {{ option.nome }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint>Associe um segmento.</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row custom-row-padding">
+        <div class="col-12">
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>DESCRIÇÃO</mat-label>
+                <textarea #descricao matInput formControlName="descricao" maxlength="350" rows="4" required></textarea>
+                <mat-hint align="start">Digite uma descrição sobre o segmento</mat-hint>
+                <mat-hint align="end">{{ descricao.value.length }} / 350</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row cluster-warning" *ngIf="data?.cluster?.id && hasAssociation">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <div class="warning-text">
+                <b>Aviso: </b>Este cluster já possui associação!
+            </div>
+        </div>
+    </div>
+
+    <div class="row cluster-footer">
+        <div class="col-md-6 col-12" *ngIf="hasAssociation">
+            <button mat-stroked-button color="primary" [mat-dialog-close]="true">CANCELAR</button>
+        </div>
+
+        <div class="col-md-6 col-12" *ngIf="!hasAssociation">
+            <button mat-stroked-button color="warn" (click)="onDelete()">EXCLUIR</button>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <button mat-flat-button color="primary" [disabled]="!clusterFG.valid" (click)="onSave()">
+                FINALIZAR
+            </button>
+        </div>
+    </div>
+</form>

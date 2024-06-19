@@ -1,0 +1,123 @@
+<div class="variaveis-content" *ngIf="parametro">
+    <div class="variaveis-top">
+        <h2>Variáveis</h2>
+
+        <div class="variaveis-add">
+            <button mat-fab matTooltip="Adicionar variável" color="primary" [disabled]="!parametroIsEditavel" (click)="onAddVariavel()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="variaveis-upload">
+        <button mat-flat-button color="accent" [disabled]="!parametroIsEditavel" (click)="onOpenVariaveisUpload()">
+            Importar Variáveis
+        </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="row variaveis-warning" *ngIf="parametro?.modo == 'GLOBAL' && data.length > 0 && checkGlobal()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <div class="warning-text">
+                <p><b>Aviso:</b></p>
+                <p>O cadastro da variável Global no SAS será considerado do tipo <b>"Texto"</b> nos seguintes cenários:</p>
+                <p>1. Caso seja adicionado apenas 1 variável e o seu tipo de dado seja diferente de "Decimal" e "Numérico".</p>
+                <p>2. Caso seja adicionado 2 ou mais variáveis.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelModo()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">error</mat-icon>
+            <div class="warning-text">
+                <b>Importante: </b>Obrigatório o preenchimento de pelo menos 1 variável como "CHAVE"!
+            </div>
+        </div>
+    </div>
+
+    <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelValue()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">error</mat-icon>
+            <div class="warning-text">
+                <b>Importante: </b>Obrigatório o preenchimento de pelo menos 1 variável diferente de "CHAVE"!
+            </div>
+        </div>
+    </div>
+
+    <div class="row variaveis-error" *ngIf="data.length > 0 && !checkVariavelLista()">
+        <div class="warning-content">
+            <mat-icon class="warning-icon">error</mat-icon>
+            <div class="warning-text">
+                <b>Importante: </b>Há variáveis do tipo "Lista" sem uma lista associada!
+            </div>
+        </div>
+    </div>
+
+    <div class="variaveis-table">
+        <div class="table-container" *ngIf="dataSource">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="nome">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '30%' }" class="t-center"> NOME </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '30%' }" class="t-start">
+                        {{ row.nome }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipo">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '20%' }" class="t-center"> TIPO </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '20%' }" class="t-start">
+                        <span *ngIf="row.tipo == 'DECIMAL'">Decimal</span>
+                        <span *ngIf="row.tipo == 'NUMERICO'">Numérico</span>
+                        <span *ngIf="row.tipo == 'TEXTO'">Texto</span>
+                        <span *ngIf="row.tipo == 'LISTA'">Lista</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="is_chave">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> CHAVE </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                        {{ row.is_chave == true ? "Sim" : "Não" }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tamanho">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> TAMANHO </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                        {{ row.tamanho }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="qtd_casas_decimais">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '15%' }" class="t-center"> QTD. CASAS DECIMAIS </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '15%' }" class="t-start">
+                        {{ row.tipo == "DECIMAL" ? row.qtd_casas_decimais : "Não se aplica" }}
+                    </td>
+                </ng-container>                
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> </th>
+                    <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                        <div class="content-table-actions">
+                            <button type="button" mat-icon-button matTooltip="Editar variável" [disabled]="!parametroIsEditavel" (click)="onEditVar(row)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button type="button" color="warn" mat-icon-button matTooltip="Excluir variável" [disabled]="!parametroIsEditavel" (click)="onDeleteVar(row)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhuma variável cadastrada.</div>
+        </div>
+    </div>
+</div>

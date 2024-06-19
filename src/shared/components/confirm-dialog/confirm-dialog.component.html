@@ -1,0 +1,23 @@
+<h1 class="confirm-dialog-title" mat-dialog-title *ngIf="title">{{ title }}</h1>
+
+<div mat-dialog-content>
+    <div class="confirm-dialog-content">
+        <div class="confirm-dialog-content-info" *ngIf="description">
+            <p class="confirm-dialog-string" *ngIf="descriptionType == 'string'">{{ description }}</p>
+            <div class="confirm-dialog-html" [innerHTML]="description" *ngIf="descriptionType == 'HTML'"></div>
+        </div>
+        <div class="confirm-dialog-content-actions">
+            <div class="row confirm-dialog-actions">
+                <div class="col-md-6 col-12">
+                    <button mat-raised-button [mat-dialog-close]="true">Cancelar</button>
+                </div>
+
+                <div class="col-md-6 col-12">
+                    <button mat-raised-button color="warn" (click)="onDelete()">
+                        {{ buttonText }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>

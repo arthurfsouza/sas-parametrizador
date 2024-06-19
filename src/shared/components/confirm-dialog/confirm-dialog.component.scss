@@ -1,0 +1,26 @@
+.confirm-dialog-title { }
+
+.confirm-dialog-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .confirm-dialog-content-info {
+        .confirm-dialog-string { }
+
+        .confirm-dialog-html { }
+    }
+
+    .confirm-dialog-content-actions {
+        margin-top: auto;
+
+        .confirm-dialog-actions {
+            div {
+                padding-top: 8px;
+                padding-bottom: 8px;
+
+                button { width: 100%; }
+            }
+        }
+    }
+}

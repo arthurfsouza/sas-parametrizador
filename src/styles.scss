@@ -1,4 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'bootstrap-4-grid/scss/grid.scss';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.custom-row-padding {
+    padding: 8px 0;
+}
+
+.custom-form-field {
+    width: 100%;
+}
+
+.default-search {
+    .icon-search { }
+
+    .icon-backspace { cursor: pointer; }
+}
+
+.table-container {
+    max-width: 100%;
+    overflow: auto;
+    
+    .t-start { text-align: start !important; }    
+    .t-center { text-align: center !important; }    
+    .t-end { text-align: end !important; }
+
+    .content-table-actions {
+        display: flex;
+
+        .icon-buttton {
+            cursor: pointer;
+        }
+    }
+
+    .empty-message {
+        background-color: #f4f4f4;
+        text-align: center;
+        font-size: 14px;
+        cursor: default !important;
+        justify-content: center;
+        color: #000000;
+        padding: 15px;
+    }
+}

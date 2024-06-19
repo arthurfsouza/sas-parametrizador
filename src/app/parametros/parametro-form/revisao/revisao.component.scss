@@ -1,0 +1,160 @@
+:host {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.revisao {
+    padding: 32px;
+    background-color: #3f51b5;
+    color: white;
+
+    .revisao-parametro {
+        padding: 16px;        
+        background-color: darkblue;
+        color: lightgray;
+        font-size: 32px;
+        font-weight: 500;
+        border: 1px solid lightgray;    
+        border-radius: 5px;    
+    }
+
+    .revisao-detalhes {
+        padding: 16px 0;
+        display: flex;
+        flex-direction: column;
+
+        label { color: lightgray; }
+
+        span {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+    }
+
+    .revisao-accordion {
+        .accordion-dados {
+            .parametro-status-CREATED, .parametro-status-UPDATED {
+                color: white;
+                background-color: #6f7681;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #6f7681;
+                text-align: center;
+            }
+
+            .parametro-status-AVAILABLE_FOR_REVIEW {
+                color: #6f7681;
+                background-color: white;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #6f7681;
+                text-align: center;
+            }
+
+            .parametro-status-ANALYTICAL_ENVIRONMENT {
+                color: white;
+                background-color: #1071e5;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #1071e5;
+                text-align: center;
+            }
+
+            .parametro-status-INITIAL_APPROVAL_REFUSED, .parametro-status-FINAL_APPROVAL_REFUSED {
+                color: #cc4e00;
+                background-color: #fff5f8;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px 5px;
+                border: 1px solid #cc4e00;
+                text-align: center;
+            }
+
+            .parametro-status-DELETED {
+                color: white;
+                background-color: #cc4e00;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px 5px;
+                border: 1px solid #cc4e00;
+                text-align: center;
+            }
+
+            .parametro-status-PENDING_INITIAL_APPROVAL, .parametro-status-PENDING_FINAL_APPROVAL {
+                color: #fcce14;
+                background-color: #fff8dd;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #fcce14;
+                text-align: center;
+            }
+
+            .parametro-status-AWAITING_IMPLEMENTATION {
+                color: white;
+                background-color: #fcce14;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #fcce14;
+                text-align: center;
+            }
+
+            .parametro-status-INITIAL_APPROVAL_COMPLETED, .parametro-status-FINAL_APPROVAL_COMPLETED {
+                color: #54c45e;
+                background-color: #e8fff3;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #54c45e;
+                text-align: center;
+            }
+
+            .parametro-status-PRODUCTION_ENVIRONMENT {
+                color: white;
+                background-color: #54c45e;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 0px 15px;
+                border: 1px solid #54c45e;
+                text-align: center;
+            }
+        }
+    }
+
+    .revisao-dark {
+        padding: 16px;    
+        background-color: darkblue;
+        color: lightgray;
+        border: 1px solid lightgray;    
+        border-radius: 5px;
+
+        div {
+            padding: 0 8px;
+        }
+    }
+
+    .revisao-actions {
+        .revisao-actions-form {
+            width: 100%;
+
+            fieldset {
+                padding: 16px 32px;
+                background-color: white;
+                border-radius: 5px;
+
+                legend {
+                    min-width: 100px;
+                    background-color: #3f51b5;
+                    border: 1px solid;
+                    border-radius: 5px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

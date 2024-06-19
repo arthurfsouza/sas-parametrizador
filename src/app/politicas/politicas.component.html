@@ -1,0 +1,85 @@
+<div class="politicas-container">
+    <div class="row politicas-topnav">
+        <div class="politicas-title">
+            <menu-navigator></menu-navigator>
+            <h1>Políticas</h1>
+        </div>
+    </div>
+
+    <div class="row politicas-content">
+        <div class="row politicas-content-top">
+            <div class="col-md-8 col-12 content-top-filter" [formGroup]="filterFG">
+                <mat-form-field appearance="fill" class="custom-form-field default-search">
+                    <mat-label>Buscar</mat-label>
+                    <input matInput placeholder="Digite aqui sua busca" formControlName="filter" minlength="3">
+                    <mat-icon matSuffix class="icon-search" *ngIf="filterFG.controls['filter'].value?.length === 0">search</mat-icon>
+                    <mat-icon matSuffix class="icon-backspace" color="warn" (click)="filterFG.controls['filter'].setValue('')"
+                        *ngIf="filterFG.controls['filter'].value?.length > 0">
+                        backspace
+                    </mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4 col-12 content-top-add">
+                <button mat-fab matTooltip="Adicionar política" color="primary" (click)="onAddPolitica()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="row politicas-content-bottom">
+            <div class="table-container" *ngIf="dataSource">
+                <table mat-table [dataSource]="dataSource" matSort #sort="matSort" (matSortChange)="sortChange($event)">    
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '30%' }" class="t-center"> NOME </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '30%' }" class="t-start">
+                            <div class="politica-group">
+                                <div class="politica-title">{{ row.nome }}</div>
+                                <div class="politica-subtitle">{{ row.descricao }}</div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="segmento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '25%' }" class="t-center"> SEGMENTO </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '25%' }" class="t-start">
+                            {{ row.cluster.segmento.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cluster">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '25%' }" class="t-center"> CLUSTER </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '25%' }" class="t-start">
+                            {{ row.cluster.nome }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'width': '10%' }" class="t-center"> STATUS </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-start">
+                            <div class="politica-status-ativo" *ngIf="row.is_ativo">Ativo</div>
+                            <div class="politica-status-inativo" *ngIf="!row.is_ativo">Inativo</div>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'width': '10%' }" class="t-center"> </th>
+                        <td mat-cell *matCellDef="let row" [ngStyle]="{'width': '10%' }" class="t-center">
+                            <div class="content-table-actions">
+                                <button mat-flat-button color="primary" (click)="onDetalhes(row)">Detalhes</button>
+                            </div>
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+    
+                <div class="empty-message" *ngIf="dataSource.data.length === 0">Nenhuma política cadastrada.</div>
+            </div>
+
+            <datatable-paginator #paginator [dataSize]="data.length" (sourceChanged)="onSourceChanged($event)">
+            </datatable-paginator>
+        </div>
+    </div>
+</div>
