@@ -63,7 +63,7 @@
                 <div class="col-12" style="padding-bottom: 8px;">
                     <mat-form-field class="custom-form-field" appearance="outline">
                         <mat-label>LIMITE DE TAMANHO</mat-label>
-                        <input matInput placeholder="Máx. de caracteres" formControlName="tamanho" required>
+                        <input matInput placeholder="Máx. de caracteres" formControlName="tamanho" pattern="^[0-9]*$" required>
                         <mat-hint>Apenas números inteiros</mat-hint>
                     </mat-form-field>
                 </div>
@@ -73,7 +73,7 @@
                 <div class="col-12" style="padding-top: 8px;">
                     <mat-form-field class="custom-form-field" appearance="outline">
                         <mat-label>QTD. DE CASAS DECIMAIS</mat-label>
-                        <input matInput placeholder="Casas decimais" formControlName="qtd_casas_decimais" required>
+                        <input matInput placeholder="Casas decimais" formControlName="qtd_casas_decimais" pattern="^[0-9]*$" required>
                         <mat-hint>Apenas números inteiros</mat-hint>
                     </mat-form-field>
                 </div>                
@@ -83,7 +83,7 @@
         <div class="col-md-6 col-12" *ngIf="variavelFG.controls['tipo'].value?.tipo == 'NUMERICO' || variavelFG.controls['tipo'].value?.tipo == 'TEXTO'">
             <mat-form-field class="custom-form-field" appearance="outline">
                 <mat-label>LIMITE DE TAMANHO</mat-label>
-                <input matInput placeholder="Máx. de caracteres" formControlName="tamanho" required>
+                <input matInput placeholder="Máx. de caracteres" formControlName="tamanho" pattern="^[0-9]*$" required>
                 <mat-hint>Apenas números inteiros</mat-hint>
             </mat-form-field>
         </div>
@@ -93,7 +93,7 @@
                 <div class="col-12" style="padding-bottom: 8px;">
                     <mat-form-field class="custom-form-field" appearance="outline">
                         <mat-label>LIMITE DE TAMANHO</mat-label>
-                        <input matInput placeholder="Máx. de itens" formControlName="tamanho" required>
+                        <input matInput placeholder="Máx. de itens" formControlName="tamanho" pattern="^[0-9]*$" required>
                         <mat-hint>Apenas números inteiros</mat-hint>
                     </mat-form-field>
                 </div>
