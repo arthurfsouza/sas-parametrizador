@@ -10,7 +10,7 @@ export const environment = {
             name: String(Md5.hashStr(env + '.LocalStorageName.' + key)),
             secret: String(Md5.hashStr(env + '.LocalStorageSecret.' + key))
         },
-        sas: { url: "http://localhost:4800/" },
-        web: { url: "http://localhost:4800/" }
+        sas: { url: "http://localhost:4200/" },
+        web: { url: "http://localhost:4200/" }
     }
 };

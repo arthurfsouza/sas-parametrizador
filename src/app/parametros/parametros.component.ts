@@ -264,6 +264,7 @@ export class ParametrosComponent {
           (response: any) => {
             if(response?.message) {
               this._snackbar.showSnackbarMessages({ message: response.message, type: 'success', has_duration: true });
+              this._loadingParametros();
             }
           },
           err => {
