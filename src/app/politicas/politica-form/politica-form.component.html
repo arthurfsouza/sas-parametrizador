@@ -52,7 +52,7 @@
                 <mat-label>CLUSTER ASSOCIADO</mat-label>
                 <mat-select name="cluster" formControlName="cluster" [compareWith]="compareObjects" (selectionChange)="onChangeCluster($event)">
                   <mat-option *ngFor="let option of clusters" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Associe um cluster.</mat-hint>
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <div class="row cluster-warning" *ngIf="data?.politica?.id && hasAssociation">
+    <div class="row politica-warning" *ngIf="data?.politica?.id && hasAssociation">
         <div class="warning-content">
             <mat-icon class="warning-icon">warning</mat-icon>
             <div class="warning-text">

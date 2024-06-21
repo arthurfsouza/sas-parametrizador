@@ -38,7 +38,7 @@
                 <mat-label>SEGMENTO ASSOCIADO</mat-label>
                 <mat-select name="segmento" formControlName="segmento" [compareWith]="compareObjects" (selectionChange)="onChangeSegmento($event)">
                   <mat-option *ngFor="let option of segmentos" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Associe um segmento.</mat-hint>

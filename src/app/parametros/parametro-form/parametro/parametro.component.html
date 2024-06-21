@@ -13,7 +13,7 @@
                 <mat-label>CLUSTER ASSOCIADO</mat-label>
                 <mat-select name="cluster" formControlName="cluster" [compareWith]="compareObjects" (selectionChange)="onChangeCluster($event)">
                   <mat-option *ngFor="let option of clusters" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Associe um cluster.</mat-hint>
@@ -25,7 +25,7 @@
                 <mat-label>POLÍTICA ASSOCIADA</mat-label>
                 <mat-select name="politica" formControlName="politica" [compareWith]="compareObjects">
                   <mat-option *ngFor="let option of politicas" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Associe uma política.</mat-hint>

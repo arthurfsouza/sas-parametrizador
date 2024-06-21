@@ -17,7 +17,7 @@
                 <mat-label>SEGMENTO</mat-label>
                 <mat-select name="segmento" formControlName="segmento" [compareWith]="compareObjects" (selectionChange)="onChangeSegmento($event)">
                   <mat-option *ngFor="let option of segmentos" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Selecione um segmento.</mat-hint>
@@ -29,7 +29,7 @@
                 <mat-label>CLUSTER</mat-label>
                 <mat-select name="cluster" formControlName="cluster" [compareWith]="compareObjects" (selectionChange)="onChangeCluster($event)">
                   <mat-option *ngFor="let option of clusters" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Selecione um cluster.</mat-hint>
@@ -41,7 +41,7 @@
                 <mat-label>POLÍTICA</mat-label>
                 <mat-select name="politica" formControlName="politica" [compareWith]="compareObjects" (selectionChange)="onChangePolitica($event)">
                   <mat-option *ngFor="let option of politicas" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Selecione uma política.</mat-hint>
