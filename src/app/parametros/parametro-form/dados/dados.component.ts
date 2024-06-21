@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmDialogComponent } from '../../../../shared/components';
 import { ParametroService, SnackbarMessagesService } from '../../../../shared/services';
@@ -16,8 +17,8 @@ import { Dado, Parametro, Variavel, VariavelLista, VariavelTipo } from '../../..
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { api } from '../../../../shared/configurations';
+
 import StringUtils from '../../../../shared/utils/string/string.utils';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-dados',
@@ -33,6 +34,7 @@ import { MatTableDataSource } from '@angular/material/table';
     MatDividerModule,
     MatIconModule,
     MatInputModule,
+    MatTableModule,
     MatSelectModule,
     MatTooltipModule
   ],
