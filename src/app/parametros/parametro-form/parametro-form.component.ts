@@ -1,9 +1,10 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MenuNavigatorComponent } from '../../../shared/components';
 import { DadosComponent } from './dados/dados.component';
@@ -12,7 +13,7 @@ import { RevisaoComponent } from './revisao/revisao.component';
 import { VariaveisComponent } from './variaveis/variaveis.component';
 import { ParametroService } from '../../../shared/services';
 import { Parametro } from '../../../shared/interfaces';
-import { api } from '../../../shared/configurations';
+import { api, general } from '../../../shared/configurations';
 
 @Component({
   selector: 'app-parametro-form',
@@ -20,6 +21,7 @@ import { api } from '../../../shared/configurations';
   imports: [
     CommonModule,
     MatButtonModule,
+    MatIconModule,
     MatStepperModule,
     ParametroComponent,
     VariaveisComponent,
@@ -39,7 +41,7 @@ export class ParametroFormComponent {
   private _http = inject(HttpClient);
   private _parametro = inject(ParametroService);
 
-  constructor(private _activated: ActivatedRoute) { }
+  constructor(private _router: Router, private _activated: ActivatedRoute) { }
 
   public parametroStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
   public variaveisStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
@@ -130,6 +132,12 @@ export class ParametroFormComponent {
     else if(this.selectedIndex == 2) { return this.dadosCompleted(); }
     else { return true; }
   }
+
+  public onBackButton(): void {
+    if(this.selectedIndex > 0) { this.selectedIndex = (this.selectedIndex - 1); }
+  }
+
+  public onCancel(): void { this._router.navigate([general.routes.private.parametros]); }
 
   public onNextButton(): void {
     if(this.selectedIndex == 0 && this.parametroCompleted()) {

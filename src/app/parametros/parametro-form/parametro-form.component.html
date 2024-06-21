@@ -38,14 +38,34 @@
         </app-revisao>
     </div>
 
-    <div class="row parametro-form-footer" *ngIf="selectedIndex < 3">
-        <div class="offset-md-4 col-md-4 col-12">
-            <button mat-stroked-button color="primary">CANCELAR</button>
+    <div class="row parametro-form-footer">
+        <div class="col-md-4 col-12" *ngIf="selectedIndex > 0">
+            <button mat-flat-button color="accent" (click)="onBackButton()">
+                <mat-icon style="margin-right: 5px;">arrow_back</mat-icon>
+                VOLTAR
+            </button>
         </div>
 
-        <div class="col-md-4 col-12">
+        <div class="offset-md-4 col-md-4 col-12" *ngIf="selectedIndex == 0">
+            <button mat-stroked-button color="primary" (click)="onCancel()">CANCELAR</button>
+        </div>
+
+        <div class="col-md-4 col-12" *ngIf="selectedIndex > 0 && selectedIndex < 3">
+            <button mat-stroked-button color="primary" (click)="onCancel()">CANCELAR</button>
+        </div>
+
+        <div class="col-md-4 col-12" *ngIf="selectedIndex < 3">
             <button mat-flat-button color="primary" [disabled]="!disabledNextButton()"
-                (click)="onNextButton()">SALVAR E AVANÇAR</button>
+                (click)="onNextButton()">
+                SALVAR E AVANÇAR
+                <mat-icon style="margin-left: 5px;">arrow_forward</mat-icon>
+            </button>
+        </div>
+
+        <div class="offset-md-4 col-md-4 col-12" *ngIf="selectedIndex == 3">
+            <button mat-flat-button color="primary" (click)="onCancel()">
+                LISTAR PARÂMETROS
+            </button>
         </div>
     </div>
 </div>
