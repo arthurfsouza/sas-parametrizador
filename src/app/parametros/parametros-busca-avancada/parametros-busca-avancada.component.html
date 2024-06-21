@@ -57,7 +57,7 @@
                 <mat-label>VARIÁVEL</mat-label>
                 <mat-select name="variavel" formControlName="variavel" [compareWith]="compareObjects" (selectionChange)="onChangeVariavel($event)">
                   <mat-option *ngFor="let option of variaveis" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Selecione uma variável.</mat-hint>

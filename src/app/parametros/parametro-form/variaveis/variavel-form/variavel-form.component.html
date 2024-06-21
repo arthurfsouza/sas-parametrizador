@@ -38,7 +38,7 @@
                 <mat-label>FORMATO DA VARIÁVEL</mat-label>
                 <mat-select name="tipo" formControlName="tipo" [compareWith]="compareObjects" (selectionChange)="onChangeTipo($event)">
                   <mat-option *ngFor="let option of tipos" [value]="option">
-                    {{ option.nome }}
+                    {{ option?.nome || "-" }}
                   </mat-option>
                 </mat-select>
                 <mat-hint>Selecione um formato de variável.</mat-hint>
