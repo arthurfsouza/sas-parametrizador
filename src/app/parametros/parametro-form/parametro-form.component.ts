@@ -53,10 +53,6 @@ export class ParametroFormComponent {
   public selectedIndex: number = 0;
 
   ngOnInit(): void {
-    this.parametroStepperFG.controls['completed'].setValue(null);
-    this.variaveisStepperFG.controls['completed'].setValue(null);
-    this.dadosStepperFG.controls['completed'].setValue(null);
-
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) {
         this.parametro = parametro;
@@ -171,5 +167,15 @@ export class ParametroFormComponent {
       }
       else { this.selectedIndex = 3; }      
     }
+  }
+
+  ngOnDestroy(): void {
+    this._parametro.setParametro(null);
+    this.parametroIsEditavel = true;
+    this.selectedIndex = 0;
+
+    this.parametroStepperFG.controls['completed'].setValue(null);
+    this.variaveisStepperFG.controls['completed'].setValue(null);
+    this.dadosStepperFG.controls['completed'].setValue(null);
   }
 }
