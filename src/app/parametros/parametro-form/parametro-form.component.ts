@@ -41,15 +41,9 @@ export class ParametroFormComponent {
 
   constructor(private _activated: ActivatedRoute) { }
 
-  public parametroStepperFG: FormGroup = new FormGroup({
-    completed: new FormControl(this.parametroFGCompleted(), [Validators.required])
-  });
-  public variaveisStepperFG: FormGroup = new FormGroup({
-    completed: new FormControl(this.variaveisFGCompleted(), [Validators.required])
-  });
-  public dadosStepperFG: FormGroup = new FormGroup({
-    completed: new FormControl(this.dadosFGCompleted(), [Validators.required])
-  });
+  public parametroStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
+  public variaveisStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
+  public dadosStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
   public revisaoStepperFG: FormGroup = new FormGroup({ });
 
   public parametro!: Parametro;
@@ -60,7 +54,21 @@ export class ParametroFormComponent {
 
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
-      if(parametro) { this.parametro = parametro; }
+      if(parametro) {
+        this.parametro = parametro;
+      
+        if(this.parametro && this.parametro?.id) {
+          this.parametroStepperFG.controls['completed'].setValue("Completed");
+        }
+
+        if(this.parametro?.variaveis && this.parametro?.variaveis?.length > 0) {
+          this.variaveisStepperFG.controls['completed'].setValue("Completed");
+        }
+
+        if(this.parametro?.dados && this.parametro?.dados?.length > 0) {
+          this.dadosStepperFG.controls['completed'].setValue("Completed");
+        }
+      }
     });
 
     this._parametro.getIsEditavel().subscribe(isEditavel => { this.parametroIsEditavel = isEditavel; });
@@ -100,10 +108,6 @@ export class ParametroFormComponent {
     return false;
   }
 
-  public parametroFGCompleted(): any {
-    return this.parametroCompleted() == true ? 'Completed' : null;
-  }
-
   public variaveisCompleted(): boolean {
     if(!this.parametroIsEditavel) { return true; }
 
@@ -112,20 +116,12 @@ export class ParametroFormComponent {
     return false;
   }
 
-  public variaveisFGCompleted(): any {
-    return this.variaveisCompleted() == true ? 'Completed' : null;
-  }
-
   public dadosCompleted(): boolean {
     if(!this.parametroIsEditavel) { return true; }
     
     if(this.appDados) { return this.appDados.dadosFG.valid; }
    
     return false;
-  }
-
-  public dadosFGCompleted(): any {
-    return this.dadosCompleted() == true ? 'Completed' : null;
   }
 
   public disabledNextButton(): boolean {
