@@ -313,12 +313,9 @@ export class DadosComponent {
         if(variaveis_lista.length > 0) { fgValue = variaveis_lista; }
       }
 
-      fg.addControl(
-        "dado-control-" + varAux.id,
-        new FormControl(fgValue, [Validators.required])
-      );
+      const control: FormControl = new FormControl({ value: fgValue, disabled: this.parametroIsEditavel }, [Validators.required]);
 
-      if(!this.parametroIsEditavel) { fg.disable(); }
+      fg.addControl("dado-control-" + varAux.id, control); 
     }
 
     return fg;
