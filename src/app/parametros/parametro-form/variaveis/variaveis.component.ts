@@ -206,8 +206,8 @@ export class VariaveisComponent {
 
   public onOpenVariaveisUpload(): void {
     const dialogRef = this.dialog.open(VariavelUploadComponent, {
-      width: '100%',
-      height: '100%',
+      width: '95%',
+      height: '95%',
       maxWidth: '100%',
       maxHeight: '100%'
     });

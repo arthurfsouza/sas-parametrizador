@@ -3,7 +3,7 @@
 
     <mat-divider></mat-divider>
 
-    <div class="parametrizador-dados-table" [formGroup]="dadosFG">
+    <div class="parametrizador-dados-table" [formGroup]="dadosFG" *ngIf="parametroIsEditavel">
         <table formArrayName="dados">
             <thead>
               <tr><th *ngFor="let column of displayedColumns"> {{ getColumnName(column) }}</th></tr>
@@ -96,5 +96,25 @@
               </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="variaveis-table" *ngIf="!parametroIsEditavel">
+        <div class="table-container" *ngIf="dataSourceDados">
+            <table mat-table [dataSource]="dataSourceDados">
+                <ng-container *ngFor="let column of displayedColumnsDados">
+                    <ng-container [matColumnDef]="column">
+                        <th mat-header-cell *matHeaderCellDef class="t-center"> {{ column }} </th>
+                        <td mat-cell *matCellDef="let row" class="t-start">
+                            {{ row[column] }}
+                        </td>
+                    </ng-container>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsDados"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsDados;"></tr>
+            </table>
+
+            <div class="empty-message" *ngIf="dataSourceDados.data.length === 0">Nenhuma dado cadastrado.</div>
+        </div>
     </div>
 </div>

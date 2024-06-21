@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { api } from '../../../../shared/configurations';
 import StringUtils from '../../../../shared/utils/string/string.utils';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-dados',
@@ -47,10 +48,14 @@ export class DadosComponent {
   
   public parametro!: Parametro;
   public parametroIsEditavel: boolean = true;
-
+  
   public displayedColumns: string[] = [];
   public variaveis: Variavel[] = [];
   public dados: Dado[] = [];
+
+  public displayedColumnsDados: string[] = [];
+  public dataSourceDados: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  public dataDados: any[] = [];
 
   public dadosFG: FormGroup = new FormGroup({ dados: this._fb.array([]) });
   private _dados: FormArray = <FormArray>this.dadosFG.get('dados');
@@ -71,6 +76,7 @@ export class DadosComponent {
           while(formArray.length !== 0) { formArray.removeAt(0); }
 
           this.initDados();
+          this.initDadosSource();
         }
       }
     });
@@ -197,6 +203,28 @@ export class DadosComponent {
       });
     }
     else { this._patchDado(1); }
+  }
+
+  public initDadosSource(): void {
+    this.displayedColumnsDados = [];
+
+    if(this.parametro.variaveis && this.parametro.variaveis.length > 0) {
+      for(let varAux of this.parametro.variaveis) { this.displayedColumnsDados.push(varAux.nome); }
+    }
+
+    this.dataDados = [];
+
+    if(this.parametro.dados && this.parametro.dados.length > 0) {
+      for(let dado of this.parametro.dados) {
+        let informacao = dado.informacao || { };     
+
+        this.dataDados.push(informacao);
+      }
+    }
+
+    if(this.dataDados && this.dataDados.length > 0) {
+      this.dataSourceDados = new MatTableDataSource(this.dataDados);
+    }
   }
 
   public getColumnID(column: string): any { return column.replace("dado-control-", ""); }
