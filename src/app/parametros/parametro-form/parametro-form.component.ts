@@ -41,12 +41,17 @@ export class ParametroFormComponent {
   private _http = inject(HttpClient);
   private _parametro = inject(ParametroService);
 
-  constructor(private _router: Router, private _activated: ActivatedRoute) { }
+  public parametroStepperFG!: FormGroup;
+  public variaveisStepperFG!: FormGroup;
+  public dadosStepperFG!: FormGroup;
+  public revisaoStepperFG!: FormGroup;
 
-  public parametroStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
-  public variaveisStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
-  public dadosStepperFG: FormGroup = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
-  public revisaoStepperFG: FormGroup = new FormGroup({ });
+  constructor(private _router: Router, private _activated: ActivatedRoute) {
+    this.parametroStepperFG = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
+    this.variaveisStepperFG = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
+    this.dadosStepperFG = new FormGroup({ completed: new FormControl(null, [Validators.required]) });
+    this.revisaoStepperFG = new FormGroup({ });
+  }
 
   public parametro!: Parametro;
   public parametroID!: string;

@@ -30,19 +30,25 @@ import { Auth, AuthService } from '../../guards';
 export class LoginComponent {
   private _http = inject(HttpClient);
   private _localStorage = inject(LocalStorageService);  
-  private _snackbar = inject(SnackbarMessagesService);  
+  private _snackbar = inject(SnackbarMessagesService);
   
-  constructor(public dialogRef: MatDialogRef<LoginComponent>) { }
-
-  public loginFG: FormGroup = new FormGroup({
-    username: new FormControl(null, [Validators.required]),
-    password: new FormControl(null, [Validators.required]),
-    connection_flag: new FormControl(true, [Validators.required])
-  });
+  public loginFG!: FormGroup
+  
+  constructor(public dialogRef: MatDialogRef<LoginComponent>) {
+    this.initFormGroup();
+  }
 
   public hidePassword: boolean = true;
 
   ngOnInit(): void { }
+
+  public initFormGroup(): void {
+    this.loginFG = new FormGroup({
+      username: new FormControl(null, [Validators.required]),
+      password: new FormControl(null, [Validators.required]),
+      connection_flag: new FormControl(true, [Validators.required])
+    });
+  }
 
   public onLogin(): void {
     if(this.loginFG.valid) {

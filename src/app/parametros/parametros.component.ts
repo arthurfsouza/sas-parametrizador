@@ -51,15 +51,15 @@ export class ParametrosComponent {
   private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
+  public filterFG!: FormGroup
+
   constructor(public dialog: MatDialog, private _router: Router){
+    this.filterFG = new FormGroup({ filter: new FormControl("", [Validators.minLength(3)]) });
+
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       if(value.length >= 3) { this._loadingParametros(); }
     });
   }
-
-  public filterFG: FormGroup = new FormGroup({
-    filter: new FormControl("", [Validators.minLength(3)])
-  });
 
   public displayedColumns: string[] = ["nome", "segmento", "cluster", "politica", "variavel", "versao", "status", "actions"];
   public dataSource: MatTableDataSource<Parametro> = new MatTableDataSource<Parametro>([]);

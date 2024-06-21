@@ -54,18 +54,11 @@ export class ParametroComponent {
   private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
-  constructor() { }
+  public parametroFG!: FormGroup;
+
+  constructor() { this.initFormGroup(); }
 
   public minDate: Date = addMinutes(new Date(), 5);
-  public parametroFG: FormGroup = new FormGroup({
-    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
-    modo: new FormControl(null, [Validators.required]),
-    data_vigencia: new FormControl(this.minDate, [Validators.required]),
-    hora_vigencia: new FormControl(null, [Validators.required]),
-    cluster: new FormControl(null, [Validators.required]),
-    politica: new FormControl(null, [Validators.required]),
-  }, this.dataHoraVigenciaValidators);
 
   public parametro!: Parametro;
   public parametroIsEditavel: boolean = true;
@@ -129,6 +122,18 @@ export class ParametroComponent {
         this.parametroFG.controls['politica'].disable();
       }
     });
+  }
+
+  public initFormGroup(): void {
+    this.parametroFG = new FormGroup({
+      nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
+      descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
+      modo: new FormControl(null, [Validators.required]),
+      data_vigencia: new FormControl(this.minDate, [Validators.required]),
+      hora_vigencia: new FormControl(null, [Validators.required]),
+      cluster: new FormControl(null, [Validators.required]),
+      politica: new FormControl(null, [Validators.required]),
+    }, this.dataHoraVigenciaValidators);
   }
 
   private _loadingClusters(): void {

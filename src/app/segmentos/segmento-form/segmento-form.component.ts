@@ -36,9 +36,13 @@ import { api } from '../../../shared/configurations';
 export class SegmentoFormComponent {
   private _http = inject(HttpClient);
   private _snackbar = inject(SnackbarMessagesService);
+
+  public segmentoFG!: FormGroup
   
   constructor(public dialogRef: MatDialogRef<SegmentoFormComponent>, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data?: { segmento: Segmento }) {
+    this.initFormGroup();
+
     if(this.data?.segmento) {
       this.segmentoFG.controls['id'].setValue(this.data.segmento.id);
 
@@ -50,14 +54,16 @@ export class SegmentoFormComponent {
     });
   }
 
-  public segmentoFG: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
-    is_ativo: new FormControl(true, [Validators.required])
-  });
-
   public hasAssociation: boolean = true;
+
+  public initFormGroup(): void {
+    this.segmentoFG = new FormGroup({
+      id: new FormControl(null),
+      nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
+      descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
+      is_ativo: new FormControl(true, [Validators.required])
+    });
+  }
 
   public getSegmentoByID(id: string): void {
     this._http.get(api.private.segmento.getByID.replace("{SEGMENTO_ID}", id)).subscribe(

@@ -40,7 +40,11 @@ export class RevisaoComponent {
   private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
-  constructor(private _router: Router){ }
+  public acoesFG!: FormGroup;
+
+  constructor(private _router: Router){
+    this.acoesFG = new FormGroup({ acao: new FormControl(null, [Validators.required]) });
+  }
 
   public parametro!: Parametro;
 
@@ -57,10 +61,6 @@ export class RevisaoComponent {
   public dataEventos: Evento[] = [];
 
   public parametroStatus: ParametroStatus[] = parametrosStatus;
-
-  public acoesFG: FormGroup = new FormGroup({
-    acao: new FormControl(null, [Validators.required])
-  });
 
   public acoes: { id: number; status_code: ParametroStatusCode, description: string }[] = [
     // { id: 1, status_code: "002", description: "Editar Parâmetro" },

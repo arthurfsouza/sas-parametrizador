@@ -38,9 +38,13 @@ import { api } from '../../../shared/configurations';
 export class PoliticaFormComponent {
   private _http = inject(HttpClient);
   private _snackbar = inject(SnackbarMessagesService);
+
+  public politicaFG!: FormGroup;
   
   constructor(public dialogRef: MatDialogRef<PoliticaFormComponent>, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data?: { politica: Politica }) {
+    this.initFormGroup();
+
     if(this.data?.politica) {
       this.politicaFG.controls['id'].setValue(this.data.politica.id);
 
@@ -53,15 +57,6 @@ export class PoliticaFormComponent {
     });
   }
 
-  public politicaFG: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
-    is_ativo: new FormControl(true, [Validators.required]),
-    cluster: new FormControl(null, [Validators.required]),
-    segmento: new FormControl(null, [Validators.required])
-  });
-
   public segmentos: Segmento[] = [];
   public clusters: Cluster[] = [];
   public clustersOriginal: Cluster[] = [];
@@ -71,6 +66,17 @@ export class PoliticaFormComponent {
   ngOnInit(): void {
     this._loadingSegmentos();
     this._loadingClusters();
+  }
+
+  public initFormGroup(): void {
+    this.politicaFG = new FormGroup({
+      id: new FormControl(null),
+      nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
+      descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
+      is_ativo: new FormControl(true, [Validators.required]),
+      cluster: new FormControl(null, [Validators.required]),
+      segmento: new FormControl(null, [Validators.required])
+    });
   }
 
   public getPoliticaByID(id: string): void {

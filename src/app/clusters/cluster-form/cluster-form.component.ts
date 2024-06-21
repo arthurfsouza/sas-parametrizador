@@ -39,8 +39,12 @@ export class ClusterFormComponent {
   private _http = inject(HttpClient);
   private _snackbar = inject(SnackbarMessagesService);
 
+  public clusterFG!: FormGroup;
+
   constructor(public dialogRef: MatDialogRef<ClusterFormComponent>, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data?: { cluster: Cluster}) {
+    this.initFormGroup();
+
     if(this.data?.cluster) {
       this.clusterFG.controls['id'].setValue(this.data.cluster.id);
 
@@ -52,20 +56,20 @@ export class ClusterFormComponent {
     });
   }
 
-  public clusterFG: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
-    is_ativo: new FormControl(true, [Validators.required]),
-    segmento: new FormControl(null, [Validators.required])
-  });
-
   public segmentos: Segmento[] = [];
 
   public hasAssociation: boolean = true;
 
-  ngOnInit(): void {
-    this._loadingSegmentos();
+  ngOnInit(): void { this._loadingSegmentos(); }
+
+  public initFormGroup(): void {
+    this.clusterFG = new FormGroup({
+      id: new FormControl(null),
+      nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
+      descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
+      is_ativo: new FormControl(true, [Validators.required]),
+      segmento: new FormControl(null, [Validators.required])
+    });
   }
 
   public getClusterByID(id: string): void {

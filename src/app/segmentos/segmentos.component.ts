@@ -41,7 +41,11 @@ export class SegmentosComponent {
 
   private _http = inject(HttpClient);
 
+  public filterFG!: FormGroup;
+
   constructor(public dialog: MatDialog){
+    this.filterFG = new FormGroup({ filter: new FormControl("", [Validators.minLength(3)]) });
+
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.data = this.originalData;
       
@@ -61,10 +65,6 @@ export class SegmentosComponent {
       }
     });
   }
-
-  public filterFG: FormGroup = new FormGroup({
-    filter: new FormControl("", [Validators.minLength(3)])
-  });
 
   public displayedColumns: string[] = ["nome", "status", "actions"];
   public dataSource: MatTableDataSource<Segmento> = new MatTableDataSource<Segmento>([]);

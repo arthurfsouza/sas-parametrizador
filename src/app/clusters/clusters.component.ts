@@ -41,7 +41,11 @@ export class ClustersComponent {
 
   private _http = inject(HttpClient);
 
-  constructor(public dialog: MatDialog){
+  public filterFG!: FormGroup;
+
+  constructor(public dialog: MatDialog) {
+    this.filterFG = new FormGroup({ filter: new FormControl("", [Validators.minLength(3)]) });
+
     this.filterFG.controls['filter'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
       this.data = this.originalData;
 
@@ -61,10 +65,6 @@ export class ClustersComponent {
       }
     });
   }
-
-  public filterFG: FormGroup = new FormGroup({
-    filter: new FormControl("", [Validators.minLength(3)])
-  });
 
   public displayedColumns: string[] = ["nome", "segmento", "status", "actions"];
   public dataSource: MatTableDataSource<Cluster> = new MatTableDataSource<Cluster>([]);

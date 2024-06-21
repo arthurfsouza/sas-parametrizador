@@ -46,7 +46,13 @@ export class DadosComponent {
   private _snackbar = inject(SnackbarMessagesService);
   private _parametro = inject(ParametroService);
 
-  constructor(public dialog: MatDialog, private _fb: FormBuilder){ }
+  public dadosFG!: FormGroup;
+  private _dados!: FormArray;
+
+  constructor(public dialog: MatDialog, private _fb: FormBuilder){
+    this.dadosFG = new FormGroup({ dados: this._fb.array([]) });
+    this._dados = <FormArray>this.dadosFG.get('dados');
+  }
   
   public parametro!: Parametro;
   public parametroIsEditavel: boolean = true;
@@ -58,9 +64,6 @@ export class DadosComponent {
   public displayedColumnsDados: string[] = [];
   public dataSourceDados: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   public dataDados: any[] = [];
-
-  public dadosFG: FormGroup = new FormGroup({ dados: this._fb.array([]) });
-  private _dados: FormArray = <FormArray>this.dadosFG.get('dados');
 
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {

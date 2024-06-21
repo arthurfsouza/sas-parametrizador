@@ -42,8 +42,12 @@ import StringUtils from '../../../../../shared/utils/string/string.utils';
 export class VariavelFormComponent {
   private _parametro = inject(ParametroService);
 
+  public variavelFG!: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<VariavelFormComponent>, @Inject(MAT_DIALOG_DATA) public data: { variaveis: Variavel[]; variavel: Variavel }) {
+      this.initFormGroup();
+      
       if(this.data && this.data.variaveis) { this.variaveis = this.data.variaveis; }
 
       if(this.data && this.data.variavel) {
@@ -66,16 +70,6 @@ export class VariavelFormComponent {
 
   public parametro!: Parametro;
 
-  public variavelFG: FormGroup = new FormGroup({
-    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("^[A-Za-z0-9_]+$")]),
-    tipo: new FormControl(null, [Validators.required]),
-    descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
-    tamanho: new FormControl(null, [Validators.required]),
-    qtd_casas_decimais: new FormControl(null),
-    is_chave: new FormControl(true, [Validators.required]),
-    variaveis_lista: new FormControl(null)
-  });
-
   public listasFG: FormGroup = new FormGroup({ item: new FormControl(null, [Validators.required]) });
 
   public variaveis: Variavel[] = [];
@@ -89,6 +83,18 @@ export class VariavelFormComponent {
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
       if(parametro) { this.parametro = parametro; }
+    });
+  }
+
+  public initFormGroup(): void {
+    this.variavelFG = new FormGroup({
+      nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("^[A-Za-z0-9_]+$")]),
+      tipo: new FormControl(null, [Validators.required]),
+      descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
+      tamanho: new FormControl(null, [Validators.required]),
+      qtd_casas_decimais: new FormControl(null),
+      is_chave: new FormControl(true, [Validators.required]),
+      variaveis_lista: new FormControl(null)
     });
   }
 
