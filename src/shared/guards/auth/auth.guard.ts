@@ -23,7 +23,6 @@ export class AuthGuard implements CanActivate {
                     resolve(false);
 
                     this._router.navigate([general.routes.auth.error.unauthorized]);
-                    window.location.reload();
 
                     return;
                 }

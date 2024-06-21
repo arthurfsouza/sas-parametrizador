@@ -50,7 +50,7 @@ export class LoginComponent {
 
       this._http.post(api.private.login, body).subscribe(
         (response: any) => {
-          if(response) {
+          if(response && response.token) {
             const auth: Auth = {
               token: response.token,
               expires_in: response.expires_in,
@@ -69,6 +69,9 @@ export class LoginComponent {
             this._localStorage.storageData({ type: 'auth', data: auth });
             this._snackbar.showSnackbarMessages({ message: "Login realizado com sucesso!", type: 'success', has_duration: true });
             this.dialogRef.close("closed");
+          }
+          else {
+            this._snackbar.showSnackbarMessages({ message: "Falha ao realizar o logiin!", type: 'error', has_duration: true });
           }
         }
       )
