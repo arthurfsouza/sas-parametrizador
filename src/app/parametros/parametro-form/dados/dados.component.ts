@@ -89,6 +89,12 @@ export class DadosComponent {
     )
   }
 
+  public dadosStepperIsValid(): boolean {
+    if(this._dados?.value?.length == 0) { return false; }
+    
+    return this.dadosFG.valid;
+  }
+
   public onCreate(): Observable<boolean> {
     const subject = new BehaviorSubject(false);
     const dados: any[] = this._prepareDados();

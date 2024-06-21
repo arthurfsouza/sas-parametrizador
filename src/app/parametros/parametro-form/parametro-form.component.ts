@@ -119,7 +119,7 @@ export class ParametroFormComponent {
   public dadosCompleted(): boolean {
     if(!this.parametroIsEditavel) { return true; }
     
-    if(this.appDados) { return this.appDados.dadosFG.valid; }
+    if(this.appDados) { return this.appDados.dadosStepperIsValid(); }
    
     return false;
   }
