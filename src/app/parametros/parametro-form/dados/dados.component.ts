@@ -222,7 +222,7 @@ export class DadosComponent {
 
     if(variavel) {
       if(variavel.tipo == "DECIMAL") {
-        pattern = new RegExp("^[0-9]{1," + variavel.tamanho + "}\.[0-9]{1," + variavel.qtd_casas_decimais + "}$");
+        pattern = new RegExp("^[0-9]{1," + variavel.tamanho + "}\\.[0-9]{1," + variavel.qtd_casas_decimais + "}$");
       }
       else if(variavel.tipo == "NUMERICO") {
         pattern = new RegExp("^[0-9]{1," + variavel.tamanho + "}$");

@@ -62,29 +62,12 @@ export class VariavelFormComponent {
           this.dataSource = new MatTableDataSource(this.dataListas);
         }
       }
-
-      this.variavelFG.controls['nome'].valueChanges.pipe(debounceTime(500)).subscribe(value => {
-        this.variavelFG.controls['nome'].setErrors(null);
-
-        if(value && this.variaveis.length > 0) {
-          let variavel!: Variavel | undefined;
-
-          if(this.data.variavel) { variavel = this.variaveis.find(v => v.nome == value && v.id != this.data.variavel.id);  }
-          else { variavel = this.variaveis.find(v => v.nome == value) }
-          
-          if(variavel) {
-            this.variavelFG.controls['nome'].markAsDirty();
-            this.variavelFG.controls['nome'].markAsTouched();
-            this.variavelFG.controls['nome'].setErrors({ nomeExistente: true });
-          }
-        }
-      })
   }
 
   public parametro!: Parametro;
 
   public variavelFG: FormGroup = new FormGroup({
-    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
+    nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("^[A-Za-z0-9_]+$")]),
     tipo: new FormControl(null, [Validators.required]),
     descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
     tamanho: new FormControl(null, [Validators.required]),
@@ -105,9 +88,7 @@ export class VariavelFormComponent {
 
   ngOnInit(): void {
     this._parametro.getParametro().subscribe(parametro => {
-      if(parametro) {
-        this.parametro = parametro;
-      }
+      if(parametro) { this.parametro = parametro; }
     });
   }
 
@@ -200,7 +181,27 @@ export class VariavelFormComponent {
   }
 
   public onSave(): void {
-    if(this.variavelFG.valid) { this.dialogRef.close({ variavel: this.variavelFG.value }); }
+    if(this.variavelFG.valid) {
+      const nome: string = this.variavelFG.controls['nome'].value;
+
+      if(nome && this.variaveis.length > 0) {
+        let variavel!: Variavel | undefined;
+
+        if(this.data.variavel) { variavel = this.variaveis.find(v => v.nome == nome && v.id != this.data.variavel.id);  }
+        else { variavel = this.variaveis.find(v => v.nome == nome) }
+        
+        if(variavel) {
+          this.variavelFG.controls['nome'].markAsDirty();
+          this.variavelFG.controls['nome'].markAsTouched();
+          this.variavelFG.controls['nome'].setErrors({ nomeExistente: true });
+
+          return;
+        }
+        else { this.variavelFG.controls['nome'].setErrors(null); }
+      }
+
+      this.dialogRef.close({ variavel: this.variavelFG.value });
+    }
   }
 
   public compareObjects(o1: any, o2: any): boolean { return o1?.id === o2?.id; }
