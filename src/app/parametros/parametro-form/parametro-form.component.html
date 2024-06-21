@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md-4 col-12" *ngIf="selectedIndex < 3">
-            <button mat-flat-button color="primary" [disabled]="!disabledNextButton()"
+            <button mat-flat-button color="primary" style="display: flex; flex-direction: row-reverse;" [disabled]="!disabledNextButton()"
                 (click)="onNextButton()">
                 SALVAR E AVANÇAR
                 <mat-icon style="margin-left: 5px;">arrow_forward</mat-icon>
