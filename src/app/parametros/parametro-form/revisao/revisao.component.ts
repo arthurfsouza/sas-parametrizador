@@ -179,6 +179,15 @@ export class RevisaoComponent {
     return parametroStatus?.description || "";
   }
 
+  public revisaoCompleted(): boolean {
+    if(!this.parametro || !this.parametro?.id) { return false; }
+    if(!this.parametro?.variaveis || this.parametro?.variaveis?.length == 0) { return false; }
+    if(!this.parametro?.dados || this.parametro?.dados?.length == 0) { return false; }
+    if(!this.parametro?.eventos || this.parametro?.eventos?.length == 0) { return false; }
+
+    return this.acoesFG.valid;
+  }
+
   public showErros(e: { error: string, campos_error: string[] }): void {
     this._snackbar.showSnackbarMessages({ message: e.error, type: 'error', has_duration: true });
   }

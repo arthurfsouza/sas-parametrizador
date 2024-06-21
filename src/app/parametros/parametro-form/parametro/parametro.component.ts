@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { addMinutes } from 'date-fns';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
@@ -55,7 +56,7 @@ export class ParametroComponent {
 
   constructor() { }
 
-  public minDate: Date = new Date();
+  public minDate: Date = addMinutes(new Date(), 5);
   public parametroFG: FormGroup = new FormGroup({
     nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.pattern("[A-Za-z0-9_]+")]),
     descricao: new FormControl(null, [Validators.required, Validators.maxLength(350)]),
@@ -63,8 +64,8 @@ export class ParametroComponent {
     data_vigencia: new FormControl(this.minDate, [Validators.required]),
     hora_vigencia: new FormControl(null, [Validators.required]),
     cluster: new FormControl(null, [Validators.required]),
-    politica: new FormControl(null, [Validators.required])
-  });
+    politica: new FormControl(null, [Validators.required]),
+  }, this.dataHoraVigenciaValidators);
 
   public parametro!: Parametro;
   public parametroIsEditavel: boolean = true;
@@ -262,6 +263,25 @@ export class ParametroComponent {
     )
     
     return subject.asObservable();
+  }
+
+  public dataHoraVigenciaValidators(control: AbstractControl) {
+    const data_vigencia: any = control.get('data_vigencia')!.value;
+    const hora_vigencia: any = control.get('hora_vigencia')!.value;
+
+    let data_vigencia_aux: string = data_vigencia.toISOString();
+
+    if(data_vigencia_aux?.length >= 10) { data_vigencia_aux = data_vigencia_aux.substring(0, 10); }
+
+    const dataHoraVigencia: Date = new Date(data_vigencia_aux + " " + hora_vigencia + ":00");
+    const now: Date = new Date();
+
+    if(dataHoraVigencia.getTime() < now.getTime()) {
+      control.get('hora_vigencia')?.setErrors({ vigenciaInvalida: true });
+    }
+    else { control.get('hora_vigencia')?.setErrors(null); }
+
+    return null
   }
 
   public showErros(e: { error: string, campos_error: string[] }): void {

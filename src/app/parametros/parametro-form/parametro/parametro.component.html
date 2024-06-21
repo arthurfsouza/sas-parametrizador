@@ -86,6 +86,15 @@
 
     <br/>
 
+    <div class="row parametro-error" *ngIf="parametroFG.controls['hora_vigencia'].hasError('vigenciaInvalida')">
+        <div class="error-content">
+            <mat-icon class="error-icon">error</mat-icon>
+            <div class="error-text">
+                <b>Importante: </b>A data e hora da vigência devem ser ser superior a data e hora do momento do cadastro!
+            </div>
+        </div>
+    </div>
+
     <div class="row parametro-warning">
         <div class="warning-content">
             <mat-icon class="warning-icon">warning</mat-icon>

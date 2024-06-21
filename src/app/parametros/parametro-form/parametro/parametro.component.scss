@@ -26,4 +26,22 @@
             .warning-text { margin-left: 15px; }
         }
     }
+
+    .parametro-error {
+        padding: 15px;
+        margin-top: auto;
+        
+        .error-content {
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            border: 2px solid #f1416c;            
+            border-radius: 5px;
+            background-color: #fff5f8;                                    
+
+            .error-icon { color: #f1416c; }
+
+            .error-text { margin-left: 15px; }
+        }
+    }
 }

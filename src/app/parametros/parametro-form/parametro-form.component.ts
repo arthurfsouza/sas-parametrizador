@@ -2,7 +2,7 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MenuNavigatorComponent } from '../../../shared/components';
@@ -41,10 +41,16 @@ export class ParametroFormComponent {
 
   constructor(private _activated: ActivatedRoute) { }
 
-  public parametroStepperFG: FormGroup = new FormGroup({});
-  public variaveisStepperFG: FormGroup = new FormGroup({});
-  public dadosStepperFG: FormGroup = new FormGroup({});
-  public revisaoStepperFG: FormGroup = new FormGroup({});
+  public parametroStepperFG: FormGroup = new FormGroup({
+    completed: new FormControl(this.parametroFGCompleted(), [Validators.required])
+  });
+  public variaveisStepperFG: FormGroup = new FormGroup({
+    completed: new FormControl(this.variaveisFGCompleted(), [Validators.required])
+  });
+  public dadosStepperFG: FormGroup = new FormGroup({
+    completed: new FormControl(this.dadosFGCompleted(), [Validators.required])
+  });
+  public revisaoStepperFG: FormGroup = new FormGroup({ });
 
   public parametro!: Parametro;
   public parametroID!: string;
@@ -94,6 +100,10 @@ export class ParametroFormComponent {
     return false;
   }
 
+  public parametroFGCompleted(): any {
+    return this.parametroCompleted() == true ? 'Completed' : null;
+  }
+
   public variaveisCompleted(): boolean {
     if(!this.parametroIsEditavel) { return true; }
 
@@ -102,12 +112,20 @@ export class ParametroFormComponent {
     return false;
   }
 
+  public variaveisFGCompleted(): any {
+    return this.variaveisCompleted() == true ? 'Completed' : null;
+  }
+
   public dadosCompleted(): boolean {
     if(!this.parametroIsEditavel) { return true; }
     
     if(this.appDados) { return this.appDados.dadosFG.valid; }
    
     return false;
+  }
+
+  public dadosFGCompleted(): any {
+    return this.dadosCompleted() == true ? 'Completed' : null;
   }
 
   public disabledNextButton(): boolean {

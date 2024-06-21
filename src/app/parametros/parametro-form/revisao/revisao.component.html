@@ -201,7 +201,7 @@
 
                 <div class="row variavel-lista-form">                    
                     <div class="offset-md-6 col-md-6 col-12" style="padding: 8px 0;">
-                        <button mat-raised-button color="primary" style="width: 100%;" [disabled]="!acoesFG.controls['acao'].valid" (click)="onSaveStatus()">
+                        <button mat-raised-button color="primary" style="width: 100%;" [disabled]="!revisaoCompleted()" (click)="onSaveStatus()">
                             <mat-icon *ngIf="acoesFG.controls['acao'].value?.status_code == '005'">insights</mat-icon>
                             Salvar
                         </button>

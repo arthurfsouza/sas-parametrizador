@@ -42,7 +42,7 @@
         padding: 15px;
         margin-top: auto;
         
-        .warning-content {
+        .error-content {
             width: 100%;
             padding: 15px;
             display: flex;
@@ -50,9 +50,9 @@
             border-radius: 5px;
             background-color: #fff5f8;                                    
 
-            .warning-icon { color: #f1416c; }
+            .error-icon { color: #f1416c; }
 
-            .warning-text { margin-left: 15px; }
+            .error-text { margin-left: 15px; }
         }
     }
 
